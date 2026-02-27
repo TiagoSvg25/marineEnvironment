@@ -1,0 +1,23 @@
+# Visual Studio
+.vs/
+*.vsidx
+*.suo
+*.user
+
+# Unreal Engine
+Binaries/
+Intermediate/
+Saved/
+DerivedDataCache/
+*.VC.db
+*.opensdf
+*.sdf
+*.sln
+*.suo
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.dll
+*.pdb

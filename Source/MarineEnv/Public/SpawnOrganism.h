@@ -1,0 +1,32 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "OrganismDataAsset.h"
+#include "Organism.h"
+#include "GameFramework/Actor.h"
+#include "SpawnOrganism.generated.h"
+
+UCLASS()
+class MARINEENV_API ASpawnOrganism : public AActor
+{
+	GENERATED_BODY()
+	
+public:	
+	// Sets default values for this actor's properties
+	ASpawnOrganism();
+
+	void SpawnOrganism();
+
+	void fill_information(UOrganismDataAsset* OrganismData, AOrganism* Organism);
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	UOrganismDataAsset* OrganismData;
+
+
+
+};
