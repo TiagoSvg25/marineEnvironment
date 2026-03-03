@@ -61,7 +61,7 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 
 	FVector Origin = GetActorLocation();
 
-	bool invalidSpawn = false;
+	bool invalidSpawn = true;
 
 	float MinDistSq = FMath::Square(OrganismData->Physical.Size*1.5);
 
@@ -69,9 +69,14 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 
 		invalidSpawn = false;
 
+		double scaleNum = FMath::FRandRange(0.5,20);
 		SpawnLocation.X = Origin.X + FMath::FRandRange(-width, width);
 		SpawnLocation.Y = Origin.Y + FMath::FRandRange(-length, length);
-		SpawnLocation.Z = Origin.Z + FMath::FRandRange(height - OrganismData->Environmental.MaxDepth + OrganismData->Physical.Height,height - OrganismData->Environmental.MinDepth);
+		SpawnLocation.Z = Origin.Z + FMath::FRandRange(
+			height - OrganismData->Environmental.MaxDepth + OrganismData->Physical.Height,
+			height - OrganismData->Environmental.MinDepth
+		 );
+
 
 		// check if other organisms are too close
 		for (AActor* Actor : Organisms)
@@ -84,14 +89,20 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 		}
 
 		if (!invalidSpawn) {
-			FTransform Transform(Rotation, SpawnLocation);
+			FTransform Transform(Rotation, SpawnLocation, FVector(scaleNum));
 
 			FActorSpawnParameters SpawnParam;
 			SpawnParam.Owner = this;
 			SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 
-			AOrganism* Organism = GetWorld()->SpawnActorDeferred<AOrganism>(AOrganism::StaticClass(),Transform,this,nullptr, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+			AOrganism* Organism = GetWorld()->SpawnActorDeferred<AOrganism>(
+				AOrganism::StaticClass(),
+				Transform,
+				this,
+				nullptr, 
+				ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn
+			);
 
 			if (Organism)
 			{
@@ -110,7 +121,7 @@ void ASpawnOrganism::fill_information(UOrganismDataAsset* OrganismDat, AOrganism
 	Organism->setEnvironmentalCharacteristics(OrganismDat->Environmental.EcoType, OrganismDat->Environmental.MinDepth, OrganismDat->Environmental.MaxDepth);
 	Organism->setPhysicalCharacteristics(OrganismDat->Physical.Size, OrganismDat->Physical.Height, OrganismDat->Physical.Weight);
 	Organism->setMovementCharacteristics(OrganismDat->Movement.Speed, OrganismDat->Movement.AwarenessRadius, OrganismDat->Movement.AngleVision);
-	Organism->setOrganismMeshe(OrganismDat->Mesh);
+	Organism->setOrganismMeshe(OrganismDat->Mesh, OrganismDat->anim);
 }
 
 void ASpawnOrganism::setSpawnRestrictions(double InWidth, double InLength, double InHeight, int InEntityLimit, TArray<UOrganismDataAsset*> InOrganismList) {
@@ -119,5 +130,4 @@ void ASpawnOrganism::setSpawnRestrictions(double InWidth, double InLength, doubl
 	this->height = InHeight;
 	this->entityLimit = InEntityLimit;
 	this->OrganismList = InOrganismList;
-
 }

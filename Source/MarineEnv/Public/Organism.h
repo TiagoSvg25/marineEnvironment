@@ -25,7 +25,7 @@ public:
 
 	void setMovementCharacteristics(float NewSpeed, float NewRadiusAwareness, float NewAngleVision);
 
-	void setOrganismMeshe(UStaticMesh* mesh);
+	void setOrganismMeshe(USkeletalMesh* mesh, UAnimSequence* anim);
 
 
 protected:
@@ -33,7 +33,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* SphereMesh;
+	USkeletalMeshComponent* SphereMesh;
+
+	UPROPERTY(VisibleAnywhere)
+	UAnimSequence* anim;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Characteristics")
 	FPhysicalCharacteristics Physical;
