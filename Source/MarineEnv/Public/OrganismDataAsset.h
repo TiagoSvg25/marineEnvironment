@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NatureCharacteristics.h"
 #include "Engine/DataAsset.h"
+#include "NatureCharacteristics.h"
 #include "OrganismDataAsset.generated.h"
 
 /**
@@ -27,6 +27,9 @@ public:
     FMovementCharacteristics Movement;
 
     UPROPERTY(EditAnywhere, Category = "Mesh")
-    UStaticMesh* Mesh;
-	
+    USkeletalMesh* Mesh;
+
+    UPROPERTY(EditAnywhere, Category = "Animation")
+    UAnimSequence* anim;
+
 };

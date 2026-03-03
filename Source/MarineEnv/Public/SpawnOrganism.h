@@ -12,14 +12,18 @@ UCLASS()
 class MARINEENV_API ASpawnOrganism : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ASpawnOrganism();
+
 
 	void SpawnOrganism(UOrganismDataAsset* OrganismData);
 
 	void fill_information(UOrganismDataAsset* OrganismData, AOrganism* Organism);
+
+	void setSpawnRestrictions(double width, double lenght, double height, int entityLimit, TArray<UOrganismDataAsset*> OrganismList);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -27,6 +31,17 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TArray<UOrganismDataAsset*> OrganismList;
 
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	int entityLimit = 10;
 
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	double width = 2000;
+
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	double height = 2000;
+
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	double length = 500;
 
 };
+

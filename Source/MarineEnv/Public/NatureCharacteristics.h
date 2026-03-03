@@ -15,13 +15,13 @@ struct FPhysicalCharacteristics
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Physical")
-	float Size;
+	float Size = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Physical")
-	float Height;
+	float Height = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Physical")
-	float Weight;
+	float Weight = 0.f;
 
 };
 
@@ -32,37 +32,36 @@ struct FEnvironmentalCharacteristics
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environmental")
-	EcoClass EcoType;
+	EcoClass EcoType = EcoClass::Flora;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environmental")
+	float MinDepth = 0.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environmental")
+	float MaxDepth = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environmental")
 	int TrophicLevel;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environmental")
-	float MinDepth;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environmental")
-	float MaxDepth;
 };
 
 USTRUCT(BlueprintType)
 struct FMovementCharacteristics
 {
 	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	MovementState InitialState = MovementState::idle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float Speed;
+	float Speed = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	MovementState InitialState;
+	float AwarenessRadius = 10.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float AwarenessRadius;
+	float AngleVision = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float TurnSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float AngleVision;
+	float TurnSpeed = 0.f;
 };
 
 

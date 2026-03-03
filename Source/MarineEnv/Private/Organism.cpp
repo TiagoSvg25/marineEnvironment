@@ -9,7 +9,7 @@ AOrganism::AOrganism()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SphereMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SphereMesh"));
+	SphereMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SphereMesh"));
 	RootComponent = SphereMesh;
 
 }
@@ -39,9 +39,10 @@ void AOrganism::setMovementCharacteristics(float NewSpeed, MovementState NewStat
 	Movement.AngleVision = NewAngleVision;
 }
 
-void AOrganism::setOrganismMeshe(UStaticMesh* meshe)
+void AOrganism::setOrganismMeshe(USkeletalMesh* meshe, UAnimSequence* anims)
 {
-	SphereMesh->SetStaticMesh(meshe);
+	SphereMesh->SetSkeletalMesh(meshe);
+	this->anim = anims;
 }
 
 void AOrganism::activateDetection(float DeltaTime)
@@ -80,6 +81,8 @@ void AOrganism::BeginPlay()
 
 	
 	calculateVectors();
+	SphereMesh->PlayAnimation(anim, true);
+
 
 
 }
