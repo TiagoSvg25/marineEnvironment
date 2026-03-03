@@ -17,7 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	ASpawnOrganism();
 
-	void SpawnOrganism();
+	void SpawnOrganism(UOrganismDataAsset* OrganismData);
 
 	void fill_information(UOrganismDataAsset* OrganismData, AOrganism* Organism);
 protected:
@@ -25,7 +25,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
-	UOrganismDataAsset* OrganismData;
+	TArray<UOrganismDataAsset*> OrganismList;
 
 
 

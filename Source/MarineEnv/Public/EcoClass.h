@@ -8,8 +8,7 @@ UENUM(BlueprintType)
 enum class EcoClass : uint8
 {
 	Flora UMETA(DisplayName = "Flora"),
-	Rock  UMETA(DisplayName = "Rock"),
-	Prey  UMETA(DisplayName = "Prey"),
-	Predator UMETA(DisplayName = "Predator"),
-
+	Sctruture  UMETA(DisplayName = "Sctruture"),
+	Animal  UMETA(DisplayName = "Animal"),
 };
+

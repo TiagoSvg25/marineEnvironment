@@ -5,6 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "NatureCharacteristics.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/Actor.h"
 #include "Organism.generated.h"
 
@@ -21,12 +22,13 @@ public:
 
 	void setPhysicalCharacteristics(float NewSize, float NewHeight, float NewWeight);
 
-	void setEnvironmentalCharacteristics(EcoClass NewEcoclass, float NewMinDepth, float NewMaxDepth);
+	void setEnvironmentalCharacteristics(EcoClass NewEcoclass, int NewTrophicLevel, float NewMinDepth, float NewMaxDepth);
 
-	void setMovementCharacteristics(float NewSpeed, float NewRadiusAwareness, float NewAngleVision);
+	void setMovementCharacteristics(float NewSpeed, MovementState NewState, float NewRadiusAwareness, float NewTurnSpeed, float NewAngleVision);
 
 	void setOrganismMeshe(UStaticMesh* mesh);
 
+	void activateDetection(float DeltaTime);
 
 protected:
 		// Called when the game starts or when spawned
@@ -45,8 +47,30 @@ protected:
 	FMovementCharacteristics Movement;
 
 
+	FVector CurrentDirection;
+
+	FVector TargetDirection;
+
+	float DirectionTimer;
+
+	float DetectionTimer;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float DirectionChangeInterval;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float DetectionInterval;
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void BehaviourAnalisys();	
+
+	void UpdateBehaviour();
+
+private:
+	void calculateVectors();
 
 };

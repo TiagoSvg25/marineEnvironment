@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "EcoClass.h"
+#include "MovementState.h"
 #include "NatureCharacteristics.generated.h"
 
 
@@ -34,6 +35,9 @@ struct FEnvironmentalCharacteristics
 	EcoClass EcoType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environmental")
+	int TrophicLevel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environmental")
 	float MinDepth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environmental")
@@ -49,7 +53,13 @@ struct FMovementCharacteristics
 	float Speed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	MovementState InitialState;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float AwarenessRadius;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float TurnSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float AngleVision;

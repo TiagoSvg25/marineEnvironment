@@ -15,11 +15,17 @@ ASpawnOrganism::ASpawnOrganism()
 void ASpawnOrganism::BeginPlay()
 {
 	Super::BeginPlay();
-	SpawnOrganism();
+
+	for (UOrganismDataAsset* OrganismData : OrganismList) {
+		if (OrganismData) {
+			SpawnOrganism(OrganismData);
+		}
+	}
+	
 	
 }
 
-void ASpawnOrganism::SpawnOrganism()
+void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 {
 	if (!OrganismData) return;
 
@@ -44,6 +50,6 @@ void ASpawnOrganism::fill_information(UOrganismDataAsset* OrganismDat, AOrganism
 {
 	Organism->setEnvironmentalCharacteristics(OrganismDat->Environmental.EcoType, OrganismDat->Environmental.MinDepth, OrganismDat->Environmental.MaxDepth);
 	Organism->setPhysicalCharacteristics(OrganismDat->Physical.Size, OrganismDat->Physical.Height, OrganismDat->Physical.Weight);
-	Organism->setMovementCharacteristics(OrganismDat->Movement.Speed, OrganismDat->Movement.AwarenessRadius, OrganismDat->Movement.AngleVision);
+	Organism->setMovementCharacteristics(OrganismDat->Movement.Speed, OrganismDat->Movement.AwarenessRadius, OrganismDat->Movement.TurnSpeed,OrganismDat->Movement.AngleVision);
 	Organism->setOrganismMeshe(OrganismDat->Mesh);
 }
