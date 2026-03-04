@@ -49,7 +49,7 @@ struct FMovementCharacteristics
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	MovementState InitialState = MovementState::idle;
+	MovementState InitialState = MovementState::Idle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float Speed = 0.f;

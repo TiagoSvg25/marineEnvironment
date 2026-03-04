@@ -118,9 +118,9 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 
 void ASpawnOrganism::fill_information(UOrganismDataAsset* OrganismDat, AOrganism* Organism)
 {
-	Organism->setEnvironmentalCharacteristics(OrganismDat->Environmental.EcoType, OrganismDat->Environmental.MinDepth, OrganismDat->Environmental.MaxDepth);
+	Organism->setEnvironmentalCharacteristics(OrganismDat->Environmental.EcoType, OrganismDat->Environmental.TrophicLevel, OrganismDat->Environmental.MinDepth, OrganismDat->Environmental.MaxDepth);
 	Organism->setPhysicalCharacteristics(OrganismDat->Physical.Size, OrganismDat->Physical.Height, OrganismDat->Physical.Weight);
-	Organism->setMovementCharacteristics(OrganismDat->Movement.Speed, OrganismDat->Movement.AwarenessRadius, OrganismDat->Movement.AngleVision);
+	Organism->setMovementCharacteristics(OrganismDat->Movement.Speed,OrganismDat->Movement.InitialState, OrganismDat->Movement.AwarenessRadius, OrganismDat->Movement.TurnSpeed , OrganismDat->Movement.AngleVision);
 	Organism->setOrganismMeshe(OrganismDat->Mesh, OrganismDat->anim);
 }
 
