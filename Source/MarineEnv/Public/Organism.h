@@ -58,6 +58,8 @@ protected:
 
 	float DetectionTimer;
 
+	FRotator NewRotation;
+
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float DirectionChangeInterval;
 
