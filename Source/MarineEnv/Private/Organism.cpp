@@ -64,11 +64,12 @@ void AOrganism::updateMovement(float DeltaTime)
 	}
 
 	// secod phase - move the organism in the direction calculated in the first phase
-
+	NewRotation = FRotationMatrix::MakeFromZ(CurrentDirection).Rotator();
+	SetActorRotation(NewRotation);
 	FVector NewLocation = GetActorLocation() + (CurrentDirection * Movement.Speed * DeltaTime);
 	SetActorLocation(NewLocation);
 
-}
+} 
 
 // Called when the game starts or when spawned
 void AOrganism::BeginPlay()
@@ -79,7 +80,8 @@ void AOrganism::BeginPlay()
 	DirectionChangeInterval = FMath::RandRange(2.0f, 5.0f);
 	DetectionInterval = FMath::RandRange(2.0f, 5.0f);
 
-	
+	NewRotation = FRotationMatrix::MakeFromZ(CurrentDirection).Rotator();
+	NewRotation.Pitch += 180.0f;
 	calculateVectors();
 	SphereMesh->PlayAnimation(anim, true);
 
