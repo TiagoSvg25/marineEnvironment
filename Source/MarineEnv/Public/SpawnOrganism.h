@@ -37,10 +37,10 @@ protected:
 	int entityLimit = 10;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
-	double width = 2000;
+	double width = 200;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
-	double height = 2000;
+	double height = 200;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	double length = 500;
