@@ -28,6 +28,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaTime) override;
+
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TArray<UOrganismDataAsset*> OrganismList;
 
@@ -42,6 +44,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	double length = 500;
+
+	int spawnCount = 0;
+
 
 };
 

@@ -9,6 +9,7 @@
 ASpawnOrganism::ASpawnOrganism()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	PrimaryActorTick.bCanEverTick = false;
 
 }
@@ -20,29 +21,36 @@ void ASpawnOrganism::BeginPlay()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ASpawnOrganism BeginPlay triggered"));
 	Super::BeginPlay();
-	int spawnCount = 0;
-	UE_LOG(LogTemp, Warning, TEXT("OrganismList Size = %d"), OrganismList.Num());
-	UE_LOG(LogTemp, Warning, TEXT("Entity Limit = %d"), entityLimit);
+
+	FVector SpawnerLocation = this->GetActorLocation();
+	UE_LOG(LogTemp, Warning, TEXT("OrgSpawner Position = %f, %f, %f"), SpawnerLocation.X, SpawnerLocation.Y, SpawnerLocation.Z);
+
 
 	if (OrganismList.Num() == 0) {
 		return;
 	}
-
-	while(spawnCount < entityLimit){
+	while(this->spawnCount <= entityLimit){
 		for (UOrganismDataAsset* OrganismData : OrganismList) {
 			if (OrganismData) {
 				SpawnOrganism(OrganismData);
-				spawnCount++;
+				this->spawnCount++;
 			}
-			if (spawnCount >= entityLimit) {
+			if (this->spawnCount >= entityLimit) {
 				break;
 			}
 		}
 	}
+
+}
+
+void ASpawnOrganism::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
 
 void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Spawn Trigger"));
 
 	if (!OrganismData) return;
 
@@ -59,7 +67,7 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 
 	int maxSpawnAttempt = 30;
 
-	FVector Origin = GetActorLocation();
+	FVector Origin = this->GetActorLocation();
 
 	bool invalidSpawn = true;
 
@@ -69,7 +77,7 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 
 		invalidSpawn = false;
 
-		double scaleNum = FMath::FRandRange(0.5,20);
+		double scaleNum = FMath::FRandRange(0.5,3);
 		SpawnLocation.X = Origin.X + FMath::FRandRange(-width, width);
 		SpawnLocation.Y = Origin.Y + FMath::FRandRange(-length, length);
 		SpawnLocation.Z = Origin.Z + FMath::FRandRange(

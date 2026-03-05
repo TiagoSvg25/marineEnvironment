@@ -17,7 +17,9 @@ ABaseSpawner::ABaseSpawner()
 void ABaseSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	FTransform SpawnTransform(GetActorLocation());
+	FVector SpawnerLocation = this->GetActorLocation(); 
+	FTransform SpawnTransform(FRotator::ZeroRotator, SpawnerLocation, FVector::OneVector);
+	UE_LOG(LogTemp, Warning, TEXT("BaseSpawner Position = %f, %f, %f"), SpawnerLocation.X, SpawnerLocation.Y, SpawnerLocation.Z);
 
 	ASpawnOrganism* OrgSpawner = GetWorld()->SpawnActorDeferred<ASpawnOrganism>(ASpawnOrganism::StaticClass(), SpawnTransform);
 
@@ -29,9 +31,14 @@ void ABaseSpawner::BeginPlay()
 			entityLimit,
 			OrganismList
 		);
-	}
-	UGameplayStatics::FinishSpawningActor(OrgSpawner, SpawnTransform);
 
+		UGameplayStatics::FinishSpawningActor(OrgSpawner, SpawnTransform);
+
+
+		FVector ORG = OrgSpawner->GetActorLocation();
+
+		UE_LOG(LogTemp, Warning, TEXT("BaseSpawner Position = %f, %f, %f"), ORG.X, ORG.Y, ORG.Z);
+	}
 
 }
 
@@ -39,6 +46,7 @@ void ABaseSpawner::BeginPlay()
 void ABaseSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 
 }
 
