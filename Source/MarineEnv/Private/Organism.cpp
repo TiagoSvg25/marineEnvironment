@@ -2,12 +2,23 @@
 
 
 #include "Organism.h"
+#include "GameFramework/FloatingPawnMovement.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AOrganism::AOrganism()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	FloatingMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
+
+	// Auto assign AI controller
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
 
 	SphereMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SphereMesh"));
 	RootComponent = SphereMesh;
@@ -62,13 +73,19 @@ void AOrganism::updateMovement(float DeltaTime)
 	if (DirectionTimer >= DirectionChangeInterval) {
 		calculateVectors();
 	}
+	AddMovementInput(CurrentDirection, Movement.Speed);
 
-	// secod phase - move the organism in the direction calculated in the first phase
-	NewRotation = FRotationMatrix::MakeFromZ(CurrentDirection).Rotator();
-	SetActorRotation(NewRotation);
-	FVector NewLocation = GetActorLocation() + (CurrentDirection * Movement.Speed * DeltaTime);
-	SetActorLocation(NewLocation);
-
+	if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
+	{
+		FRotator TargetRotation = CurrentDirection.ToOrientationRotator();
+		FRotator Smoothed = FMath::RInterpTo(
+			GetActorRotation(),
+			TargetRotation,
+			DeltaTime,
+			Movement.TurnSpeed
+		);
+		SetActorRotation(Smoothed);
+	}
 } 
 
 // Called when the game starts or when spawned
@@ -79,14 +96,8 @@ void AOrganism::BeginPlay()
 	CurrentDirection = FMath::VRand();	
 	DirectionChangeInterval = FMath::RandRange(2.0f, 5.0f);
 	DetectionInterval = FMath::RandRange(2.0f, 5.0f);
-
-	NewRotation = FRotationMatrix::MakeFromZ(CurrentDirection).Rotator();
-	NewRotation.Pitch += 180.0f;
 	calculateVectors();
 	SphereMesh->PlayAnimation(anim, true);
-
-
-
 }
 
 // Called every frame

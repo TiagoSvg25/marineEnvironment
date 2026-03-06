@@ -6,11 +6,13 @@
 #include "CoreMinimal.h"
 #include "NatureCharacteristics.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "Organism.generated.h"
 
+
 UCLASS()
-class MARINEENV_API AOrganism : public AActor
+class MARINEENV_API AOrganism : public APawn
 {
 	GENERATED_BODY()
 	
@@ -36,6 +38,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* SphereMesh;
+
+	UPROPERTY(VisibleAnywhere)
+	UFloatingPawnMovement* FloatingMovement;
 
 	UPROPERTY(VisibleAnywhere)
 	UAnimSequence* anim;
