@@ -7,9 +7,21 @@
 #include "NatureCharacteristics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/Pawn.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Organism.generated.h"
 
+UENUM(BlueprintType)
+enum class OrganismState : uint8
+{
+	Idle UMETA(DisplayName = "Idle"),
+	Hunting UMETA(DisplayName = "Hunting"),
+	Fleeing UMETA(DisplayName = "Fleeing"),
+	Reproduction UMETA(DisplayName = "Reproduction"),
+
+};
+
+class AOrganismAIController;
 
 UCLASS()
 class MARINEENV_API AOrganism : public APawn
@@ -26,11 +38,20 @@ public:
 
 	void setEnvironmentalCharacteristics(EcoClass NewEcoclass, int NewTrophicLevel, float NewMinDepth, float NewMaxDepth);
 
+	FEnvironmentalCharacteristics getEnvironmentalCharacteristics();
+
 	void setMovementCharacteristics(float NewSpeed, MovementState NewState, float NewRadiusAwareness, float NewTurnSpeed, float NewAngleVision);
+	
+	FMovementCharacteristics getMovementCharacteristics();
 
 	void setOrganismMeshe(USkeletalMesh* mesh, UAnimSequence* anim);
 
 	void activateDetection(float DeltaTime);
+
+	void setState(OrganismState NewState);
+
+	OrganismState getState();
+
 
 protected:
 		// Called when the game starts or when spawned
@@ -38,6 +59,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* SphereMesh;
+
+	UPROPERTY(VisibleAnywhere, Category = "Collision")
+	USphereComponent* CollisionSphere;
 
 	UPROPERTY(VisibleAnywhere)
 	UFloatingPawnMovement* FloatingMovement;
@@ -54,6 +78,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Characteristics")
 	FMovementCharacteristics Movement;
 
+	OrganismState CurrentState = OrganismState::Idle;
+
+
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	void BehaviourAnalisys();	
+
+	void UpdateBehaviour();
 
 	FVector CurrentDirection;
 
@@ -70,15 +105,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float DetectionInterval;
-
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	void BehaviourAnalisys();	
-
-	void UpdateBehaviour();
 
 private:
 	void calculateVectors();

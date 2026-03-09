@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "NatureCharacteristics.h"
+#include "AIController.h"
 #include "OrganismDataAsset.generated.h"
 
 /**
@@ -31,5 +32,8 @@ public:
 
     UPROPERTY(EditAnywhere, Category = "Animation")
     UAnimSequence* anim;
+
+    UPROPERTY(EditDefaultsOnly, Category = "AI")
+    TSubclassOf<AAIController> ControllerClass;
 
 };

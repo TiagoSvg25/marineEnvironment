@@ -3,24 +3,26 @@
 
 #include "Organism.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "OrganismAIController.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AOrganism::AOrganism()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+
 	PrimaryActorTick.bCanEverTick = true;
 
 	FloatingMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
-
-	// Auto assign AI controller
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-
+	AutoPossessAI = EAutoPossessAI::Disabled;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 
 	SphereMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SphereMesh"));
+
+	AIControllerClass = AOrganismAIController::StaticClass();
+
+
 	RootComponent = SphereMesh;
 
 }
@@ -41,6 +43,11 @@ void AOrganism::setEnvironmentalCharacteristics(EcoClass Ecotype, int NewTrophic
 	Environmental.MaxDepth = NewMaxDepth;
 }
 
+FEnvironmentalCharacteristics AOrganism::getEnvironmentalCharacteristics() {
+	return Environmental;
+}
+
+
 void AOrganism::setMovementCharacteristics(float NewSpeed, MovementState NewState, float NewRadiusAwareness,float NewTurnSpeed, float NewAngleVision)
 {
 	Movement.Speed = NewSpeed;
@@ -50,19 +57,27 @@ void AOrganism::setMovementCharacteristics(float NewSpeed, MovementState NewStat
 	Movement.AngleVision = NewAngleVision;
 }
 
+FMovementCharacteristics AOrganism::getMovementCharacteristics() {
+	return Movement;
+}
+
+
 void AOrganism::setOrganismMeshe(USkeletalMesh* meshe, UAnimSequence* anims)
 {
 	SphereMesh->SetSkeletalMesh(meshe);
 	this->anim = anims;
 }
 
-void AOrganism::activateDetection(float DeltaTime)
-{
-	if (DetectionTimer >= DetectionInterval) {
-		DetectionTimer = 0.0f;
-		BehaviourAnalisys();
-	}
+
+void AOrganism::setState(OrganismState NewState) {
+	CurrentState = NewState;
 }
+
+OrganismState AOrganism::getState() {
+	return CurrentState;
+}
+
+
 
 void AOrganism::updateMovement(float DeltaTime)
 {
@@ -108,7 +123,6 @@ void AOrganism::Tick(float DeltaTime)
 	DirectionTimer += DeltaTime;
 	DetectionTimer += DeltaTime;
 
-	activateDetection(DeltaTime);
 	updateMovement(DeltaTime);
 
 }
