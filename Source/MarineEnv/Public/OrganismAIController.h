@@ -19,11 +19,22 @@ class MARINEENV_API AOrganismAIController : public AAIController
 	GENERATED_BODY()
 
 public:
+	AOrganismAIController();
+
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void OnPossess(APawn* InPawn) override;
 
 	void setPredatorNearby(AOrganism* InPredator);
 
+	bool checkEscape(AOrganism* Prey, AOrganism* InPredator);
+
 	AOrganism* findFood();
+
+	void onCatchPrey(AOrganism* Collided);
+
+	void onTerrainCollision(FVector Normal);
+
 
 private:
 	UPROPERTY()
@@ -39,8 +50,7 @@ private:
 
 	float DetectionTimer;
 
-	bool isHungry;
-
+	bool isHungry = false;
 
 
 	void updateState();

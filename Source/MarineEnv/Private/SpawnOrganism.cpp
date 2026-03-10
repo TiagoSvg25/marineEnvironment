@@ -29,7 +29,7 @@ void ASpawnOrganism::BeginPlay()
 	if (OrganismList.Num() == 0) {
 		return;
 	}
-	while(this->spawnCount <= entityLimit){
+	while(this->spawnCount < entityLimit){
 		for (UOrganismDataAsset* OrganismData : OrganismList) {
 			if (OrganismData) {
 				SpawnOrganism(OrganismData);
@@ -117,6 +117,8 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 				fill_information(OrganismData, Organism);
 
 				UGameplayStatics::FinishSpawningActor(Organism, Transform);
+
+				Organism->SpawnDefaultController();
 			}
 			return;
 		}
@@ -130,6 +132,7 @@ void ASpawnOrganism::fill_information(UOrganismDataAsset* OrganismDat, AOrganism
 	Organism->setPhysicalCharacteristics(OrganismDat->Physical.Size, OrganismDat->Physical.Height, OrganismDat->Physical.Weight);
 	Organism->setMovementCharacteristics(OrganismDat->Movement.Speed,OrganismDat->Movement.InitialState, OrganismDat->Movement.AwarenessRadius, OrganismDat->Movement.TurnSpeed , OrganismDat->Movement.AngleVision);
 	Organism->setOrganismMeshe(OrganismDat->Mesh, OrganismDat->anim);
+	Organism->AIControllerClass = OrganismDat->ControllerClass;
 }
 
 void ASpawnOrganism::setSpawnRestrictions(double InWidth, double InLength, double InHeight, int InEntityLimit, TArray<UOrganismDataAsset*> InOrganismList) {

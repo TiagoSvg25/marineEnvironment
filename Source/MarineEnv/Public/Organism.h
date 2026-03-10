@@ -52,6 +52,15 @@ public:
 
 	OrganismState getState();
 
+	UFUNCTION()
+	void OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+		bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnHitTerrain(UPrimitiveComponent* HitComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, FVector NormalImpulse,
+		const FHitResult& Hit);
 
 protected:
 		// Called when the game starts or when spawned
@@ -90,6 +99,8 @@ public:
 
 	void UpdateBehaviour();
 
+	void calculateVectors();
+
 	FVector CurrentDirection;
 
 	FVector TargetDirection;
@@ -105,8 +116,5 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float DetectionInterval;
-
-private:
-	void calculateVectors();
 
 };
