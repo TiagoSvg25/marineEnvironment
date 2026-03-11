@@ -17,7 +17,7 @@ enum class OrganismState : uint8
 	Idle UMETA(DisplayName = "Idle"),
 	Hunting UMETA(DisplayName = "Hunting"),
 	Fleeing UMETA(DisplayName = "Fleeing"),
-	Reproduction UMETA(DisplayName = "Reproduction"),
+	Reproduction UMETA(DisplayName = "Reproduction")
 
 };
 

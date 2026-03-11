@@ -29,14 +29,12 @@ public:
 
 	bool checkEscape(AOrganism* Prey, AOrganism* InPredator);
 
-	AOrganism* findFood();
-
-	void onCatchPrey(AOrganism* Collided);
+	void onActorCollision(AOrganism* Collided);
 
 	void onTerrainCollision(FVector Normal);
 
 
-private:
+protected:
 	UPROPERTY()
 	AOrganism* Organism;
 
@@ -53,6 +51,7 @@ private:
 	bool isHungry = false;
 
 
-	void updateState();
-	void executeState();
+	virtual void updateState() {};
+	virtual AOrganism* findFood() { return nullptr; }
+
 };

@@ -146,7 +146,7 @@ void AOrganism::OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 	// notify controller
 	AOrganismAIController* MyController = Cast<AOrganismAIController>(GetController());
 	if (MyController)
-		MyController->onCatchPrey(Other);
+		MyController->onActorCollision(Other);
 }
 
 void AOrganism::OnHitTerrain(UPrimitiveComponent* HitComp, AActor* OtherActor,
