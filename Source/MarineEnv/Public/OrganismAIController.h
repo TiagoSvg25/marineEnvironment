@@ -34,6 +34,7 @@ public:
 	void onTerrainCollision(FVector Normal);
 
 
+
 protected:
 	UPROPERTY()
 	AOrganism* Organism;

@@ -109,7 +109,6 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 
 			if (Organism)
 			{
-				fill_information(OrganismData, Organism);
 
 				UGameplayStatics::FinishSpawningActor(Organism, Transform);
 

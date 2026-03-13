@@ -10,24 +10,19 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class MARINEENV_API AAnimal : public AOrganism
 {
 	GENERATED_BODY()
 
 public:
 
-	void BeginPlay();
+	virtual void BeginPlay() override;
 
-	virtual void updateMovement(float DeltaTime);
+	virtual void updateMovement(float DeltaTime) {};
 
-	virtual void BehaviourAnalisys();
+	virtual void BehaviourAnalisys() {};
 
-	virtual void UpdateBehaviour();
-
-
-	UAnimalDataAsset* AnimalDataAsset;
-
-	UOrganismDataAsset* OrganismDataAsset;
+	virtual void UpdateBehaviour() {};
 };
 

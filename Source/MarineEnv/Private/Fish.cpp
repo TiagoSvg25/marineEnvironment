@@ -34,13 +34,13 @@ void AFish::Tick(float DeltaTime)
 
 void AFish::UpdateBehaviour()
 {
-
+	//
 }
 
 
 void AFish::BehaviourAnalisys()
 {
-
+	//
 }
 
 

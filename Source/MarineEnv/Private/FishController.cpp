@@ -10,6 +10,14 @@ AFishController::AFishController()
     PrimaryActorTick.bCanEverTick = true; // must be true
 }
 
+void AFishController::updateState() {
+    //
+}
+
+AOrganism* AFishController::findFood() {
+    AOrganism* ClosestFood = nullptr;
+    return ClosestFood;
+}
 
 /*void AFishController::updateState() {
 

@@ -61,9 +61,7 @@ AOrganism::AOrganism()
 } */
 
 // Called when the game starts or when spawned
-void AOrganism::BeginPlay()
-{
-	Super::BeginPlay();
+
 
 	/*CurrentDirection = FMath::VRand();
 	DirectionChangeInterval = FMath::RandRange(2.0f, 5.0f);
@@ -72,13 +70,8 @@ void AOrganism::BeginPlay()
 	SphereMesh->PlayAnimation(anim, true);
 	CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AOrganism::OnOrganismOverlap);
 	CollisionSphere->OnComponentHit.AddDynamic(this, &AOrganism::OnHitTerrain);*/
-}
 
-// Called every frame
-void AOrganism::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
+
 
 
 /*

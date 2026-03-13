@@ -10,6 +10,14 @@ AOrganismAIController::AOrganismAIController()
     PrimaryActorTick.bCanEverTick = true; // must be true
 }
 
+void AOrganismAIController::Tick(float DeltaTime) {
+    Super::Tick(DeltaTime);
+}
+
+void AOrganismAIController::OnPossess(APawn* InPawn) {
+    Super::OnPossess(InPawn);
+}
+
 /*
 void AOrganismAIController::OnPossess(APawn* InPawn)
 {

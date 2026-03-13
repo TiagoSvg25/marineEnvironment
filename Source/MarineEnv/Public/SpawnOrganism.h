@@ -20,8 +20,6 @@ public:
 
 	void SpawnOrganism(UOrganismDataAsset* OrganismData);
 
-	void fill_information(UOrganismDataAsset* OrganismData, AOrganism* Organism);
-
 	void setSpawnRestrictions(double width, double lenght, double height, int entityLimit, TArray<UOrganismDataAsset*> OrganismList);
 
 protected:
@@ -38,7 +36,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	double width = 200;
-
+	 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	double height = 200;
 
