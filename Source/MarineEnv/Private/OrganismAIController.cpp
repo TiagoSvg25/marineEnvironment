@@ -1,14 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include <OrganismAIController.h>
 #include <Organism.h>
 #include <Kismet/GameplayStatics.h>
-#include <OrganismAIController.h>
+
 
 AOrganismAIController::AOrganismAIController()
 {
     PrimaryActorTick.bCanEverTick = true; // must be true
 }
 
+/*
 void AOrganismAIController::OnPossess(APawn* InPawn)
 {
     Super::OnPossess(InPawn);
@@ -73,4 +75,4 @@ void AOrganismAIController::onTerrainCollision(FVector Normal) {
     Organism->TargetDirection = newDir.GetSafeNormal();
 }
 
-
+*/

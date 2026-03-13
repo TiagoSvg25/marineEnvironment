@@ -1,9 +1,9 @@
 //// Fill out your copyright notice in the Description page of Project Settings.
 //
-
+#include "FishController.h"
 
 #include <Organism.h>
-#include "FishController.h"
+
 
 AFishController::AFishController()
 {
@@ -11,7 +11,7 @@ AFishController::AFishController()
 }
 
 
-void AFishController::updateState() {
+/*void AFishController::updateState() {
 
     OrganismState currentState = Organism->getState();
     switch (currentState) {
@@ -121,8 +121,10 @@ AOrganism* AFishController::findFood() {
         }
     }
 
+
     return ClosestFood;
 }
 
 
 
+*/

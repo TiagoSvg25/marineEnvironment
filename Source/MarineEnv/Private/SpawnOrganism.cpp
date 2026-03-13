@@ -71,8 +71,6 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 
 	bool invalidSpawn = true;
 
-	float MinDistSq = FMath::Square(OrganismData->Physical.Size*1.5);
-
 	for(int i = 0; i < maxSpawnAttempt; i++){
 
 		invalidSpawn = false;
@@ -80,16 +78,13 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 		double scaleNum = FMath::FRandRange(0.5,3);
 		SpawnLocation.X = Origin.X + FMath::FRandRange(-width, width);
 		SpawnLocation.Y = Origin.Y + FMath::FRandRange(-length, length);
-		SpawnLocation.Z = Origin.Z + FMath::FRandRange(
-			height - OrganismData->Environmental.MaxDepth + OrganismData->Physical.Height,
-			height - OrganismData->Environmental.MinDepth
-		 );
+		
 
 
 		// check if other organisms are too close
 		for (AActor* Actor : Organisms)
 		{
-			if (FVector::DistSquared(Actor->GetActorLocation(), SpawnLocation) < MinDistSq)
+			if (FVector::DistSquared(Actor->GetActorLocation(), SpawnLocation) > 0)
 			{
 				invalidSpawn = true;
 				break;
@@ -126,14 +121,6 @@ void ASpawnOrganism::SpawnOrganism(UOrganismDataAsset* OrganismData)
 
 }
 
-void ASpawnOrganism::fill_information(UOrganismDataAsset* OrganismDat, AOrganism* Organism)
-{
-	Organism->setEnvironmentalCharacteristics(OrganismDat->Environmental.EcoType, OrganismDat->Environmental.TrophicLevel, OrganismDat->Environmental.MinDepth, OrganismDat->Environmental.MaxDepth);
-	Organism->setPhysicalCharacteristics(OrganismDat->Physical.Size, OrganismDat->Physical.Height, OrganismDat->Physical.Weight);
-	Organism->setMovementCharacteristics(OrganismDat->Movement.Speed,OrganismDat->Movement.InitialState, OrganismDat->Movement.AwarenessRadius, OrganismDat->Movement.TurnSpeed , OrganismDat->Movement.AngleVision);
-	Organism->setOrganismMeshe(OrganismDat->Mesh, OrganismDat->anim);
-	Organism->AIControllerClass = OrganismDat->ControllerClass;
-}
 
 void ASpawnOrganism::setSpawnRestrictions(double InWidth, double InLength, double InHeight, int InEntityLimit, TArray<UOrganismDataAsset*> InOrganismList) {
 	this->width = InWidth;

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "NatureCharacteristics.h"
 #include "AIController.h"
 #include "OrganismDataAsset.generated.h"
 
@@ -18,20 +17,36 @@ class MARINEENV_API UOrganismDataAsset : public UPrimaryDataAsset
 
 public:
 
-    UPROPERTY(EditAnywhere, Category = "Physical")
-    FPhysicalCharacteristics Physical;
+    UPROPERTY(EditAnywhere, Category = "Scale")
+    int Scale = 1;
 
-    UPROPERTY(EditAnywhere, Category = "Environmental")
-    FEnvironmentalCharacteristics Environmental;
+    UPROPERTY(EditAnywhere, Category = "SpawnDensity")
+    float SpawnDensity = 1.0f;
 
-    UPROPERTY(EditAnywhere, Category = "Movement")
-    FMovementCharacteristics Movement;
+    UPROPERTY(EditAnywhere, Category = "DepthRange")
+    float MinDepthRange = 0.f;
+
+    UPROPERTY(EditAnywhere, Category = "DepthRange")
+    float MaxDepthRange = 100.f;
 
     UPROPERTY(EditAnywhere, Category = "Mesh")
-    USkeletalMesh* Mesh;
+    USkeletalMeshComponent* Mesh;
 
     UPROPERTY(EditAnywhere, Category = "Animation")
     UAnimSequence* anim;
+
+    UPROPERTY(EditAnywhere, Category = "Health")
+    float Health = 1.0f;
+
+    UPROPERTY(EditAnywhere, Category = "MaxHealth")
+    float MaxHealth = 100.0f;
+
+    UPROPERTY(EditAnywhere, Category = "Tags")
+    TArray<FString> Tags;
+
+    UPROPERTY(EditAnywhere, Category = "Age")
+    int Age = 0;
+
 
     UPROPERTY(EditDefaultsOnly, Category = "AI")
     TSubclassOf<AAIController> ControllerClass;
