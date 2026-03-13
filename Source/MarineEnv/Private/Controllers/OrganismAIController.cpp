@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include <OrganismAIController.h>
-#include <Organism.h>
+#include "Controllers/OrganismAIController.h"
+#include "Entities/Organism.h"
 #include <Kismet/GameplayStatics.h>
 
 

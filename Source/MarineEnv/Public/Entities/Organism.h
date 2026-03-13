@@ -4,7 +4,7 @@
 
 
 #include "CoreMinimal.h"
-#include "OrganismDataAsset.h"
+#include "DataAssets/OrganismDataAsset.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/Pawn.h"
 #include "Components/SphereComponent.h"

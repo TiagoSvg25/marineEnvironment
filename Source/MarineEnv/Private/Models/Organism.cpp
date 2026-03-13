@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Organism.h"
+#include "Entities/Organism.h"
 #include "GameFramework/FloatingPawnMovement.h"
-#include "OrganismAIController.h"
+#include "Controllers/OrganismAIController.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values

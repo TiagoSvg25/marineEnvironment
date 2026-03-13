@@ -3,7 +3,7 @@
 
 
 #include "MarineEnvGameModeBase.h"
-#include "BaseSpawner.h"
+#include "Spawner/BaseSpawner.h"
 
 
 AMarineEnvGameModeBase::AMarineEnvGameModeBase()

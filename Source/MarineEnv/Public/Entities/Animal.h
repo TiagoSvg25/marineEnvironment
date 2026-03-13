@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AnimalDataAsset.h"
+#include "DataAssets/AnimalDataAsset.h"
 #include "Organism.h"
 #include "Animal.generated.h"
 

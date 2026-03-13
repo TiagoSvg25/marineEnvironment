@@ -29,8 +29,9 @@ public:
     UPROPERTY(EditAnywhere, Category = "DepthRange")
     float MaxDepthRange = 100.f;
 
+    
     UPROPERTY(EditAnywhere, Category = "Mesh")
-    USkeletalMeshComponent* Mesh;
+    USkeletalMesh* MeshAsset;
 
     UPROPERTY(EditAnywhere, Category = "Animation")
     UAnimSequence* anim;

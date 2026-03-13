@@ -1,17 +1,25 @@
-#include "Fish.h"
+#include "Entities/Fish.h"
 
 
 AFish::AFish()
 {
-	CurrentDirection = FMath::VRand();
-
 	AnimalDataAsset = CreateDefaultSubobject<UAnimalDataAsset>(TEXT("AnimalDataAsset"));  
 
-	AnimalDataAsset->Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("/Game/Fab/Clown_Fish_Low_Poly_Animated/clown_fish_low_poly_animated/SkeletalMeshes"));
-	AnimalDataAsset->Mesh->SetupAttachment(RootComponent);
+	FishMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FishMesh"));
+	RootComponent = FishMesh;
 
+	// 2. Carregar a esfera básica do Engine
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereAsset(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
+
+	if (SphereAsset.Succeeded())
+	{
+		FishMesh->SetStaticMesh(SphereAsset.Object);
+	}
 
 	AnimalDataAsset->DirectionChangeInterval = FMath::RandRange(2.0f, 5.0f);
+
+	CurrentDirection = FMath::VRand();
+
 
 }
 

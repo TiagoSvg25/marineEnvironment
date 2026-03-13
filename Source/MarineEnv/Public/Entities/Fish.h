@@ -38,4 +38,8 @@ public:
 	UAnimalDataAsset* AnimalDataAsset;
 
 	FVector CurrentDirection;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* FishMesh;
+
 };

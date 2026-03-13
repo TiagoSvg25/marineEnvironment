@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "OrganismDataAsset.h"
-#include "Organism.h"
+#include "DataAssets/OrganismDataAsset.h"
+#include "Entities/Organism.h"
 #include "GameFramework/Actor.h"
 #include "SpawnOrganism.generated.h"
 
