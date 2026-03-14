@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Entities/Organism.h"
 #include "OrganismAIController.generated.h"
 
 /**
  * 
  */
 
-class AOrganism;
+
 
 
 UCLASS()
@@ -25,34 +26,9 @@ public:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
-	void setPredatorNearby(AOrganism* InPredator);
-
-	bool checkEscape(AOrganism* Prey, AOrganism* InPredator);
-
-	void onActorCollision(AOrganism* Collided);
-
-	void onTerrainCollision(FVector Normal);
-
-
-
 protected:
+
 	UPROPERTY()
 	AOrganism* Organism;
-
-	UPROPERTY()
-	AOrganism* Target;
-
-	UPROPERTY()
-	AOrganism* Predator;
-
-	float DirectionTimer;
-
-	float DetectionTimer;
-
-	bool isHungry = false;
-
-
-	virtual void updateState() {};
-	virtual AOrganism* findFood() { return nullptr; }
 
 };

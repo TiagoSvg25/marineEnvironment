@@ -9,6 +9,35 @@ AFishController::AFishController()
     PrimaryActorTick.bCanEverTick = true; // must be true
 }
 
+
+
+
+
+void AFishController::BehaviourAnalisys()
+{
+    if (!Animal) return;
+
+    FString CurrentState = Animal->getCurrentState();
+
+    if (CurrentState == "Idle") {
+
+    }
+    else if (CurrentState == "Hunting") {
+
+    }
+    else if (CurrentState == "Fleeing") {
+
+    }
+    else if (CurrentState == "Reproduction") {
+
+    }
+}
+
+
+
+
+
+/*
 void AFishController::updateState() {
     //
 }
@@ -17,6 +46,22 @@ AOrganism* AFishController::findFood() {
     AOrganism* ClosestFood = nullptr;
     return ClosestFood;
 }
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*void AFishController::updateState() {
 

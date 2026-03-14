@@ -3,12 +3,10 @@
 
 AFish::AFish()
 {
-	AnimalDataAsset = CreateDefaultSubobject<UAnimalDataAsset>(TEXT("AnimalDataAsset"));  
-
+	 
 	FishMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FishMesh"));
 	RootComponent = FishMesh;
 
-	// 2. Carregar a esfera básica do Engine
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereAsset(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 
 	if (SphereAsset.Succeeded())
@@ -37,21 +35,6 @@ void AFish::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	BehaviourAnalisys();
 }
-
-
-
-void AFish::UpdateBehaviour()
-{
-	//
-}
-
-
-void AFish::BehaviourAnalisys()
-{
-	//
-}
-
-
 
 
 

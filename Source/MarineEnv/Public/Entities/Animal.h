@@ -17,6 +17,8 @@ class MARINEENV_API AAnimal : public AOrganism
 
 public:
 
+	AAnimal();
+
 	virtual void BeginPlay() override;
 
 	virtual void updateMovement(float DeltaTime) {};
@@ -24,5 +26,23 @@ public:
 	virtual void BehaviourAnalisys() {};
 
 	virtual void UpdateBehaviour() {};
+
+	virtual void Tick(float DeltaTime) override;
+
+
+	FString getCurrentState() const { return CurrentState; };
+
+	void setState(const FString& NewState) { CurrentState = NewState; };
+
+
+
+	UPROPERTY(EditAnywhere, Category = "Data")
+	UAnimalDataAsset* AnimalDataAsset;
+
+
+private:
+
+	FString CurrentState;
+
 };
 

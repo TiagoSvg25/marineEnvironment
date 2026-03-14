@@ -30,13 +30,6 @@ public:
 
 	void updateMovement(float DeltaTime) override;
 
-	void BehaviourAnalisys() override;
-
-	void UpdateBehaviour() override;
-
-	
-	UAnimalDataAsset* AnimalDataAsset;
-
 	FVector CurrentDirection;
 
 	UPROPERTY(VisibleAnywhere)

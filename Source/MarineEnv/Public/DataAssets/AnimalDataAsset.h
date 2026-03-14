@@ -45,9 +45,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "States")
 	FString InitialState = "Idle";
 
-	UPROPERTY(EditAnywhere, Category = "States")
+	/*UPROPERTY(EditAnywhere, Category = "States")
 	TArray<FString> States = { "Idle", "Hunting", "Fleeing", "Reproduction", "Hungry" };
-	
+	*/
 };
 
 
