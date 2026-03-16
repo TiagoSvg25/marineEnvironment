@@ -7,12 +7,13 @@
 
 AAnimalAIController::AAnimalAIController()
 {
+
 }
 
 void AAnimalAIController::OnPossess(APawn* InPawn)
 {
     Super::OnPossess(InPawn); 
-    Animal = Cast<AAnimal>(InPawn);
+    // Animal = Cast<AAnimal>(InPawn);
 }
 
 
@@ -23,9 +24,10 @@ void AAnimalAIController::BeginPlay()
 }
 
 
-
 void AAnimalAIController::Tick(float DeltaTime)
 {
+    UE_LOG(LogTemp, Warning, TEXT("AnimalAIController Tick"));
     Super::Tick(DeltaTime);
-    BehaviourAnalisys();
+
+    BehaviourAnalisys(DeltaTime);
 }

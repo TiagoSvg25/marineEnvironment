@@ -16,7 +16,7 @@ class MARINEENV_API AAnimalAIController : public AOrganismAIController
 {
 	GENERATED_BODY()
 
-public: 
+public:
 
 	AAnimalAIController();
 
@@ -26,8 +26,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-
 	virtual void OnPossess(APawn* InPawn) override;
+
+	virtual AAnimal* getModel() const override { return Cast<AAnimal>(Model); }
 
 	//void setPredatorNearby(AOrganism* InPredator);
 
@@ -37,7 +38,15 @@ public:
 
 	//void onTerrainCollision(FVector Normal);
 
-	virtual void BehaviourAnalisys() {};
+	virtual void BehaviourAnalisys(float DeltaTime) {};
+
+
+	virtual void updateMovement(float DeltaTime, FVector TargetLocation) {};
+
+
+
+
+	//virtual void HuntPrey() {} ;
 
 	//void UpdateBehaviour() override;
 
@@ -45,10 +54,8 @@ public:
 protected:
 
 	UPROPERTY()
-	AAnimal* Animal;
-
-	UPROPERTY()
 	AOrganism* Target;
+
 
 	UPROPERTY()
 	AOrganism* Predator;
@@ -57,6 +64,5 @@ protected:
 	virtual AOrganism* findFood() { return nullptr; }
 
 	float DirectionTimer;
-
 	
 };

@@ -9,11 +9,9 @@
 // Sets default values
 AOrganism::AOrganism()
 {
-
 	/*PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	bUseControllerRotationYaw = false;
-	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
@@ -36,6 +34,106 @@ AOrganism::AOrganism()
 	FloatingMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
 	FloatingMovement->SetUpdatedComponent(RootComponent);*/
 }
+
+float AOrganism::getHealth() const
+{
+	return getDataAsset()->Health;
+}
+
+void AOrganism::setHealth(float NewHealth)
+{
+	getDataAsset()->Health = NewHealth;
+
+}
+
+int AOrganism::getAge() const
+{
+	return getDataAsset()->Age;
+}
+
+void AOrganism::setAge(int NewAge)
+{
+	getDataAsset()->Age = NewAge;
+}
+
+int AOrganism::getScale() const
+{
+	return getDataAsset()->Scale;
+}
+
+void AOrganism::setScale(int NewScale)
+{
+	getDataAsset()->Scale = NewScale;
+}
+
+float AOrganism::getSpawnDensity() const
+{
+	return getDataAsset()->SpawnDensity;
+}
+
+void AOrganism::setSpawnDensity(float NewSpawnDensity)
+{
+	getDataAsset()->SpawnDensity = NewSpawnDensity;
+}
+
+float AOrganism::getMinDepthRange() const
+{
+	return getDataAsset()->MinDepthRange;
+}
+
+float AOrganism::getMaxDepthRange() const
+{
+	return getDataAsset()->MaxDepthRange;
+}
+
+void AOrganism::setMinDepthRange(float NewMinDepthRange)
+{
+	getDataAsset()->MinDepthRange = NewMinDepthRange;
+}
+
+void AOrganism::setMaxDepthRange(float NewMaxDepthRange)
+{
+	getDataAsset()->MaxDepthRange = NewMaxDepthRange;
+}
+
+USkeletalMesh* AOrganism::getMeshAsset() const
+{
+	return getDataAsset()->MeshAsset;
+}
+
+void AOrganism::setMeshAsset(USkeletalMesh* NewMeshAsset)
+{
+	getDataAsset()->MeshAsset = NewMeshAsset;
+}
+
+UAnimSequence* AOrganism::getAnimAsset() const
+{
+	return getDataAsset()->anim;
+}
+
+void AOrganism::setAnimAsset(UAnimSequence* NewAnimAsset)
+{
+	UAnimSequence* AnimAsset = getDataAsset()->anim;
+}
+
+
+
+TArray<FString> AOrganism::getTags() const {
+	return getDataAsset()->Tags;
+}
+
+void AOrganism::setTags(const TArray<FString>& NewTags)
+{
+	getDataAsset()->Tags = NewTags;
+}
+
+
+
+
+
+
+
+
 
 
 

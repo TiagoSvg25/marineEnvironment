@@ -11,19 +11,22 @@ AFishController::AFishController()
 
 
 
-
-
-void AFishController::BehaviourAnalisys()
+void AFishController::BehaviourAnalisys(float DeltaTime)
 {
-    if (!Animal) return;
+    UE_LOG(LogTemp, Warning, TEXT("Current State:~antes"));
+    if (!getModel()) return;
 
-    FString CurrentState = Animal->getCurrentState();
+
+    getModel()->setEnergy(getModel()->getEnergy() - getModel()->getEnergyConsumptionRate() * DeltaTime * getModel()->getSpeed());
+
+    FString CurrentState = getModel()->getCurrentState();
+    UE_LOG(LogTemp, Warning, TEXT("Current State: %s"), *CurrentState);
 
     if (CurrentState == "Idle") {
-
+        updateMovement(DeltaTime, FVector(1000, 1000, 2));
     }
     else if (CurrentState == "Hunting") {
-
+        //f (Target) HuntPrey();
     }
     else if (CurrentState == "Fleeing") {
 
@@ -33,6 +36,44 @@ void AFishController::BehaviourAnalisys()
     }
 }
 
+
+/*
+void AFishController::HuntPrey() {
+   
+    // if it starts hunting, increase speed by 2x
+    if (getModel()->isHunting()) {
+        getModel()->setHunting(true);
+        float currentSpeed = getModel()->getSpeed();
+        getModel()->setSpeed(currentSpeed * 2);
+        getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
+    }
+
+
+
+
+
+
+    if (getModel()->getEnergy() <= 0) {
+        getModel()->setEnergy(0);
+        // die Animal 
+    }
+
+    /* if it stops hunting, reset speed to normal
+    if (Target->GetActorLocation() == getModel()->getAwarenessRadius()) {
+        getModel()->setHunting(false);
+        float currentSpeed = getModel()->getSpeed();
+        getModel()->setSpeed(currentSpeed / 2);
+        getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
+        getModel()->setState("Idle");
+    }
+}    */
+
+void AFishController::updateMovement(float DeltaTime, FVector TargetLocation)
+{
+    if (getModel() && getModel()->getDataAsset()) {
+        getModel()->AddMovementInput(getModel()->GetActorForwardVector(), getModel()->getSpeed());
+    }
+}
 
 
 

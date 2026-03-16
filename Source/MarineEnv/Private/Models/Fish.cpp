@@ -1,4 +1,5 @@
 #include "Entities/Fish.h"
+#include "Controllers/FishController.h"
 
 
 AFish::AFish()
@@ -6,7 +7,6 @@ AFish::AFish()
 	 
 	FishMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FishMesh"));
 	RootComponent = FishMesh;
-
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereAsset(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 
 	if (SphereAsset.Succeeded())
@@ -14,11 +14,14 @@ AFish::AFish()
 		FishMesh->SetStaticMesh(SphereAsset.Object);
 	}
 
-	AnimalDataAsset->DirectionChangeInterval = FMath::RandRange(2.0f, 5.0f);
+	AIControllerClass = AFishController::StaticClass();
 
 	CurrentDirection = FMath::VRand();
 
-
+	if (FloatingMovement)
+	{
+		FloatingMovement->SetUpdatedComponent(RootComponent);
+	}
 }
 
 AFish::~AFish()
@@ -28,18 +31,25 @@ AFish::~AFish()
 void AFish::BeginPlay()
 {
 	Super::BeginPlay();
+
+
+	setState("Idle");
+
+	setEnergyThreshold(FMath::RandRange(20.0f, 40.0f));
+
+	setAwarenessRadius(FMath::RandRange(10.0f, 15.0f));
 }
 
 void AFish::Tick(float DeltaTime)
 {
+
 	Super::Tick(DeltaTime);
-	BehaviourAnalisys();
 }
 
 
 
 
-
+/*
 void AFish::updateMovement(float DeltaTime)
 {
 
@@ -60,4 +70,4 @@ void AFish::updateMovement(float DeltaTime)
 		);
 		SetActorRotation(Smoothed);
 	}
-}
+}*/

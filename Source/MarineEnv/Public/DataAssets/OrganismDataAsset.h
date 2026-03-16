@@ -28,7 +28,6 @@ public:
 
     UPROPERTY(EditAnywhere, Category = "DepthRange")
     float MaxDepthRange = 100.f;
-
     
     UPROPERTY(EditAnywhere, Category = "Mesh")
     USkeletalMesh* MeshAsset;
@@ -47,7 +46,6 @@ public:
 
     UPROPERTY(EditAnywhere, Category = "Age")
     int Age = 0;
-
 
     UPROPERTY(EditDefaultsOnly, Category = "AI")
     TSubclassOf<AAIController> ControllerClass;

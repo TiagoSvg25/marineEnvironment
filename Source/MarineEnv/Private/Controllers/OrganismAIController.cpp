@@ -16,6 +16,7 @@ void AOrganismAIController::Tick(float DeltaTime) {
 
 void AOrganismAIController::OnPossess(APawn* InPawn) {
     Super::OnPossess(InPawn);
+    Model = Cast<AOrganism>(InPawn);
 }
 
 /*

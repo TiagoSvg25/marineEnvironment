@@ -22,6 +22,8 @@ class MARINEENV_API AOrganismAIController : public AAIController
 public:
 	AOrganismAIController();
 
+	virtual AOrganism* getModel() const { return Model; }
+
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void OnPossess(APawn* InPawn) override;
@@ -29,6 +31,6 @@ public:
 protected:
 
 	UPROPERTY()
-	AOrganism* Organism;
+	AOrganism* Model;
 
 };

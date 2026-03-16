@@ -26,12 +26,14 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Energy")
 	float Energy = 100.0f;
 
+	UPROPERTY(EditAnywhere, Category="Energy")
+	float EnergyThreshold = 20.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Energy")
 	float MaxEnergy = 100.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Energy")
-	float EnergyConsumptionRate = 1.0f;
+	float EnergyConsumptionRate = 0.2f;
 
 	UPROPERTY(EditAnywhere, Category = "Awareness")
 	float AwarenessRadius = 1.0f;
@@ -43,7 +45,7 @@ public:
 	int TrophicLevel = 1;
 
 	UPROPERTY(EditAnywhere, Category = "States")
-	FString InitialState = "Idle";
+	FString CurrentState = "Idle";
 
 	/*UPROPERTY(EditAnywhere, Category = "States")
 	TArray<FString> States = { "Idle", "Hunting", "Fleeing", "Reproduction", "Hungry" };

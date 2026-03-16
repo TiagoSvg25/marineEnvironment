@@ -3,12 +3,13 @@
 #pragma once
 
 #include "Controllers/AnimalAIController.h"
+#include "Entities/Fish.h"
 #include "FishController.generated.h"
 
 /**
  * 
  */
-class AOrganism;
+
 
 UCLASS()
 class MARINEENV_API AFishController : public AAnimalAIController
@@ -18,6 +19,9 @@ class MARINEENV_API AFishController : public AAnimalAIController
 public:
 	AFishController();
 
+	virtual AFish* getModel() const override { return Cast<AFish>(Model); }
+	
+
 protected:
 	/*float DirectionTimer = 0.f;
 
@@ -25,8 +29,14 @@ protected:
 
 	bool isHungry = false;
 	*/
-	virtual void BehaviourAnalisys() override;
+	virtual void BehaviourAnalisys(float DeltaTime) override;
+
+	//virtual void HuntPrey() override;
+
+	virtual void updateMovement(float DeltaTime, FVector TargetLocation) override;
+	
 
 	//virtual void updateState() override;
 	//virtual AOrganism* findFood() override;
+
 };
