@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DataAssets/AnimalDataAsset.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Organism.h"
 #include "Animal.generated.h"
@@ -29,10 +28,6 @@ public:
 	virtual void UpdateBehaviour() {};
 
 	virtual void Tick(float DeltaTime) override;
-
-	virtual UAnimalDataAsset* getDataAsset() const override {
-		return Cast<UAnimalDataAsset>(DataAsset);;
-	}
 
 
 
@@ -83,19 +78,22 @@ public:
 	float getEnergyConsumptionRate() const;
 
 	void setEnergyConsumptionRate(float NewEnergyConsumptionRate);
-
-	float getPerseguitionTime() const;
-
-	void setPerseguitionTime(float NewPerseguitionTime);
 	
 
 
 protected:
-
-	UPROPERTY(VisibleAnywhere)
+	
+	float Speed = 1.0f;
+	float DirectionChangeInterval;
+	float Energy = 100.0f;
+	float EnergyThreshold = 20.0f;
+	float MaxEnergy = 100.0f;
+	float EnergyConsumptionRate = 0.2f;
+	float AwarenessRadius = 1000.0f;
+	float AngleVision = 45.0f;
+	int TrophicLevel = 1;
+	FString CurrentState = "Idle";
 	UFloatingPawnMovement* FloatingMovement;
-
-	FString CurrentState;
 
 	bool Hunting = false;
 };

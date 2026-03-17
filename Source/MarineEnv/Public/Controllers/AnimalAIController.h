@@ -5,6 +5,10 @@
 #include "CoreMinimal.h"
 #include "Entities/Animal.h"
 #include "Controllers/OrganismAIController.h"
+#include "WorldCollision.h"
+#include "Engine/World.h"
+#include "Engine/OverlapResult.h"
+#include "Components/LineBatchComponent.h"
 #include "AnimalAIController.generated.h"
 
 /**
@@ -56,12 +60,20 @@ protected:
 	UPROPERTY()
 	AOrganism* Target;
 
+	UPROPERTY()
+	UStaticMeshComponent* VisionConeMesh;
 
 	UPROPERTY()
 	AOrganism* Predator;
 
-	virtual void updateState() {};
-	virtual AOrganism* findFood() { return nullptr; }
+	virtual void updateState() {}
+
+	AOrganism* find(TSubclassOf<AOrganism> ClassFilter = nullptr,
+		TArray<FString> RequiredTags = {},
+		bool RequireAllTags = true,
+		int MaxTrophicLevel = -1,
+		int MinTrophicLevel = -1);
+	void DrawDebugVisionCone();
 
 	float DirectionTimer;
 	

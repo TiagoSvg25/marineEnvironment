@@ -2,9 +2,8 @@
 
 #pragma once
 
-
+#include "AIController.h"
 #include "CoreMinimal.h"
-#include "DataAssets/OrganismDataAsset.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/Pawn.h"
 #include "Components/SphereComponent.h"
@@ -22,11 +21,6 @@ class MARINEENV_API AOrganism : public APawn
 public:	
 		// Sets default values for this actor's properties
 	AOrganism();
-
-	virtual UOrganismDataAsset* getDataAsset() const
-	{
-		return DataAsset; // será o UAnimalDataAsset criado pelo AAnimal
-	}
 
 	float getHealth() const;
 
@@ -76,8 +70,18 @@ public:
 		const FHitResult& Hit);*/
 
 protected:
-	UPROPERTY()
-	UOrganismDataAsset* DataAsset;
+
+	int Scale = 1;
+	float SpawnDensity = 1.0f;
+	float MinDepthRange = 0.f;
+	float MaxDepthRange = 100.f;
+	USkeletalMesh* MeshAsset;
+	UAnimSequence* anim;
+	float Health = 1.0f;
+	float MaxHealth = 100.0f;
+	TArray<FString> Tags = { "dummy" };
+	int Age = 0;
+	TSubclassOf<AAIController> ControllerClass;
 
 	// Called when the game starts or when spawned
 

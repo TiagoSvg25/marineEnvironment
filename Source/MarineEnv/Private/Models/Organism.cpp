@@ -37,94 +37,94 @@ AOrganism::AOrganism()
 
 float AOrganism::getHealth() const
 {
-	return getDataAsset()->Health;
+	return Health;
 }
 
 void AOrganism::setHealth(float NewHealth)
 {
-	getDataAsset()->Health = NewHealth;
+	Health = NewHealth;
 
 }
 
 int AOrganism::getAge() const
 {
-	return getDataAsset()->Age;
+	return Age;
 }
 
 void AOrganism::setAge(int NewAge)
 {
-	getDataAsset()->Age = NewAge;
+	Age = NewAge;
 }
 
 int AOrganism::getScale() const
 {
-	return getDataAsset()->Scale;
+	return Scale;
 }
 
 void AOrganism::setScale(int NewScale)
 {
-	getDataAsset()->Scale = NewScale;
+	Scale = NewScale;
 }
 
 float AOrganism::getSpawnDensity() const
 {
-	return getDataAsset()->SpawnDensity;
+	return SpawnDensity;
 }
 
 void AOrganism::setSpawnDensity(float NewSpawnDensity)
 {
-	getDataAsset()->SpawnDensity = NewSpawnDensity;
+	SpawnDensity = NewSpawnDensity;
 }
 
 float AOrganism::getMinDepthRange() const
 {
-	return getDataAsset()->MinDepthRange;
+	return MinDepthRange;
 }
 
 float AOrganism::getMaxDepthRange() const
 {
-	return getDataAsset()->MaxDepthRange;
+	return MaxDepthRange;
 }
 
 void AOrganism::setMinDepthRange(float NewMinDepthRange)
 {
-	getDataAsset()->MinDepthRange = NewMinDepthRange;
+	MinDepthRange = NewMinDepthRange;
 }
 
 void AOrganism::setMaxDepthRange(float NewMaxDepthRange)
 {
-	getDataAsset()->MaxDepthRange = NewMaxDepthRange;
+	MaxDepthRange = NewMaxDepthRange;
 }
 
 USkeletalMesh* AOrganism::getMeshAsset() const
 {
-	return getDataAsset()->MeshAsset;
+	return MeshAsset;
 }
 
 void AOrganism::setMeshAsset(USkeletalMesh* NewMeshAsset)
 {
-	getDataAsset()->MeshAsset = NewMeshAsset;
+	MeshAsset = NewMeshAsset;
 }
 
 UAnimSequence* AOrganism::getAnimAsset() const
 {
-	return getDataAsset()->anim;
+	return anim;
 }
 
 void AOrganism::setAnimAsset(UAnimSequence* NewAnimAsset)
 {
-	UAnimSequence* AnimAsset = getDataAsset()->anim;
+	UAnimSequence* AnimAsset = anim;
 }
 
 
 
 TArray<FString> AOrganism::getTags() const {
-	return getDataAsset()->Tags;
+	return Tags;
 }
 
 void AOrganism::setTags(const TArray<FString>& NewTags)
 {
-	getDataAsset()->Tags = NewTags;
+	Tags = NewTags;
 }
 
 

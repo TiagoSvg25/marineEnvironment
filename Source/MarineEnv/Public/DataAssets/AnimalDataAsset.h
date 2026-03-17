@@ -36,10 +36,10 @@ public:
 	float EnergyConsumptionRate = 0.2f;
 
 	UPROPERTY(EditAnywhere, Category = "Awareness")
-	float AwarenessRadius = 1.0f;
+	float AwarenessRadius = 1000.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Awareness")
-	float AngleVision = 180.0f;
+	float AngleVision = 45.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Nature")
 	int TrophicLevel = 1;

@@ -4,7 +4,6 @@
 
 AFish::AFish()
 {
-	 
 	FishMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FishMesh"));
 	RootComponent = FishMesh;
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereAsset(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
@@ -32,12 +31,7 @@ void AFish::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	setState("Idle");
-
-	setEnergyThreshold(FMath::RandRange(20.0f, 40.0f));
-
-	setAwarenessRadius(FMath::RandRange(10.0f, 15.0f));
 }
 
 void AFish::Tick(float DeltaTime)

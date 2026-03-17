@@ -5,9 +5,6 @@
 
 AAnimal::AAnimal()
 {
-
-	DataAsset = CreateDefaultSubobject<UAnimalDataAsset>(TEXT("AnimalDataAsset"));
-	// AAnimal.cpp ou AFish.cpp
 	FloatingMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
@@ -18,7 +15,6 @@ AAnimal::AAnimal()
 void AAnimal::BeginPlay()
 {
 	Super::BeginPlay();
-	CurrentState = getDataAsset()->CurrentState;
 }
 
 void AAnimal::Tick(float DeltaTime)
@@ -31,12 +27,12 @@ void AAnimal::Tick(float DeltaTime)
 
 FString AAnimal::getCurrentState() const
 {
-	return getDataAsset()->CurrentState;
+	return CurrentState;
 }
 
 void AAnimal::setState(const FString& NewState)
 {
-	getDataAsset()->CurrentState = NewState;
+	CurrentState = NewState;
 }
 
 bool AAnimal::isHunting() const
@@ -51,94 +47,94 @@ void AAnimal::setHunting(bool NewIsHunting)
 
 float AAnimal::getAwarenessRadius() const
 {
-	return getDataAsset()->AwarenessRadius;
+	return AwarenessRadius;
 }
 
 void AAnimal::setAwarenessRadius(float NewAwarenessRadius)
 {
-	getDataAsset()->AwarenessRadius = NewAwarenessRadius;
+	AwarenessRadius = NewAwarenessRadius;
 }
 
 float AAnimal::getAngleVision() const
 {
-	return getDataAsset()->AngleVision;
+	return AngleVision;
 }
 
 void AAnimal::setAngleVision(float NewAngleVision)
 {
-	getDataAsset()->AngleVision = NewAngleVision;
+	AngleVision = NewAngleVision;
 }
 
 int AAnimal::getTrophicLevel() const
 {
-	return getDataAsset()->TrophicLevel;
+	return TrophicLevel;
 }
 
 void AAnimal::setTrophicLevel(int NewTrophicLevel)
 {
-	getDataAsset()->TrophicLevel = NewTrophicLevel;
+	TrophicLevel = NewTrophicLevel;
 }
 
 float AAnimal::getDirectionChangeInterval() const
 {
-	return getDataAsset()->DirectionChangeInterval;
+	return DirectionChangeInterval;
 }
 
 void AAnimal::setDirectionChangeInterval(float NewDirectionChangeInterval)
 {
-	getDataAsset()->DirectionChangeInterval = NewDirectionChangeInterval;
+	DirectionChangeInterval = NewDirectionChangeInterval;
 }
 
 
 
 float AAnimal::getSpeed() const
 {
-	return getDataAsset()->Speed;
+	return Speed;
 }
 
 void AAnimal::setSpeed(float NewSpeed)
 {
-	getDataAsset()->Speed = NewSpeed;
+	Speed = NewSpeed;
 }
 
 float AAnimal::getEnergyThreshold() const
 {
-	return getDataAsset()->EnergyThreshold;
+	return EnergyThreshold;
 }
 
 void AAnimal::setEnergyThreshold(float NewEnergyThreshold)
 {
-	getDataAsset()->EnergyThreshold = NewEnergyThreshold;
+	EnergyThreshold = NewEnergyThreshold;
 }
 
 float AAnimal::getMaxEnergy() const
 {
-	return getDataAsset()->MaxEnergy;
+	return MaxEnergy;
 }
 
 void AAnimal::setMaxEnergy(float NewMaxEnergy)
 {
-	getDataAsset()->MaxEnergy = NewMaxEnergy;
+	MaxEnergy = NewMaxEnergy;
 }
 
 
 
 float AAnimal::getEnergy() const {
-	return getDataAsset()->Energy;
+	return Energy;
 }
 
 void AAnimal::setEnergy(float NewEnergy) {
-	getDataAsset()->Energy = NewEnergy;
+	Energy = NewEnergy;
 }
 
 float AAnimal::getEnergyConsumptionRate() const
 {
-	return getDataAsset()->EnergyConsumptionRate;
+	return EnergyConsumptionRate;
 }
 
 void AAnimal::setEnergyConsumptionRate(float NewEnergyConsumptionRate)
 {
-	getDataAsset()->EnergyConsumptionRate = NewEnergyConsumptionRate;
+	EnergyConsumptionRate = NewEnergyConsumptionRate;
 }
 
 

@@ -42,7 +42,7 @@ public:
     float MaxHealth = 100.0f;
 
     UPROPERTY(EditAnywhere, Category = "Tags")
-    TArray<FString> Tags;
+    TArray<FString> Tags = { "dummy" };
 
     UPROPERTY(EditAnywhere, Category = "Age")
     int Age = 0;

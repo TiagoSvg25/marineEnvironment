@@ -11,6 +11,7 @@ AFishController::AFishController()
 
 
 
+
 void AFishController::BehaviourAnalisys(float DeltaTime)
 {
     UE_LOG(LogTemp, Warning, TEXT("Current State:~antes"));
@@ -20,10 +21,8 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
     getModel()->setEnergy(getModel()->getEnergy() - getModel()->getEnergyConsumptionRate() * DeltaTime * getModel()->getSpeed());
 
     FString CurrentState = getModel()->getCurrentState();
-    UE_LOG(LogTemp, Warning, TEXT("Current State: %s"), *CurrentState);
 
     if (CurrentState == "Idle") {
-        updateMovement(DeltaTime, FVector(1000, 1000, 2));
     }
     else if (CurrentState == "Hunting") {
         //f (Target) HuntPrey();
@@ -70,7 +69,7 @@ void AFishController::HuntPrey() {
 
 void AFishController::updateMovement(float DeltaTime, FVector TargetLocation)
 {
-    if (getModel() && getModel()->getDataAsset()) {
+    if (getModel()) {
         getModel()->AddMovementInput(getModel()->GetActorForwardVector(), getModel()->getSpeed());
     }
 }
