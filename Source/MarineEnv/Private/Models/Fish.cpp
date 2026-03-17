@@ -22,6 +22,7 @@ AFish::AFish()
 	}
 
 	setTrophicLevel(bIsPredator ? 2 : 1);
+
 }
 
 AFish::~AFish()
@@ -41,6 +42,7 @@ void AFish::BeginPlay()
 
 	setTrophicLevel(bIsPredator ? 2 : 1);
 
+	setSpeed(1.0f);
 }
 
 void AFish::Tick(float DeltaTime)

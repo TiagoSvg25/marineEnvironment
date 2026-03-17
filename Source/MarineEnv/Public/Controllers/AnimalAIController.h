@@ -45,9 +45,9 @@ public:
 
 	virtual void roam(float DeltaTime) {};
 
-	// 2virtual void findMate() {} ;
+	virtual AAnimal* findMate() { return nullptr; } ;
 
-	//virtual void HuntPrey(float DeltaTime) {} ;
+	virtual void HuntPrey(float DeltaTime) {} ;
 
 	//void UpdateBehaviour() override;
 

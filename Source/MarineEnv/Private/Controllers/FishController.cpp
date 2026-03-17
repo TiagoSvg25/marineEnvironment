@@ -14,29 +14,34 @@ AFishController::AFishController()
 
 void AFishController::BehaviourAnalisys(float DeltaTime)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Current State:~antes"));
     if (!getModel()) return;
 
 
     getModel()->setEnergy(getModel()->getEnergy() - getModel()->getEnergyConsumptionRate() * DeltaTime * getModel()->getSpeed());
 
     FString CurrentState = getModel()->getCurrentState();
-    UE_LOG(LogTemp, Warning, TEXT("Current State: %s"), *CurrentState);
 
     if (CurrentState == "Idle") {
-        UE_LOG(LogTemp, Warning, TEXT("%f"), getModel()->getTargetLocation().X);
+        getModel()->setState("Hunting");
         roam(DeltaTime);
     }
-    /*else if (CurrentState == "Hunting") {
+    else if (CurrentState == "Hunting") {
         Target = findFood();
-        if (Target) HuntPrey(DeltaTime);
+        UE_LOG(LogTemp, Warning, TEXT("Searching"));
+        if (Target){ 
+            UE_LOG(LogTemp, Warning, TEXT("Found"));
+            HuntPrey(DeltaTime);
+        }
+        else {
+            roam(DeltaTime);
+        }
     }
     else if (CurrentState == "Fleeing") {
 
     }
     else if (CurrentState == "Reproduction") {
 
-    }*/
+    }
 }
 
 void AFishController::updateMovement(float DeltaTime)
@@ -72,7 +77,7 @@ void AFishController::roam(float DeltaTime) {
 
 
 
-/*void AFishController::HuntPrey(float DeltaTime) {
+void AFishController::HuntPrey(float DeltaTime) {
     if (getModel()->getEnergy() <= 0) {
         getModel()->setEnergy(0);
         // die Animal 
@@ -86,13 +91,14 @@ void AFishController::roam(float DeltaTime) {
         getModel()->setSpeed(currentSpeed * 2);
         getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
 
-        TargetLocation = Target->GetActorLocation();
+        getModel()->setTargetLocation(Target->GetActorLocation());
 
         updateMovement(DeltaTime);
 
     }
     else {
-        TargetLocation = Target->GetActorLocation();
+        UE_LOG(LogTemp, Warning, TEXT("Hunting"));
+        getModel()->setTargetLocation(Target->GetActorLocation());
 
         updateMovement(DeltaTime);
 
@@ -105,7 +111,8 @@ void AFishController::roam(float DeltaTime) {
             getModel()->setSpeed(getModel()->getSpeed() / 2);
             getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
             getModel()->setState("Idle");
-            TargetLocation = FMath::VRand();
+            getModel()->setTargetLocation(FMath::VRand());
+            
         }
 
 
@@ -119,14 +126,9 @@ void AFishController::roam(float DeltaTime) {
     }
 }    
 
-
-
-
-
-/*
 AAnimal* AFishController::findMate() {
     // find nearby mates and reproduce
-    float radius = getModel()->getAngleVision();
+    float radius = 100000.f;
 
 
     TArray<AActor*> FoundActors;
@@ -144,9 +146,6 @@ AAnimal* AFishController::findMate() {
         ToIgnore,
         FoundActors
     );
-
-
-
     AAnimal* ClosestMate = nullptr;
     float ClosestDistSq = getModel()->getAwarenessRadius();
 
@@ -172,19 +171,7 @@ AAnimal* AFishController::findMate() {
     return ClosestMate;
 
 }
-*/
 
-/*
-void AFishController::updateState() {
-    //
-}
-
-AOrganism* AFishController::findFood() {
-    AOrganism* ClosestFood = nullptr;
-    return ClosestFood;
-}
-
-*/
 
 /*void AFishController::updateState() {
 
@@ -318,7 +305,7 @@ AAnimal* AFishController::findFood() {
         getModel()->GetActorLocation(),
         radius,
         ObjectTypes,
-        AAnimal::StaticClass(),
+        AOrganism::StaticClass(),
         ToIgnore,
         FoundActors
     );
