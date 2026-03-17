@@ -152,6 +152,11 @@ void AAnimal::setTurnSpeed(float NewTurnSpeed)
 	getDataAsset()->TurnSpeed = NewTurnSpeed;
 }
 
+void AAnimal::setTargetLocation(FVector location) {
+	getDataAsset()->TargetLocation = location;
+}
 
-
+FVector AAnimal::getTargetLocation() {
+	return getDataAsset()->TargetLocation;
+}
 

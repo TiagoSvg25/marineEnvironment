@@ -28,9 +28,11 @@ protected:
 
 	// virtual AAnimal* findMate() override;
 
-	virtual void HuntPrey(float DeltaTime) override;
+	//virtual void HuntPrey(float DeltaTime) override;
 
 	virtual void updateMovement(float DeltaTime) override;
+
+	virtual void roam(float DeltaTime) override;
 
 	//virtual void updateState() override;
 	virtual AAnimal* findFood() override;

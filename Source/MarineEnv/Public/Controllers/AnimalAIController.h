@@ -41,12 +41,13 @@ public:
 	virtual void BehaviourAnalisys(float DeltaTime) {};
 
 
-	virtual void updateMovement(float DeltaTime) {};
+	virtual void updateMovement(float DeltaTime) {}; 
 
+	virtual void roam(float DeltaTime) {};
 
 	// 2virtual void findMate() {} ;
 
-	virtual void HuntPrey(float DeltaTime) {} ;
+	//virtual void HuntPrey(float DeltaTime) {} ;
 
 	//void UpdateBehaviour() override;
 
@@ -67,7 +68,6 @@ protected:
 	
 	FVector CurrentDirection;
 
-	FVector TargetLocation;
 
 	float InitialZ = 0.0f;
 };

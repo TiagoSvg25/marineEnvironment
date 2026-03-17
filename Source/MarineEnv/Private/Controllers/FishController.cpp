@@ -2,6 +2,7 @@
 //
 #include "Controllers/FishController.h"
 #include "Entities/Organism.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 AFishController::AFishController()
@@ -23,13 +24,10 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
     UE_LOG(LogTemp, Warning, TEXT("Current State: %s"), *CurrentState);
 
     if (CurrentState == "Idle") {
-        if (getModel()->getEnergy() < 80) getModel()->setState("Hunting");
-
-        else {
-            updateMovement(DeltaTime);
-        }
+        UE_LOG(LogTemp, Warning, TEXT("%f"), getModel()->getTargetLocation().X);
+        roam(DeltaTime);
     }
-    else if (CurrentState == "Hunting") {
+    /*else if (CurrentState == "Hunting") {
         Target = findFood();
         if (Target) HuntPrey(DeltaTime);
     }
@@ -38,12 +36,43 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
     }
     else if (CurrentState == "Reproduction") {
 
+    }*/
+}
+
+void AFishController::updateMovement(float DeltaTime)
+{
+    CurrentDirection = FMath::VInterpTo(CurrentDirection, getModel()->getTargetLocation(), DeltaTime, getModel()->getTurnSpeed());
+
+
+    if (getModel() && getModel()->getDataAsset()) {
+        getModel()->AddMovementInput(CurrentDirection, getModel()->getSpeed());
+    }
+
+}
+
+void AFishController::roam(float DeltaTime) {
+
+    if (DirectionTimer >= getModel()->getDirectionChangeInterval()) {
+        getModel()->setTargetLocation(FMath::VRand());
+        DirectionTimer = 0.f;
+
+        if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
+        {
+            FRotator TargetRotation = CurrentDirection.ToOrientationRotator();
+            FRotator Smoothed = FMath::RInterpTo(
+                getModel()->GetActorRotation(),
+                TargetRotation,
+                DeltaTime,
+                getModel()->getTurnSpeed()
+            );
+            getModel()->SetActorRotation(Smoothed);
+        }
     }
 }
 
 
 
-void AFishController::HuntPrey(float DeltaTime) {
+/*void AFishController::HuntPrey(float DeltaTime) {
     if (getModel()->getEnergy() <= 0) {
         getModel()->setEnergy(0);
         // die Animal 
@@ -91,34 +120,7 @@ void AFishController::HuntPrey(float DeltaTime) {
 }    
 
 
-void AFishController::updateMovement(float DeltaTime)
-{
-    CurrentDirection = FMath::VInterpTo(CurrentDirection, TargetLocation, DeltaTime, getModel()->getTurnSpeed());
 
-
-    if (getModel() && getModel()->getDataAsset()) {
-        getModel()->AddMovementInput(CurrentDirection, getModel()->getSpeed());
-    }
-
-
-    if (DirectionTimer >= getModel()->getDirectionChangeInterval()) {
-        TargetLocation = FMath::VRand();
-        TargetLocation.Z = InitialZ;
-        DirectionTimer = 0.f;
-
-        if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
-        {
-            FRotator TargetRotation = CurrentDirection.ToOrientationRotator();
-            FRotator Smoothed = FMath::RInterpTo(
-                getModel()->GetActorRotation(),
-                TargetRotation,
-                DeltaTime,
-                getModel()->getTurnSpeed()
-            );
-            getModel()->SetActorRotation(Smoothed);
-        }
-    }
-}
 
 
 /*

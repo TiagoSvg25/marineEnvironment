@@ -7,7 +7,7 @@
 
 AAnimalAIController::AAnimalAIController()
 {
-
+    PrimaryActorTick.bCanEverTick = true;
 }
 
 void AAnimalAIController::OnPossess(APawn* InPawn)
@@ -23,13 +23,20 @@ void AAnimalAIController::BeginPlay()
 
     InitialZ = getModel()->GetActorLocation().Z;
 
+    getModel()->setState("Idle");
+
     CurrentDirection = FMath::VRand();
     FVector2D Random2D = FMath::RandPointInCircle(1.0f);
 
-    TargetLocation = FVector(Random2D.X, Random2D.Y, 0.0f) * 1000.0f;
+    FVector CurrentLocation = getModel()->GetActorLocation();
 
+    FVector RandomOffset = FMath::VRand() * 200.0f;
 
-    TargetLocation.Z = InitialZ;
+    FVector NewTarget = CurrentLocation + RandomOffset;
+
+    NewTarget.Z = FMath::Min(NewTarget.Z, getModel()->getMaxDepthRange());
+
+    getModel()->setTargetLocation(NewTarget);
 
 }
 
@@ -41,6 +48,7 @@ void AAnimalAIController::Tick(float DeltaTime)
 
     DirectionTimer += DeltaTime;
 
-    BehaviourAnalisys(DeltaTime);
 
+    BehaviourAnalisys(DeltaTime);
+    updateMovement(DeltaTime);
 }

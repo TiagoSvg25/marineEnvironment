@@ -17,7 +17,7 @@ class MARINEENV_API UAnimalDataAsset : public UOrganismDataAsset
 public:
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float Speed = 1.0f;
+	float Speed = 100.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float DirectionChangeInterval;
@@ -49,6 +49,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "States")
 	FString CurrentState = "Idle";
+
+	UPROPERTY(EditAnywhere, Category = "Target")
+	FVector TargetLocation;
 
 	/*UPROPERTY(EditAnywhere, Category = "States")
 	TArray<FString> States = { "Idle", "Hunting", "Fleeing", "Reproduction", "Hungry" };

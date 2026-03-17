@@ -89,6 +89,10 @@ public:
 	void setTurnSpeed(float NewTurnSpeed);
 
 	void setPerseguitionTime(float NewPerseguitionTime);
+
+	void setTargetLocation(FVector location);
+
+	FVector getTargetLocation();
 	
 
 
