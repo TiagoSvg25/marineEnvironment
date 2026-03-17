@@ -23,17 +23,14 @@ public:
 	
 
 protected:
-	/*float DirectionTimer = 0.f;
-
-	float DetectionTimer = 0.f;
-
-	bool isHungry = false;
-	*/
+	
 	virtual void BehaviourAnalisys(float DeltaTime) override;
 
-	//virtual void HuntPrey() override;
+	virtual AAnimal* findMate() override;
 
-	virtual void updateMovement(float DeltaTime, FVector TargetLocation) override;
+	virtual void HuntPrey(float DeltaTime) override;
+
+	virtual void updateMovement(float DeltaTime) override;
 	
 
 	//virtual void updateState() override;

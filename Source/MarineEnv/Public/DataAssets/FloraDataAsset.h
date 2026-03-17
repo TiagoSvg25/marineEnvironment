@@ -13,5 +13,4 @@ UCLASS()
 class MARINEENV_API UFloraDataAsset : public UOrganismDataAsset
 {
 	GENERATED_BODY()
-	
 };

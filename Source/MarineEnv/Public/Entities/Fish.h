@@ -28,8 +28,6 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	FVector CurrentDirection;
-
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* FishMesh;
 

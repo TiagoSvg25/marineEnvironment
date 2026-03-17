@@ -41,12 +41,12 @@ public:
 	virtual void BehaviourAnalisys(float DeltaTime) {};
 
 
-	virtual void updateMovement(float DeltaTime, FVector TargetLocation) {};
+	virtual void updateMovement(float DeltaTime) {};
 
 
+	virtual void findMate() {} ;
 
-
-	//virtual void HuntPrey() {} ;
+	virtual void HuntPrey(float DeltaTime) {} ;
 
 	//void UpdateBehaviour() override;
 
@@ -54,15 +54,19 @@ public:
 protected:
 
 	UPROPERTY()
-	AOrganism* Target;
+	AAnimal* Target;
 
 
 	UPROPERTY()
-	AOrganism* Predator;
+	AAnimal* Predator;
 
 	virtual void updateState() {};
-	virtual AOrganism* findFood() { return nullptr; }
+	virtual AAnimal* findFood() { return nullptr; }
 
 	float DirectionTimer;
 	
+	FVector CurrentDirection;
+
+	FVector TargetLocation;
+
 };

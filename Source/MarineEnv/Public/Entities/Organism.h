@@ -36,6 +36,11 @@ public:
 
 	void setAge(int NewAge);
 
+	int getAgeReproduction() const;
+
+	void setAgeReproduction(int NewAgeReproduction);
+
+
 	int getScale() const;
 
 	void setScale(int NewScale);

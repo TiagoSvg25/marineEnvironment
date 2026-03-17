@@ -23,59 +23,153 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
     UE_LOG(LogTemp, Warning, TEXT("Current State: %s"), *CurrentState);
 
     if (CurrentState == "Idle") {
-        updateMovement(DeltaTime, FVector(1000, 1000, 2));
+        if (getModel()->getEnergy() < 80) getModel()->setState("Hunting");
+
+        else {
+            updateMovement(DeltaTime);
+        }
     }
     else if (CurrentState == "Hunting") {
-        //f (Target) HuntPrey();
+        findFood();
+        if (Target) HuntPrey(DeltaTime);
     }
     else if (CurrentState == "Fleeing") {
 
     }
     else if (CurrentState == "Reproduction") {
-
+        findMate();
     }
 }
 
 
-/*
-void AFishController::HuntPrey() {
-   
-    // if it starts hunting, increase speed by 2x
-    if (getModel()->isHunting()) {
-        getModel()->setHunting(true);
-        float currentSpeed = getModel()->getSpeed();
-        getModel()->setSpeed(currentSpeed * 2);
-        getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
-    }
 
-
-
-
-
-
+void AFishController::HuntPrey(float DeltaTime) {
     if (getModel()->getEnergy() <= 0) {
         getModel()->setEnergy(0);
         // die Animal 
     }
 
-    /* if it stops hunting, reset speed to normal
-    if (Target->GetActorLocation() == getModel()->getAwarenessRadius()) {
-        getModel()->setHunting(false);
-        float currentSpeed = getModel()->getSpeed();
-        getModel()->setSpeed(currentSpeed / 2);
-        getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
-        getModel()->setState("Idle");
-    }
-}    */
 
-void AFishController::updateMovement(float DeltaTime, FVector TargetLocation)
+    // if it starts hunting, increase speed by 2x
+    if (!getModel()->isHunting()) {
+        getModel()->setHunting(true);
+        float currentSpeed = getModel()->getSpeed();
+        getModel()->setSpeed(currentSpeed * 2);
+        getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
+
+        TargetLocation = Target->GetActorLocation();
+
+        updateMovement(DeltaTime);
+
+    }
+    else {
+        TargetLocation = Target->GetActorLocation();
+
+        updateMovement(DeltaTime);
+
+        float DistanceToTarget = FVector::Dist(Target->GetActorLocation(), getModel()->GetActorLocation());
+
+
+        if (DistanceToTarget <= 2) {
+            // eat the prey
+            getModel()->setEnergy(Target->getEnergy() + getModel()->getEnergy());
+            getModel()->setSpeed(getModel()->getSpeed() / 2);
+            getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
+            getModel()->setState("Idle");
+            TargetLocation = FMath::VRand();
+        }
+
+
+        if (DistanceToTarget >= getModel()->getAwarenessRadius()) {
+            getModel()->setHunting(false);
+            float currentSpeed = getModel()->getSpeed();
+            getModel()->setSpeed(currentSpeed / 2);
+            getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
+            getModel()->setHunting(false);
+        }
+    }
+}    
+
+
+void AFishController::updateMovement(float DeltaTime)
 {
+    CurrentDirection = FMath::VInterpTo(CurrentDirection, TargetLocation, DeltaTime, getModel()->getDirectionChangeInterval());
+
+
     if (getModel() && getModel()->getDataAsset()) {
-        getModel()->AddMovementInput(getModel()->GetActorForwardVector(), getModel()->getSpeed());
+        getModel()->AddMovementInput(CurrentDirection, getModel()->getSpeed());
+    }
+
+
+    if (DirectionTimer >= getModel()->getDirectionChangeInterval()) {
+
+        TargetLocation = FMath::VRand();
+        DirectionTimer = 0.f;
+
+        if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
+        {
+            FRotator TargetRotation = CurrentDirection.ToOrientationRotator();
+            FRotator Smoothed = FMath::RInterpTo(
+                getModel()->GetActorRotation(),
+                TargetRotation,
+                DeltaTime,
+                getModel()->getDirectionChangeInterval()
+            );
+            getModel()->SetActorRotation(Smoothed);
+        }
     }
 }
 
 
+
+AAnimal* AFishController::findMate() {
+    // find nearby mates and reproduce
+    float radius = getModel()->getAngleVision();
+
+
+    TArray<AActor*> FoundActors;
+    TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+    TArray<AActor*> ToIgnore;
+    ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
+    ToIgnore.Add(this);
+
+    UKismetSystemLibrary::SphereOverlapActors(
+        GetWorld(),
+        getModel()->GetActorLocation(),
+        radius,
+        ObjectTypes,
+        AAnimal::StaticClass(),
+        ToIgnore,
+        FoundActors
+    );
+
+
+
+    AAnimal* ClosestMate = nullptr;
+    float ClosestDistSq = getModel()->getAwarenessRadius();
+
+    for (AActor* Actor : FoundActors)
+    {
+        AAnimal* Other = Cast<AAnimal>(Actor);
+        if (!Other) continue;
+
+
+        FVector direction = getModel()->GetActorLocation() - Other->GetActorLocation();
+
+
+        float DistSq = FVector::DistSquared(getModel()->GetActorLocation(), Other->GetActorLocation());
+
+
+        if (DistSq < ClosestDistSq)
+        {
+            ClosestDistSq = DistSq;
+            ClosestMate = Other;
+        }
+    }
+
+    return ClosestMate;
+
+}
 
 
 /*

@@ -56,6 +56,16 @@ void AOrganism::setAge(int NewAge)
 	getDataAsset()->Age = NewAge;
 }
 
+int AOrganism::getAgeReproduction() const
+{
+	return getDataAsset()->AgeReproduction;
+}
+
+void AOrganism::setAgeReproduction(int NewAgeReproduction)
+{
+	getDataAsset()->AgeReproduction = NewAgeReproduction;
+}
+
 int AOrganism::getScale() const
 {
 	return getDataAsset()->Scale;

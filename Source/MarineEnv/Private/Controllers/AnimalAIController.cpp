@@ -21,6 +21,11 @@ void AAnimalAIController::BeginPlay()
 {
     Super::BeginPlay();
 
+
+    CurrentDirection = FMath::VRand();
+
+    TargetLocation = FMath::VRand();
+
 }
 
 
@@ -29,5 +34,8 @@ void AAnimalAIController::Tick(float DeltaTime)
     UE_LOG(LogTemp, Warning, TEXT("AnimalAIController Tick"));
     Super::Tick(DeltaTime);
 
+    DirectionTimer += DeltaTime;
+
     BehaviourAnalisys(DeltaTime);
+
 }

@@ -16,8 +16,6 @@ AFish::AFish()
 
 	AIControllerClass = AFishController::StaticClass();
 
-	CurrentDirection = FMath::VRand();
-
 	if (FloatingMovement)
 	{
 		FloatingMovement->SetUpdatedComponent(RootComponent);

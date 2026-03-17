@@ -47,6 +47,11 @@ public:
     UPROPERTY(EditAnywhere, Category = "Age")
     int Age = 0;
 
+
+    UPROPERTY(EditAnywhere, Category = "Age")
+    int AgeReproduction = 30;
+
+
     UPROPERTY(EditDefaultsOnly, Category = "AI")
     TSubclassOf<AAIController> ControllerClass;
 
