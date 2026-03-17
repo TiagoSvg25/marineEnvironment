@@ -44,12 +44,13 @@ public:
 	virtual void updateMovement(float DeltaTime) {};
 
 
-	virtual void findMate() {} ;
+	// 2virtual void findMate() {} ;
 
 	virtual void HuntPrey(float DeltaTime) {} ;
 
 	//void UpdateBehaviour() override;
 
+	virtual AAnimal* findFood() { return nullptr;  };
 
 protected:
 
@@ -61,7 +62,6 @@ protected:
 	AAnimal* Predator;
 
 	virtual void updateState() {};
-	virtual AAnimal* findFood() { return nullptr; }
 
 	float DirectionTimer;
 	
@@ -69,4 +69,5 @@ protected:
 
 	FVector TargetLocation;
 
+	float InitialZ = 0.0f;
 };

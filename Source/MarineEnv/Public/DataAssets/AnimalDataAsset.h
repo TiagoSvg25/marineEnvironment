@@ -44,6 +44,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Nature")
 	int TrophicLevel = 1;
 
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float TurnSpeed = 2.0f;
+
 	UPROPERTY(EditAnywhere, Category = "States")
 	FString CurrentState = "Idle";
 

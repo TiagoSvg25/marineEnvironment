@@ -32,4 +32,7 @@ public:
 	UStaticMeshComponent* FishMesh;
 
 
+	UPROPERTY(EditAnywhere, Category = "Debug")
+	bool bIsPredator = false;
+
 };

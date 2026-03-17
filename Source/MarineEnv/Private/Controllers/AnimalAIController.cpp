@@ -21,10 +21,15 @@ void AAnimalAIController::BeginPlay()
 {
     Super::BeginPlay();
 
+    InitialZ = getModel()->GetActorLocation().Z;
 
     CurrentDirection = FMath::VRand();
+    FVector2D Random2D = FMath::RandPointInCircle(1.0f);
 
-    TargetLocation = FMath::VRand();
+    TargetLocation = FVector(Random2D.X, Random2D.Y, 0.0f) * 1000.0f;
+
+
+    TargetLocation.Z = InitialZ;
 
 }
 

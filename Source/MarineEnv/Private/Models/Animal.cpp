@@ -141,8 +141,16 @@ void AAnimal::setEnergyConsumptionRate(float NewEnergyConsumptionRate)
 	getDataAsset()->EnergyConsumptionRate = NewEnergyConsumptionRate;
 }
 
+float AAnimal::getTurnSpeed() const
+{
+	return getDataAsset()->TurnSpeed;
+}
 
 
+void AAnimal::setTurnSpeed(float NewTurnSpeed)
+{
+	getDataAsset()->TurnSpeed = NewTurnSpeed;
+}
 
 
 

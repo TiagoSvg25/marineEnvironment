@@ -20,6 +20,8 @@ AFish::AFish()
 	{
 		FloatingMovement->SetUpdatedComponent(RootComponent);
 	}
+
+	setTrophicLevel(bIsPredator ? 2 : 1);
 }
 
 AFish::~AFish()
@@ -36,6 +38,9 @@ void AFish::BeginPlay()
 	setEnergyThreshold(FMath::RandRange(20.0f, 40.0f));
 
 	setAwarenessRadius(FMath::RandRange(10.0f, 15.0f));
+
+	setTrophicLevel(bIsPredator ? 2 : 1);
+
 }
 
 void AFish::Tick(float DeltaTime)

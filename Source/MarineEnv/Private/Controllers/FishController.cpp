@@ -30,14 +30,14 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         }
     }
     else if (CurrentState == "Hunting") {
-        findFood();
+        Target = findFood();
         if (Target) HuntPrey(DeltaTime);
     }
     else if (CurrentState == "Fleeing") {
 
     }
     else if (CurrentState == "Reproduction") {
-        findMate();
+
     }
 }
 
@@ -93,7 +93,7 @@ void AFishController::HuntPrey(float DeltaTime) {
 
 void AFishController::updateMovement(float DeltaTime)
 {
-    CurrentDirection = FMath::VInterpTo(CurrentDirection, TargetLocation, DeltaTime, getModel()->getDirectionChangeInterval());
+    CurrentDirection = FMath::VInterpTo(CurrentDirection, TargetLocation, DeltaTime, getModel()->getTurnSpeed());
 
 
     if (getModel() && getModel()->getDataAsset()) {
@@ -102,8 +102,8 @@ void AFishController::updateMovement(float DeltaTime)
 
 
     if (DirectionTimer >= getModel()->getDirectionChangeInterval()) {
-
         TargetLocation = FMath::VRand();
+        TargetLocation.Z = InitialZ;
         DirectionTimer = 0.f;
 
         if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
@@ -113,7 +113,7 @@ void AFishController::updateMovement(float DeltaTime)
                 getModel()->GetActorRotation(),
                 TargetRotation,
                 DeltaTime,
-                getModel()->getDirectionChangeInterval()
+                getModel()->getTurnSpeed()
             );
             getModel()->SetActorRotation(Smoothed);
         }
@@ -121,7 +121,7 @@ void AFishController::updateMovement(float DeltaTime)
 }
 
 
-
+/*
 AAnimal* AFishController::findMate() {
     // find nearby mates and reproduce
     float radius = getModel()->getAngleVision();
@@ -170,7 +170,7 @@ AAnimal* AFishController::findMate() {
     return ClosestMate;
 
 }
-
+*/
 
 /*
 void AFishController::updateState() {
@@ -183,20 +183,6 @@ AOrganism* AFishController::findFood() {
 }
 
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*void AFishController::updateState() {
 
@@ -311,7 +297,54 @@ AOrganism* AFishController::findFood() {
 
     return ClosestFood;
 }
-
-
-
 */
+
+AAnimal* AFishController::findFood() {
+    float radius = getModel()->getAwarenessRadius();
+    int trophicLevel = getModel()->getTrophicLevel();
+
+
+
+    TArray<AActor*> FoundActors;
+    TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+    TArray<AActor*> ToIgnore;
+    ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
+    ToIgnore.Add(getModel());
+
+    UKismetSystemLibrary::SphereOverlapActors(
+        GetWorld(),
+        getModel()->GetActorLocation(),
+        radius,
+        ObjectTypes,
+        AAnimal::StaticClass(),
+        ToIgnore,
+        FoundActors
+    );
+
+
+    AAnimal* ClosestFood = nullptr;
+    float ClosestDistSq = FLT_MAX;
+
+    for (AActor* Actor : FoundActors)
+    {
+        AAnimal* Other = Cast<AAnimal>(Actor);
+        if (!Other) continue;
+
+        if (Other->getTrophicLevel() >= trophicLevel) continue;
+
+        FVector direction = getModel()->GetActorLocation() - Other->GetActorLocation();
+
+
+        float DistSq = FVector::DistSquared(getModel()->GetActorLocation(), Other->GetActorLocation());
+
+
+        if (DistSq < ClosestDistSq)
+        {
+            ClosestDistSq = DistSq;
+            ClosestFood = Other;
+        }
+    }
+
+
+    return ClosestFood;
+}

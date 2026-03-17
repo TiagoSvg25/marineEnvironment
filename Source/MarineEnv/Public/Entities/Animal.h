@@ -84,7 +84,9 @@ public:
 
 	void setEnergyConsumptionRate(float NewEnergyConsumptionRate);
 
-	float getPerseguitionTime() const;
+	float getTurnSpeed() const;
+
+	void setTurnSpeed(float NewTurnSpeed);
 
 	void setPerseguitionTime(float NewPerseguitionTime);
 	
