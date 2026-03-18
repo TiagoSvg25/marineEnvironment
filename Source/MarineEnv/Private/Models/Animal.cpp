@@ -7,20 +7,33 @@ AAnimal::AAnimal()
 {
 
 	DataAsset = CreateDefaultSubobject<UAnimalDataAsset>(TEXT("AnimalDataAsset"));
-	// AAnimal.cpp ou AFish.cpp
+
 	FloatingMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
+
+	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
+
+	RootComponent = CollisionComponent;
+
+	CollisionComponent->InitSphereRadius(50.0f);
+
+	CollisionComponent->SetCollisionProfileName(TEXT("Pawn"));
+
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AIControllerClass = AAnimalAIController::StaticClass();
-
-
-
 }
 
 void AAnimal::BeginPlay()
 {
 	Super::BeginPlay();
-	CurrentState = getDataAsset()->CurrentState;
+
+	if (UAnimalDataAsset* Asset = getDataAsset())
+	{
+		CurrentState = "Idle";
+		CurrentEnergy = Asset->MaxEnergy; 
+		CurrentSpeed = Asset->BaseSpeed;
+		CurrentTargetLocation = GetActorLocation(); 
+	}
 }
 
 void AAnimal::Tick(float DeltaTime)
@@ -33,22 +46,17 @@ void AAnimal::Tick(float DeltaTime)
 
 FString AAnimal::getCurrentState() const
 {
-	return getDataAsset()->CurrentState;
+	return CurrentState;
 }
 
 void AAnimal::setState(const FString& NewState)
 {
-	getDataAsset()->CurrentState = NewState;
+	CurrentState = NewState;
 }
 
-bool AAnimal::isHunting() const
+float AAnimal::getBaseSpeed() const
 {
-	return Hunting;
-}
-
-void AAnimal::setHunting(bool NewIsHunting)
-{
-	Hunting = NewIsHunting;
+	return getDataAsset()->BaseSpeed;
 }
 
 float AAnimal::getAwarenessRadius() const
@@ -95,12 +103,12 @@ void AAnimal::setDirectionChangeInterval(float NewDirectionChangeInterval)
 
 float AAnimal::getSpeed() const
 {
-	return getDataAsset()->Speed;
+	return CurrentSpeed;
 }
 
 void AAnimal::setSpeed(float NewSpeed)
 {
-	getDataAsset()->Speed = NewSpeed;
+	CurrentSpeed = NewSpeed;
 }
 
 float AAnimal::getEnergyThreshold() const
@@ -126,11 +134,11 @@ void AAnimal::setMaxEnergy(float NewMaxEnergy)
 
 
 float AAnimal::getEnergy() const {
-	return getDataAsset()->Energy;
+	return CurrentEnergy;
 }
 
 void AAnimal::setEnergy(float NewEnergy) {
-	getDataAsset()->Energy = NewEnergy;
+	CurrentEnergy = NewEnergy;
 }
 
 float AAnimal::getEnergyConsumptionRate() const
@@ -155,10 +163,10 @@ void AAnimal::setTurnSpeed(float NewTurnSpeed)
 }
 
 void AAnimal::setTargetLocation(FVector location) {
-	getDataAsset()->TargetLocation = location;
+	CurrentTargetLocation = location;
 }
 
 FVector AAnimal::getTargetLocation() {
-	return getDataAsset()->TargetLocation;
+	return CurrentTargetLocation;
 }
 

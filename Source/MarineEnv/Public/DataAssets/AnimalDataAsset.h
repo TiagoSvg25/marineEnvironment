@@ -17,14 +17,10 @@ class MARINEENV_API UAnimalDataAsset : public UOrganismDataAsset
 public:
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float Speed = 100.0f;
+	float BaseSpeed = 1.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float DirectionChangeInterval;
-
-
-	UPROPERTY(EditAnywhere, Category = "Energy")
-	float Energy = 100.0f;
 
 	UPROPERTY(EditAnywhere, Category="Energy")
 	float EnergyThreshold = 20.0f;
@@ -36,7 +32,7 @@ public:
 	float EnergyConsumptionRate = 0.2f;
 
 	UPROPERTY(EditAnywhere, Category = "Awareness")
-	float AwarenessRadius = 1.0f;
+	float AwarenessRadius = 1500.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Awareness")
 	float AngleVision = 180.0f;
@@ -49,9 +45,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "States")
 	FString CurrentState = "Idle";
-
-	UPROPERTY(EditAnywhere, Category = "Target")
-	FVector TargetLocation;
 
 	/*UPROPERTY(EditAnywhere, Category = "States")
 	TArray<FString> States = { "Idle", "Hunting", "Fleeing", "Reproduction", "Hungry" };

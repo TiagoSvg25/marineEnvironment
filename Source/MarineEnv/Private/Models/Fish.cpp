@@ -4,7 +4,6 @@
 
 AFish::AFish()
 {
-	 
 	FishMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FishMesh"));
 	RootComponent = FishMesh;
 	FishMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -31,11 +30,8 @@ AFish::AFish()
 
 	if (FloatingMovement)
 	{
-		FloatingMovement->SetUpdatedComponent(RootComponent);
+		FloatingMovement->SetUpdatedComponent(CollisionComponent);
 	}
-
-	setTrophicLevel(bIsPredator ? 2 : 1);
-
 }
 
 AFish::~AFish()
@@ -68,8 +64,6 @@ void AFish::BeginPlay()
 
 	setEnergyThreshold(FMath::RandRange(20.0f, 40.0f));
 
-	setAwarenessRadius(FMath::RandRange(30.0f, 40.0f));
-
 	setTrophicLevel(bIsPredator ? 2 : 1);
 
 	setSpeed(0.2f);
@@ -89,7 +83,7 @@ void AFish::Tick(float DeltaTime)
 
 
 
-/*
+/* 
 void AFish::updateMovement(float DeltaTime)
 {
 
