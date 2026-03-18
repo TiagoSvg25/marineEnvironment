@@ -47,12 +47,8 @@ void AAnimalAIController::Tick(float DeltaTime)
 
     DirectionTimer += DeltaTime;
     DetectionTimer += DeltaTime;
-    
-
-    if(DetectionTimer > getModel()->getDirectionChangeInterval()){
-        DetectionTimer = 0;
-        BehaviourAnalisys(DeltaTime);
-    }
+   
+    BehaviourAnalisys(DeltaTime);
     updateMovement(DeltaTime);
 }
 

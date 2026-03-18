@@ -16,8 +16,10 @@ AOrganism::AOrganism()
 
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 	RootComponent = CollisionSphere;
-	CollisionSphere->SetSphereRadius(16.f);
+	CollisionSphere->SetSphereRadius(20.0f);
+
 	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
 	CollisionSphere->SetCollisionObjectType(ECC_Pawn);
 	CollisionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	CollisionSphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);

@@ -115,3 +115,4 @@ protected:
 	bool Hunting = false;
 };
 
+	

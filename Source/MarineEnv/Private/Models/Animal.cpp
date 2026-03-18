@@ -9,14 +9,13 @@ AAnimal::AAnimal()
 	DataAsset = CreateDefaultSubobject<UAnimalDataAsset>(TEXT("AnimalDataAsset"));
 
 	FloatingMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
+	
+	if (FloatingMovement && RootComponent)
+	{
+		FloatingMovement->SetUpdatedComponent(RootComponent);
+	}
 
-	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 
-	RootComponent = CollisionComponent;
-
-	CollisionComponent->InitSphereRadius(50.0f);
-
-	CollisionComponent->SetCollisionProfileName(TEXT("Pawn"));
 
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;

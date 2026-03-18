@@ -20,7 +20,7 @@ public:
 	float BaseSpeed = 1.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float DirectionChangeInterval;
+	float DirectionChangeInterval = 0;
 
 	UPROPERTY(EditAnywhere, Category="Energy")
 	float EnergyThreshold = 20.0f;

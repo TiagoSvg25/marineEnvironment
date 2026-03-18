@@ -5,11 +5,17 @@
 AFish::AFish()
 {
 	FishMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FishMesh"));
-	RootComponent = FishMesh;
-	FishMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	FishMesh->SetCollisionObjectType(ECC_Pawn);
+
+
+	if (RootComponent)
+	{
+		FishMesh->SetupAttachment(RootComponent);
+	}
+
+	FishMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision); // ECollisionEnabled::QueryAndPhysics
+	/*FishMesh->SetCollisionObjectType(ECC_Pawn);
 	FishMesh->SetCollisionResponseToAllChannels(ECR_Block);
-	FishMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	FishMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);*/
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SphereAsset(TEXT("/Game/Fab/Clown_Fish_Low_Poly_Animated/clown_fish_low_poly_animated/SkeletalMeshes/clown_fish_low_poly_animated.clown_fish_low_poly_animated"));
 
@@ -30,7 +36,7 @@ AFish::AFish()
 
 	if (FloatingMovement)
 	{
-		FloatingMovement->SetUpdatedComponent(CollisionComponent);
+		FloatingMovement->SetUpdatedComponent(RootComponent);
 	}
 }
 
@@ -63,14 +69,6 @@ void AFish::BeginPlay()
 	setState("Idle");
 
 	setEnergyThreshold(FMath::RandRange(20.0f, 40.0f));
-
-	setTrophicLevel(bIsPredator ? 2 : 1);
-
-	setSpeed(0.2f);
-
-	setTurnSpeed(5.0f);
-
-	setDirectionChangeInterval(3.0f);
 
 }
 
