@@ -5,13 +5,26 @@
 AFish::AFish()
 {
 	 
-	FishMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FishMesh"));
+	FishMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FishMesh"));
 	RootComponent = FishMesh;
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereAsset(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
+	FishMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	FishMesh->SetCollisionObjectType(ECC_Pawn);
+	FishMesh->SetCollisionResponseToAllChannels(ECR_Block);
+	FishMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SphereAsset(TEXT("/Game/Fab/Clown_Fish_Low_Poly_Animated/clown_fish_low_poly_animated/SkeletalMeshes/clown_fish_low_poly_animated.clown_fish_low_poly_animated"));
+
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(TEXT("/Script/Engine.AnimSequence'/Game/Assets/clown_fish_low_poly_animatedswim1.clown_fish_low_poly_animatedswim1'"));
+
 
 	if (SphereAsset.Succeeded())
 	{
-		FishMesh->SetStaticMesh(SphereAsset.Object);
+		FishMesh->SetSkeletalMesh(SphereAsset.Object);
+	}
+
+	if (Animation.Succeeded())
+	{
+		Anim = Animation.Object;
 	}
 
 	AIControllerClass = AFishController::StaticClass();
@@ -33,16 +46,38 @@ void AFish::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (!FishMesh)
+	{
+		UE_LOG(LogTemp, Error, TEXT("FishMesh is null!"));
+		return;
+	}
+
+	if (!Anim)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Animation is null! Check the asset path."));
+	}
+	else
+	{
+		FishMesh->PlayAnimation(Anim, true);
+		UE_LOG(LogTemp, Warning, TEXT("Animation started successfully"));
+	}
+
+	FishMesh->PlayAnimation(Anim, true);
 
 	setState("Idle");
 
 	setEnergyThreshold(FMath::RandRange(20.0f, 40.0f));
 
-	setAwarenessRadius(FMath::RandRange(10.0f, 15.0f));
+	setAwarenessRadius(FMath::RandRange(30.0f, 40.0f));
 
 	setTrophicLevel(bIsPredator ? 2 : 1);
 
-	setSpeed(1.0f);
+	setSpeed(0.2f);
+
+	setTurnSpeed(5.0f);
+
+	setDirectionChangeInterval(3.0f);
+
 }
 
 void AFish::Tick(float DeltaTime)

@@ -43,12 +43,63 @@ void AAnimalAIController::BeginPlay()
 
 void AAnimalAIController::Tick(float DeltaTime)
 {
-    UE_LOG(LogTemp, Warning, TEXT("AnimalAIController Tick"));
     Super::Tick(DeltaTime);
 
     DirectionTimer += DeltaTime;
+    DetectionTimer += DeltaTime;
+    
 
-
-    BehaviourAnalisys(DeltaTime);
+    if(DetectionTimer > getModel()->getDirectionChangeInterval()){
+        DetectionTimer = 0;
+        BehaviourAnalisys(DeltaTime);
+    }
     updateMovement(DeltaTime);
 }
+
+
+
+AAnimal* AAnimalAIController::checkPredators() {
+
+    float radius = getModel()->getAwarenessRadius();
+    int trophicLevel = getModel()->getTrophicLevel();
+    float angleVision = getModel()->getAngleVision();
+
+    TArray<AActor*> FoundActors;
+    TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+    TArray<AActor*> ToIgnore;
+    ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
+    ToIgnore.Add(getModel());
+
+    UKismetSystemLibrary::SphereOverlapActors(
+        GetWorld(),
+        getModel()->GetActorLocation(),
+        radius,
+        ObjectTypes,
+        AOrganism::StaticClass(),
+        ToIgnore,
+        FoundActors
+    );
+
+    for (AActor* Actor : FoundActors)
+    {
+        AAnimal* Other = Cast<AAnimal>(Actor);
+        if (!Other) continue;
+
+        if (Other->getTrophicLevel() <= trophicLevel) continue;
+
+        FVector direction = Other->GetActorLocation() - getModel()->GetActorLocation();
+        direction.Normalize();
+
+        FVector animalForward = getModel()->GetActorForwardVector();
+
+        float dotProduct = FVector::DotProduct(animalForward, direction);
+        float angleToOther = FMath::RadiansToDegrees(FMath::Acos(dotProduct));
+
+        if (angleToOther <= angleVision / 2.0f) {
+            return Other;
+        }
+    }
+
+    return nullptr;
+}
+

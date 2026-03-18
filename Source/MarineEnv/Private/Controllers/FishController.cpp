@@ -22,14 +22,19 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
     FString CurrentState = getModel()->getCurrentState();
 
     if (CurrentState == "Idle") {
-        getModel()->setState("Hunting");
+
+        AAnimal* pred = checkPredators();
+        if (pred != nullptr) {
+            getModel()->setSpeed(getModel()->getSpeed() * 2);
+            getModel()->getTargetLocation() = getModel()->GetActorLocation() - pred->GetActorLocation();
+            getModel()->setState("Fleeing");
+        }
+
         roam(DeltaTime);
     }
     else if (CurrentState == "Hunting") {
         Target = findFood();
-        UE_LOG(LogTemp, Warning, TEXT("Searching"));
         if (Target){ 
-            UE_LOG(LogTemp, Warning, TEXT("Found"));
             HuntPrey(DeltaTime);
         }
         else {
@@ -37,6 +42,21 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         }
     }
     else if (CurrentState == "Fleeing") {
+        if (getModel()->getEnergy() >= 0.30 * getModel()->getMaxEnergy()) {
+
+            getModel()->setTargetLocation(FMath::VRand().GetSafeNormal());
+        }
+        else {
+            if (checkPredators() != nullptr) {
+                getModel()->setTargetLocation(FMath::VRand().GetSafeNormal());
+            }
+            else {
+                getModel()->setSpeed(getModel()->getSpeed() / 2);
+                getModel()->setState("Idle");
+            }
+        }
+
+        
 
     }
     else if (CurrentState == "Reproduction") {
@@ -46,40 +66,49 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
 
 void AFishController::updateMovement(float DeltaTime)
 {
-    CurrentDirection = FMath::VInterpTo(CurrentDirection, getModel()->getTargetLocation(), DeltaTime, getModel()->getTurnSpeed());
+    FVector CurrentLocation = getModel()->GetActorLocation();
+    FVector TargetLocation = getModel()->getTargetLocation();
 
+    FVector DesiredDirection = (TargetLocation - CurrentLocation).GetSafeNormal();
 
-    if (getModel() && getModel()->getDataAsset()) {
-        getModel()->AddMovementInput(CurrentDirection, getModel()->getSpeed());
+    CurrentDirection = FMath::VInterpTo(CurrentDirection, DesiredDirection, DeltaTime, getModel()->getTurnSpeed());
+    CurrentDirection = CurrentDirection.GetSafeNormal();
+
+    getModel()->AddMovementInput(CurrentDirection, getModel()->getSpeed());
+
+    if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
+    {
+        FRotator TargetRotation = CurrentDirection.ToOrientationRotator();
+        FRotator Smoothed = FMath::RInterpTo(
+            getModel()->GetActorRotation(),
+            TargetRotation,
+            DeltaTime,
+            getModel()->getTurnSpeed()
+        );
+        getModel()->SetActorRotation(Smoothed);
     }
 
 }
 
 void AFishController::roam(float DeltaTime) {
+    FVector CurrentLocation = getModel()->GetActorLocation();
+    float DistToTarget = FVector::Dist(CurrentLocation, getModel()->getTargetLocation());
 
-    if (DirectionTimer >= getModel()->getDirectionChangeInterval()) {
-        getModel()->setTargetLocation(FMath::VRand());
-        DirectionTimer = 0.f;
-
-        if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
-        {
-            FRotator TargetRotation = CurrentDirection.ToOrientationRotator();
-            FRotator Smoothed = FMath::RInterpTo(
-                getModel()->GetActorRotation(),
-                TargetRotation,
-                DeltaTime,
-                getModel()->getTurnSpeed()
-            );
-            getModel()->SetActorRotation(Smoothed);
+    if (DirectionTimer >= getModel()->getDirectionChangeInterval() || DistToTarget < 10.f) {
+        FVector RandomOffset = FMath::VRand()*300.f;
+        FVector NewTarget = CurrentLocation + RandomOffset;
+        if (NewTarget.Z <= 0) {
+            NewTarget.Z = 0 - NewTarget.Z;
         }
+        getModel()->setTargetLocation(NewTarget);
+        DirectionTimer = 0.f;
     }
 }
-
-
 
 void AFishController::HuntPrey(float DeltaTime) {
     if (getModel()->getEnergy() <= 0) {
         getModel()->setEnergy(0);
+        getModel()->Destroy();
         // die Animal 
     }
 
@@ -93,14 +122,9 @@ void AFishController::HuntPrey(float DeltaTime) {
 
         getModel()->setTargetLocation(Target->GetActorLocation());
 
-        updateMovement(DeltaTime);
-
     }
     else {
-        UE_LOG(LogTemp, Warning, TEXT("Hunting"));
         getModel()->setTargetLocation(Target->GetActorLocation());
-
-        updateMovement(DeltaTime);
 
         float DistanceToTarget = FVector::Dist(Target->GetActorLocation(), getModel()->GetActorLocation());
 
@@ -128,7 +152,7 @@ void AFishController::HuntPrey(float DeltaTime) {
 
 AAnimal* AFishController::findMate() {
     // find nearby mates and reproduce
-    float radius = 100000.f;
+    float radius = getModel()->getAwarenessRadius();
 
 
     TArray<AActor*> FoundActors;
@@ -148,6 +172,7 @@ AAnimal* AFishController::findMate() {
     );
     AAnimal* ClosestMate = nullptr;
     float ClosestDistSq = getModel()->getAwarenessRadius();
+
 
     for (AActor* Actor : FoundActors)
     {
@@ -305,11 +330,10 @@ AAnimal* AFishController::findFood() {
         getModel()->GetActorLocation(),
         radius,
         ObjectTypes,
-        AOrganism::StaticClass(),
+        AFish::StaticClass(),
         ToIgnore,
         FoundActors
     );
-
 
     AAnimal* ClosestFood = nullptr;
     float ClosestDistSq = FLT_MAX;
@@ -319,7 +343,7 @@ AAnimal* AFishController::findFood() {
         AAnimal* Other = Cast<AAnimal>(Actor);
         if (!Other) continue;
 
-        if (Other->getTrophicLevel() >= trophicLevel) continue;
+        if (Other->getTrophicLevel() > trophicLevel) continue;
 
         FVector direction = getModel()->GetActorLocation() - Other->GetActorLocation();
 

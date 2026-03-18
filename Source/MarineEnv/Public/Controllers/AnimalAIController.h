@@ -40,7 +40,6 @@ public:
 
 	virtual void BehaviourAnalisys(float DeltaTime) {};
 
-
 	virtual void updateMovement(float DeltaTime) {}; 
 
 	virtual void roam(float DeltaTime) {};
@@ -53,6 +52,9 @@ public:
 
 	virtual AAnimal* findFood() { return nullptr;  };
 
+	AAnimal* checkPredators();
+
+
 protected:
 
 	UPROPERTY()
@@ -64,7 +66,10 @@ protected:
 
 	virtual void updateState() {};
 
-	float DirectionTimer;
+	float DirectionTimer = 10.f;
+
+	float DetectionTimer = 10.f;
+
 	
 	FVector CurrentDirection;
 

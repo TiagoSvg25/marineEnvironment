@@ -13,6 +13,8 @@ AAnimal::AAnimal()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AIControllerClass = AAnimalAIController::StaticClass();
 
+
+
 }
 
 void AAnimal::BeginPlay()

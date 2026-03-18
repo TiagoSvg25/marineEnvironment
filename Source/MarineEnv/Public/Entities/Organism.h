@@ -84,13 +84,13 @@ protected:
 	UPROPERTY()
 	UOrganismDataAsset* DataAsset;
 
+	UPROPERTY(VisibleAnywhere, Category = "Collision")
+	USphereComponent* CollisionSphere;
+
 	// Called when the game starts or when spawned
 
 	/*UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* SphereMesh;
-
-	UPROPERTY(VisibleAnywhere, Category = "Collision")
-	USphereComponent* CollisionSphere;
 
 	UPROPERTY(VisibleAnywhere)
 	UFloatingPawnMovement* FloatingMovement;

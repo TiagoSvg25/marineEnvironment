@@ -9,7 +9,7 @@
 // Sets default values
 AOrganism::AOrganism()
 {
-	/*PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
@@ -24,15 +24,7 @@ AOrganism::AOrganism()
 	CollisionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 	CollisionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);	
 
-
-
-	SphereMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SphereMesh"));
-	SphereMesh->SetupAttachment(RootComponent);
-
 	AIControllerClass = AOrganismAIController::StaticClass();
-
-	FloatingMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
-	FloatingMovement->SetUpdatedComponent(RootComponent);*/
 }
 
 float AOrganism::getHealth() const
