@@ -81,7 +81,7 @@ public:
 		const FHitResult& Hit);*/
 
 protected:
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data", meta = (AllowPrivateAccess = "true"))
 	UOrganismDataAsset* DataAsset;
 
 	// Called when the game starts or when spawned

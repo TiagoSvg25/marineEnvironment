@@ -22,14 +22,21 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
     FString CurrentState = getModel()->getCurrentState();
 
     if (CurrentState == "Idle") {
-        getModel()->setState("Hunting");
-        roam(DeltaTime);
+        if (getModel()->getEnergy() < 90) {
+            Target = findFood();
+            if (Target) {
+                getModel()->setState("Hunting");
+                float currentSpeed = getModel()->getSpeed();
+                getModel()->setSpeed(currentSpeed * 2);
+                getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
+                getModel()->setTargetLocation(Target->GetActorLocation());
+            }
+            else roam(DeltaTime);
+        }
+        else roam(DeltaTime);
     }
     else if (CurrentState == "Hunting") {
-        Target = findFood();
-        UE_LOG(LogTemp, Warning, TEXT("Searching"));
         if (Target){ 
-            UE_LOG(LogTemp, Warning, TEXT("Found"));
             HuntPrey(DeltaTime);
         }
         else {
@@ -78,23 +85,14 @@ void AFishController::roam(float DeltaTime) {
 
 
 void AFishController::HuntPrey(float DeltaTime) {
+    if (!Target || !getModel()) {
+        if (getModel()) getModel()->setState("Idle");
+        return;
+    }
+   
     if (getModel()->getEnergy() <= 0) {
         getModel()->setEnergy(0);
-        // die Animal 
-    }
-
-
-    // if it starts hunting, increase speed by 2x
-    if (!getModel()->isHunting()) {
-        getModel()->setHunting(true);
-        float currentSpeed = getModel()->getSpeed();
-        getModel()->setSpeed(currentSpeed * 2);
-        getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
-
-        getModel()->setTargetLocation(Target->GetActorLocation());
-
-        updateMovement(DeltaTime);
-
+         
     }
     else {
         UE_LOG(LogTemp, Warning, TEXT("Hunting"));
@@ -105,23 +103,21 @@ void AFishController::HuntPrey(float DeltaTime) {
         float DistanceToTarget = FVector::Dist(Target->GetActorLocation(), getModel()->GetActorLocation());
 
 
-        if (DistanceToTarget <= 2) {
-            // eat the prey
+        if (DistanceToTarget <= 50) {
             getModel()->setEnergy(Target->getEnergy() + getModel()->getEnergy());
-            getModel()->setSpeed(getModel()->getSpeed() / 2);
+            getModel()->setSpeed(getModel()->getBaseSpeed());
             getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
             getModel()->setState("Idle");
             getModel()->setTargetLocation(FMath::VRand());
-            
+            Target = nullptr;
         }
 
 
         if (DistanceToTarget >= getModel()->getAwarenessRadius()) {
-            getModel()->setHunting(false);
-            float currentSpeed = getModel()->getSpeed();
-            getModel()->setSpeed(currentSpeed / 2);
+            Target = nullptr;
+            getModel()->setState("Idle");
+            getModel()->setSpeed(getModel()->getBaseSpeed());
             getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
-            getModel()->setHunting(false);
         }
     }
 }    
@@ -316,8 +312,11 @@ AAnimal* AFishController::findFood() {
 
     for (AActor* Actor : FoundActors)
     {
+
         AAnimal* Other = Cast<AAnimal>(Actor);
         if (!Other) continue;
+
+        UE_LOG(LogTemp, Warning, TEXT("Vi um animal: %s"), *Other->GetName());
 
         if (Other->getTrophicLevel() >= trophicLevel) continue;
 

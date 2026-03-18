@@ -6,6 +6,7 @@
 #include "DataAssets/AnimalDataAsset.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Organism.h"
+#include "Components/SphereComponent.h"
 #include "Animal.generated.h"
 
 /**
@@ -44,9 +45,7 @@ public:
 
 	void setState(const FString& NewState);
 
-	bool isHunting() const;
-
-	void setHunting(bool NewIsHunting);
+	float getBaseSpeed() const;
 
 	float getEnergyThreshold() const;
 
@@ -88,8 +87,6 @@ public:
 
 	void setTurnSpeed(float NewTurnSpeed);
 
-	void setPerseguitionTime(float NewPerseguitionTime);
-
 	void setTargetLocation(FVector location);
 
 	FVector getTargetLocation();
@@ -98,10 +95,22 @@ public:
 
 protected:
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
+	USphereComponent* CollisionComponent;
+
 	UPROPERTY(VisibleAnywhere)
 	UFloatingPawnMovement* FloatingMovement;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animal | Stats")
 	FString CurrentState;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animal | Stats")
+	float CurrentEnergy;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animal | Stats")
+	float CurrentSpeed;
+
+	FVector CurrentTargetLocation;
 
 	bool Hunting = false;
 };

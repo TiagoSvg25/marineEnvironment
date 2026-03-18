@@ -4,11 +4,14 @@
 
 AFish::AFish()
 {
-	 
 	FishMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FishMesh"));
-	RootComponent = FishMesh;
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereAsset(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 
+	if (CollisionComponent)
+	{
+		FishMesh->SetupAttachment(CollisionComponent);
+	}
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereAsset(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 	if (SphereAsset.Succeeded())
 	{
 		FishMesh->SetStaticMesh(SphereAsset.Object);
@@ -18,11 +21,8 @@ AFish::AFish()
 
 	if (FloatingMovement)
 	{
-		FloatingMovement->SetUpdatedComponent(RootComponent);
+		FloatingMovement->SetUpdatedComponent(CollisionComponent);
 	}
-
-	setTrophicLevel(bIsPredator ? 2 : 1);
-
 }
 
 AFish::~AFish()
@@ -38,8 +38,6 @@ void AFish::BeginPlay()
 
 	setEnergyThreshold(FMath::RandRange(20.0f, 40.0f));
 
-	setAwarenessRadius(FMath::RandRange(10.0f, 15.0f));
-
 	setTrophicLevel(bIsPredator ? 2 : 1);
 
 	setSpeed(1.0f);
@@ -54,7 +52,7 @@ void AFish::Tick(float DeltaTime)
 
 
 
-/*
+/* 
 void AFish::updateMovement(float DeltaTime)
 {
 
