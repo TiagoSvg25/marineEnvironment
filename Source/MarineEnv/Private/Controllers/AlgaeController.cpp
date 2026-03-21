@@ -3,6 +3,7 @@
 
 #include "Controllers/AlgaeController.h"
 #include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
 
 AAlgaeController::AAlgaeController()
 {
@@ -37,8 +38,8 @@ void AAlgaeController::Reproduce()
     if (!ParentAlgae || !GetWorld()) return;
 
     FVector ParentLocation = ParentAlgae->GetActorLocation();
-    float SpawnRadius = 200.0f; // Distance from parent
     float CollisionCheckRadius = 50.0f;
+    float SpawnRadius = CollisionCheckRadius * 3.0f;
 
     for (int i = 0; i < 10; i++)
     {
@@ -63,21 +64,30 @@ void AAlgaeController::Reproduce()
         if (!bIsOccupied)
         {
             // Spawn the new Algae
-            /*FActorSpawnParameters SpawnParams;
-            SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+            FTransform SpawnTransform(FRotator::ZeroRotator, SpawnLocation);
+            /*FActorSpawnParameters SpawnParam;
+            SpawnParam.Owner = this;
+            SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+            */
 
-            AAlgae* NewAlgae = GetWorld()->SpawnActor<AAlgae>(ParentAlgae->GetClass(), SpawnLocation, FRotator::ZeroRotator, SpawnParams); // BIG BUG
+            AAlgae* NewAlgae = GetWorld()->SpawnActorDeferred<AAlgae>(
+                ParentAlgae->GetClass(),
+                SpawnTransform,
+                nullptr,
+                nullptr,
+                ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn
+            );
 
             if (NewAlgae)
             {
                 NewAlgae->setEnergy(0.0f);
                 NewAlgae->setState("Idle");
+
+                UGameplayStatics::FinishSpawningActor(NewAlgae, SpawnTransform);
+                NewAlgae->SpawnDefaultController();
                 UE_LOG(LogTemp, Display, TEXT("New Algae successfully created at %s"), *SpawnLocation.ToString());
                 return; // Successfully spawned
-            }*/
-            UE_LOG(LogTemp, Display, TEXT("New Algae successfully created at %s"), *SpawnLocation.ToString());
-            getModel()->setEnergy(0.1f);
-            return;
+            }
         }
     }
 
