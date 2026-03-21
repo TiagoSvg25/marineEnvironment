@@ -22,6 +22,7 @@ void AAlgaeController::BehaviourAnalisys(float DeltaTime)
 
     if (CurrentState == "Idle") {
         if (getModel()->getEnergy() >= 100.0f) {
+            getModel()->setEnergy(0.0f);
             getModel()->setState("Reproduce");
         }
     }
@@ -39,11 +40,11 @@ void AAlgaeController::Reproduce()
 
     FVector ParentLocation = ParentAlgae->GetActorLocation();
     float CollisionCheckRadius = 50.0f;
-    float SpawnRadius = CollisionCheckRadius * 3.0f;
+    float SpawnRadius = 200.0f;
 
     for (int i = 0; i < 10; i++)
     {
-        FVector RandomOffset = FVector(FMath::FRandRange(-1.0f, 1), FMath::FRandRange(-1.0f, 1), 0.0f);
+        FVector RandomOffset = FVector(FMath::FRandRange(-1.0f, 1), FMath::FRandRange(-1.0f, 1), FMath::FRandRange(-1.0f, 1));
         RandomOffset.Normalize();
         FVector SpawnLocation = ParentLocation + (RandomOffset * SpawnRadius);
 
@@ -51,6 +52,9 @@ void AAlgaeController::Reproduce()
         FCollisionShape Sphere = FCollisionShape::MakeSphere(CollisionCheckRadius);
         FCollisionQueryParams QueryParams;
         QueryParams.AddIgnoredActor(ParentAlgae);
+
+        UE_LOG(LogTemp, Display, TEXT("Parent at: %s"), *ParentLocation.ToString());
+        UE_LOG(LogTemp, Display, TEXT("Child at: %s"), *SpawnLocation.ToString());
 
         // Check if the area is clear
         bool bIsOccupied = GetWorld()->OverlapAnyTestByChannel(
@@ -63,12 +67,8 @@ void AAlgaeController::Reproduce()
 
         if (!bIsOccupied)
         {
-            // Spawn the new Algae
+            // Spawn the new Algae with SpawnActorDeferred
             FTransform SpawnTransform(FRotator::ZeroRotator, SpawnLocation);
-            /*FActorSpawnParameters SpawnParam;
-            SpawnParam.Owner = this;
-            SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-            */
 
             AAlgae* NewAlgae = GetWorld()->SpawnActorDeferred<AAlgae>(
                 ParentAlgae->GetClass(),
@@ -80,11 +80,11 @@ void AAlgaeController::Reproduce()
 
             if (NewAlgae)
             {
-                NewAlgae->setEnergy(0.0f);
+                NewAlgae->setEnergy(0.1f);
                 NewAlgae->setState("Idle");
 
                 UGameplayStatics::FinishSpawningActor(NewAlgae, SpawnTransform);
-                NewAlgae->SpawnDefaultController();
+                //NewAlgae->SpawnDefaultController();
                 UE_LOG(LogTemp, Display, TEXT("New Algae successfully created at %s"), *SpawnLocation.ToString());
                 return; // Successfully spawned
             }

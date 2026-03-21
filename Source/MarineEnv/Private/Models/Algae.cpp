@@ -67,7 +67,7 @@ void AAlgae::BeginPlay()
 
 	setState("Idle");
 
-	setEnergy(50.0f);
+	setEnergy(1.0f);
 
 
 }

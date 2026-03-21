@@ -20,8 +20,10 @@ void APlantAIController::BeginPlay()
     Super::BeginPlay();
 
     //InitialZ = getModel()->GetActorLocation().Z;
-    getModel()->setState("Idle");
-    getModel()->setSpawnRadius(200.0f);
+    if (getModel()) {
+        getModel()->setState("Idle");
+        getModel()->setSpawnRadius(200.0f);
+    }
 }
 
 
