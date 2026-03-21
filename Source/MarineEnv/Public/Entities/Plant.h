@@ -35,10 +35,6 @@ public:
 
 	void setEnergy(float NewEnergy);
 
-	float getSpawnRadius() const;
-
-	void setSpawnRadius(float NewSpawnRadius);
-
 
 protected:
 
@@ -50,8 +46,5 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Plant | Stats")
 	float CurrentEnergy;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Plant | Stats")
-	float SpawnRadius;
 	
 };

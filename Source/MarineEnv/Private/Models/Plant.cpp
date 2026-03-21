@@ -42,13 +42,3 @@ void APlant::setEnergy(float NewEnergy)
 {
     CurrentEnergy = NewEnergy;
 }
-
-float APlant::getSpawnRadius() const
-{
-    return SpawnRadius;
-}
-
-void APlant::setSpawnRadius(float NewSpawnRadius)
-{
-    SpawnRadius = NewSpawnRadius;
-}

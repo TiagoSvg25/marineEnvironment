@@ -38,15 +38,25 @@ void AAlgaeController::Reproduce()
     AAlgae* ParentAlgae = getModel();
     if (!ParentAlgae || !GetWorld()) return;
 
+    USkeletalMeshComponent* MeshComp = ParentAlgae->FindComponentByClass<USkeletalMeshComponent>();
+    float MeshLength = 50.0f; // Default fallback
+
+    if (MeshComp && MeshComp->GetSkeletalMeshAsset())
+    {
+        FBoxSphereBounds Bounds = MeshComp->GetSkeletalMeshAsset()->GetImportedBounds();
+        MeshLength = Bounds.SphereRadius;
+    }
+
     FVector ParentLocation = ParentAlgae->GetActorLocation();
-    float CollisionCheckRadius = 50.0f;
-    float SpawnRadius = 200.0f;
+
+    float SpawnRadius = MeshLength * 2.5f;
+    float CollisionCheckRadius = MeshLength;
 
     for (int i = 0; i < 10; i++)
     {
-        FVector RandomOffset = FVector(FMath::FRandRange(-1.0f, 1), FMath::FRandRange(-1.0f, 1), FMath::FRandRange(-1.0f, 1));
-        RandomOffset.Normalize();
+        FVector RandomOffset = FMath::VRand(); // Shorthand for a random unit vector
         FVector SpawnLocation = ParentLocation + (RandomOffset * SpawnRadius);
+        SpawnLocation.Z = ParentLocation.Z;
 
         // Check for collisions with other Organisms (Pawns/Actors)
         FCollisionShape Sphere = FCollisionShape::MakeSphere(CollisionCheckRadius);

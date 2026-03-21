@@ -22,7 +22,6 @@ void APlantAIController::BeginPlay()
     //InitialZ = getModel()->GetActorLocation().Z;
     if (getModel()) {
         getModel()->setState("Idle");
-        getModel()->setSpawnRadius(200.0f);
     }
 }
 
