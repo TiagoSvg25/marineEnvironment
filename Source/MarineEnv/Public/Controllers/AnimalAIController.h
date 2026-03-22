@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Entities/Animal.h"
+#include "Entities/Plant.h"
 #include "Controllers/OrganismAIController.h"
 #include "AnimalAIController.generated.h"
 
