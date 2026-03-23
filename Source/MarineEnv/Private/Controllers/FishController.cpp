@@ -3,6 +3,9 @@
 #include "Controllers/FishController.h"
 #include "Entities/Organism.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+
+
 
 
 AFishController::AFishController()
@@ -25,7 +28,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         AAnimal* pred = checkPredators();
         if (pred != nullptr) {
             getModel()->setSpeed(getModel()->getSpeed() * 2);
-            getModel()->getTargetLocation() = getModel()->GetActorLocation() - pred->GetActorLocation();
+            getModel()->setTargetLocation(getModel()->GetActorLocation() - pred->GetActorLocation());
             getModel()->setState("Fleeing");
         }
 
@@ -39,6 +42,9 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
                 getModel()->setTargetLocation(Target->GetActorLocation());
             }
             else roam(DeltaTime);
+        }
+        else if (getModel()->getEnergy() > 90) {
+            getModel()->setState("Reproduction");
         }
         else {
             roam(DeltaTime);
@@ -72,8 +78,83 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
 
     }
     else if (CurrentState == "Reproduction") {
+        AAnimal* pred = checkPredators();
+        if (pred != nullptr) {
+            Target = nullptr;
+            getModel()->setSpeed(getModel()->getSpeed() * 2);
+            getModel()->setTargetLocation(getModel()->GetActorLocation() - pred->GetActorLocation());
+            getModel()->setState("Fleeing");
+        }
 
+        if(Target == nullptr){
+            Target = find(getModel()->GetClass());
+            if (Target && Target->getCurrentState() == "Reproduction") {
+                getModel()->setTargetLocation(Target->GetActorLocation());
+            }
+        }
+        else {
+            getModel()->setTargetLocation(Target->GetActorLocation());
+            if(FVector::Dist(getModel()->GetActorLocation(), Target->GetActorLocation()) < 50.f){
+                Reproduce();
+            }
+        }
     }
+}
+
+void AFishController::Reproduce() {
+    
+    if(!getModel()) return;
+
+     getModel()->setEnergy(getModel()->getEnergy() * 0.70);
+
+     int spawnAttempts = 10;
+
+     for (int i = 0; i < spawnAttempts; i++) {
+
+
+        FVector SpawnLocation = getModel()->GetActorLocation() + FMath::VRand()*(getModel()->getMeshAsset()->GetImportedBounds().SphereRadius);
+        SpawnLocation.Z = getModel()->GetActorLocation().Z;
+
+        FCollisionShape Sphere = FCollisionShape::MakeSphere(getModel()->getMeshAsset()->GetImportedBounds().SphereRadius);
+        FCollisionQueryParams QueryParams;
+        QueryParams.AddIgnoredActor(getModel());
+
+
+        // Check if the area is clear
+        bool bIsOccupied = GetWorld()->OverlapAnyTestByChannel(
+            SpawnLocation,
+            FQuat::Identity,
+            ECC_Pawn, // Assuming Organisms use the Pawn channel
+            Sphere,
+            QueryParams
+        );
+
+        if (!bIsOccupied)
+        {
+            // Spawn the new Algae with SpawnActorDeferred
+            FTransform SpawnTransform(FRotator::ZeroRotator, SpawnLocation);
+
+            AFish* NewFish = GetWorld()->SpawnActorDeferred<AFish>(
+                getModel()->GetClass(),
+                SpawnTransform,
+                nullptr,
+                nullptr,
+                ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn
+            );
+
+            if (NewFish)
+            {
+                UGameplayStatics::FinishSpawningActor(NewFish, SpawnTransform);
+                UE_LOG(LogTemp, Display, TEXT("New fish successfully created at %s"), *SpawnLocation.ToString());
+                return; // Successfully spawned
+            }
+        }
+
+
+     }
+
+
+
 }
 
 void AFishController::updateMovement(float DeltaTime)

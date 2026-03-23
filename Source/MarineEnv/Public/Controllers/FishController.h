@@ -34,6 +34,8 @@ protected:
 
 	virtual void roam(float DeltaTime) override;
 
+	void Reproduce();
+
 	//virtual void updateState() override;
 	virtual AAnimal* findFood() override;
 
