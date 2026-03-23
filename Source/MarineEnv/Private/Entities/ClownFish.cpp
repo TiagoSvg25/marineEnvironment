@@ -17,12 +17,20 @@ AClownFish::AClownFish()
 	if (SphereAsset.Succeeded())
 	{
 		FishMesh->SetSkeletalMesh(SphereAsset.Object);
+		setMeshAsset(SphereAsset.Object);
 	}
 
 	if (Animation.Succeeded())
 	{
 		Anim = Animation.Object;
+
 	}
+
+	setSpeed(0.2f);
+
+	setEnergy(60.f);
+
+	setState("Idle");
 
 	bIsPredator = false;
 

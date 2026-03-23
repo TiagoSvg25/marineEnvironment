@@ -26,7 +26,6 @@ void AAnimal::BeginPlay()
 
 	setState("Idle");
 	setEnergy(getMaxEnergy());
-	setSpeed(getBaseSpeed());
 	setTargetLocation(GetActorLocation());
 }
 

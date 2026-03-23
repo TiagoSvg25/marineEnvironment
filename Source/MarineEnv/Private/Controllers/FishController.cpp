@@ -45,6 +45,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             else roam(DeltaTime);
         }
         else if (getModel()->getEnergy() > 90) {
+            getModel()->setSpeed(getModel()->getSpeed() / 2);
             getModel()->setState("Reproduction");
         }
         else {
@@ -89,7 +90,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         }
 
         if(Target == nullptr){
-            Target = find(getModel()->GetClass());
+            Target = Cast<AAnimal>(find(getModel()->GetClass()));
             if (Target && Target->getCurrentState() == "Reproduction") {
                 getModel()->setTargetLocation(Target->GetActorLocation());
             }
@@ -98,6 +99,8 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             getModel()->setTargetLocation(Target->GetActorLocation());
             if(FVector::Dist(getModel()->GetActorLocation(), Target->GetActorLocation()) < 50.f){
                 Reproduce();
+                getModel()->setState("Idle");
+                Target->setState("Idle");
             }
         }
     }
@@ -146,6 +149,7 @@ void AFishController::Reproduce() {
 
             if (NewFish)
             {
+                NewFish->setState("Idle");
                 UGameplayStatics::FinishSpawningActor(NewFish, SpawnTransform);
                 UE_LOG(LogTemp, Display, TEXT("New fish successfully created at %s"), *SpawnLocation.ToString());
                 return; // Successfully spawned
