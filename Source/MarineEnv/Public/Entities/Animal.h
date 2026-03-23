@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DataAssets/AnimalDataAsset.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Organism.h"
 #include "Components/SphereComponent.h"
@@ -30,10 +29,6 @@ public:
 	virtual void UpdateBehaviour() {};
 
 	virtual void Tick(float DeltaTime) override;
-
-	virtual UAnimalDataAsset* getDataAsset() const override {
-		return Cast<UAnimalDataAsset>(DataAsset);;
-	}
 
 
 
@@ -90,29 +85,26 @@ public:
 	void setTargetLocation(FVector location);
 
 	FVector getTargetLocation();
-	
+
 
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
-	USphereComponent* CollisionComponent;
-
-	UPROPERTY(VisibleAnywhere)
+	FVector CurrentTargetLocation;
+	float Speed = 1.0f;
+	float BaseSpeed = 1.0f;
+	float DirectionChangeInterval;
+	float Energy = 100.0f;
+	float EnergyThreshold = 20.0f;
+	float MaxEnergy = 100.0f;
+	float EnergyConsumptionRate = 0.2f;
+	float AwarenessRadius = 1000.0f;
+	float AngleVision = 45.0f;
+	int TrophicLevel = 1;
+	FString CurrentState = "Idle";
+	int TurnSpeed = 2.0f;
 	UFloatingPawnMovement* FloatingMovement;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animal | Stats")
-	FString CurrentState;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animal | Stats")
-	float CurrentEnergy;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animal | Stats")
-	float CurrentSpeed;
-
-	FVector CurrentTargetLocation;
-
-	bool Hunting = false;
 };
 
 	

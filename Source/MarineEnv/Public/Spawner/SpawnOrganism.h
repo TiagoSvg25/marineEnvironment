@@ -1,9 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
+/*
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DataAssets/OrganismDataAsset.h"
 #include "Entities/Organism.h"
 #include "GameFramework/Actor.h"
 #include "SpawnOrganism.generated.h"
@@ -18,7 +17,7 @@ public:
 	ASpawnOrganism();
 
 
-	void SpawnOrganism(UOrganismDataAsset* OrganismData);
+	void SpawnOrganism();
 
 	void setSpawnRestrictions(double width, double lenght, double height, int entityLimit, TArray<UOrganismDataAsset*> OrganismList);
 
@@ -28,8 +27,8 @@ protected:
 
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	TArray<UOrganismDataAsset*> OrganismList;
+	//UPROPERTY(EditAnywhere, Category = "Spawn")
+	//TArray<UOrganismDataAsset*> OrganismList;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	int entityLimit = 10;
@@ -48,3 +47,4 @@ protected:
 
 };
 
+*/

@@ -14,7 +14,7 @@ AMarineEnvGameModeBase::AMarineEnvGameModeBase()
 void AMarineEnvGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-
+	/*
 
 	if (SpawnerClass) {
 		FActorSpawnParameters SpawnParam;
@@ -23,5 +23,5 @@ void AMarineEnvGameModeBase::BeginPlay()
 		SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 		Spawner = GetWorld()->SpawnActor<ABaseSpawner>(SpawnerClass.Get(), FVector::ZeroVector, FRotator::ZeroRotator, SpawnParam);
-	}
+	}*/
 }

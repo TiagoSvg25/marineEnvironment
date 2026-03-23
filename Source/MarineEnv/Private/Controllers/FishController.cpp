@@ -12,6 +12,7 @@ AFishController::AFishController()
 
 
 
+
 void AFishController::BehaviourAnalisys(float DeltaTime)
 {
     if (!getModel()) return;
@@ -43,6 +44,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         else {
             roam(DeltaTime);
         }
+
     }
     else if (CurrentState == "Hunting") {
 
@@ -155,53 +157,6 @@ void AFishController::HuntPrey(float DeltaTime) {
         }
     }
 }    
-
-AAnimal* AFishController::findMate() {
-    // find nearby mates and reproduce
-    float radius = getModel()->getAwarenessRadius();
-
-
-    TArray<AActor*> FoundActors;
-    TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-    TArray<AActor*> ToIgnore;
-    ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
-    ToIgnore.Add(this);
-
-    UKismetSystemLibrary::SphereOverlapActors(
-        GetWorld(),
-        getModel()->GetActorLocation(),
-        radius,
-        ObjectTypes,
-        AAnimal::StaticClass(),
-        ToIgnore,
-        FoundActors
-    );
-    AAnimal* ClosestMate = nullptr;
-    float ClosestDistSq = getModel()->getAwarenessRadius();
-
-
-    for (AActor* Actor : FoundActors)
-    {
-        AAnimal* Other = Cast<AAnimal>(Actor);
-        if (!Other) continue;
-
-
-        FVector direction = getModel()->GetActorLocation() - Other->GetActorLocation();
-
-
-        float DistSq = FVector::DistSquared(getModel()->GetActorLocation(), Other->GetActorLocation());
-
-
-        if (DistSq < ClosestDistSq)
-        {
-            ClosestDistSq = DistSq;
-            ClosestMate = Other;
-        }
-    }
-
-    return ClosestMate;
-
-}
 
 
 

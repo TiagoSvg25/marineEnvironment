@@ -5,7 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-
+/*
 ASpawnOrganism::ASpawnOrganism()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -128,3 +128,4 @@ void ASpawnOrganism::setSpawnRestrictions(double InWidth, double InLength, doubl
 	this->entityLimit = InEntityLimit;
 	this->OrganismList = InOrganismList;
 }
+*/

@@ -2,9 +2,8 @@
 
 #pragma once
 
-
+#include "AIController.h"
 #include "CoreMinimal.h"
-#include "DataAssets/OrganismDataAsset.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/Pawn.h"
 #include "Components/SphereComponent.h"
@@ -23,11 +22,6 @@ public:
 		// Sets default values for this actor's properties
 	AOrganism();
 
-	virtual UOrganismDataAsset* getDataAsset() const
-	{
-		return DataAsset; // será o UAnimalDataAsset criado pelo AAnimal
-	}
-
 	float getHealth() const;
 
 	void setHealth(float NewHealth);
@@ -35,11 +29,6 @@ public:
 	int getAge() const;
 
 	void setAge(int NewAge);
-
-	int getAgeReproduction() const;
-
-	void setAgeReproduction(int NewAgeReproduction);
-
 
 	int getScale() const;
 
@@ -81,10 +70,19 @@ public:
 		const FHitResult& Hit);*/
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data", meta = (AllowPrivateAccess = "true"))
-	UOrganismDataAsset* DataAsset;
 
-	UPROPERTY(VisibleAnywhere, Category = "Collision")
+
+	int Scale = 1;
+	float SpawnDensity = 1.0f;
+	float MinDepthRange = 0.f;
+	float MaxDepthRange = 100.f;
+	USkeletalMesh* MeshAsset;
+	UAnimSequence* anim;
+	float Health = 1.0f;
+	float MaxHealth = 100.0f;
+	TArray<FString> Tags = { "dummy" };
+	int Age = 0;
+	TSubclassOf<AAIController> ControllerClass;
 	USphereComponent* CollisionSphere;
 
 	// Called when the game starts or when spawned

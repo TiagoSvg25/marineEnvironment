@@ -22,6 +22,7 @@ AFish::AFish()
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(TEXT("/Script/Engine.AnimSequence'/Game/Assets/clown_fish_low_poly_animatedswim1.clown_fish_low_poly_animatedswim1'"));
 
 
+
 	if (SphereAsset.Succeeded())
 	{
 		FishMesh->SetSkeletalMesh(SphereAsset.Object);

@@ -21,11 +21,11 @@ public:
 protected:
 
 	virtual void BeginPlay() override;
-
+/*
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<ABaseSpawner> SpawnerClass;
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	ABaseSpawner* Spawner;
-	
+	*/
 };
