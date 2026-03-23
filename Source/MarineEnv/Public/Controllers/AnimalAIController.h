@@ -5,6 +5,10 @@
 #include "CoreMinimal.h"
 #include "Entities/Animal.h"
 #include "Controllers/OrganismAIController.h"
+#include "WorldCollision.h"
+#include "Engine/World.h"
+#include "Engine/OverlapResult.h"
+#include "Components/LineBatchComponent.h"
 #include "AnimalAIController.generated.h"
 
 /**
@@ -44,8 +48,6 @@ public:
 
 	virtual void roam(float DeltaTime) {};
 
-	virtual AAnimal* findMate() { return nullptr; } ;
-
 	virtual void HuntPrey(float DeltaTime) {} ;
 
 	//void UpdateBehaviour() override;
@@ -60,11 +62,21 @@ protected:
 	UPROPERTY()
 	AAnimal* Target;
 
+	UPROPERTY()
+	UStaticMeshComponent* VisionConeMesh;
 
 	UPROPERTY()
 	AAnimal* Predator;
 
-	virtual void updateState() {};
+
+	virtual void updateState() {}
+
+	AOrganism* find(TSubclassOf<AOrganism> ClassFilter = nullptr,
+		TArray<FString> RequiredTags = {},
+		bool RequireAllTags = true,
+		int MaxTrophicLevel = -1,
+		int MinTrophicLevel = -1);
+	void DrawDebugVisionCone();
 
 	float DirectionTimer = 10.f;
 
