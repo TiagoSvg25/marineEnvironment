@@ -32,7 +32,7 @@ AClownFish::AClownFish()
 
 	setState("Idle");
 
-	bIsPredator = false;
+	bIsPredator = true;
 
 }
 

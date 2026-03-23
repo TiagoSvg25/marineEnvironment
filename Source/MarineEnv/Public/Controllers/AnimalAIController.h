@@ -82,6 +82,10 @@ protected:
 
 	float DetectionTimer = 10.f;
 
+	float FleeTimer = 10.f;
+
+	float CurrentFleeTimer = 0.f;
+
 	
 	FVector CurrentDirection;
 

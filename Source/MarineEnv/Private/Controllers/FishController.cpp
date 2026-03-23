@@ -20,29 +20,44 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
 {
     if (!getModel()) return;
 
-
+    UE_LOG(LogTemp, Warning, TEXT("Energy: %f"), getModel()->getEnergy());
+    UE_LOG(LogTemp, Warning, TEXT("State: %s"), *getModel()->getCurrentState());
     getModel()->setEnergy(getModel()->getEnergy() - getModel()->getEnergyConsumptionRate() * DeltaTime * getModel()->getSpeed());
 
     FString CurrentState = getModel()->getCurrentState();
 
     if (CurrentState == "Idle") {
-        AAnimal* pred = checkPredators();
+        AAnimal* pred = Cast<AAnimal>(find(AAnimal::StaticClass(), {}, false, -1 , getModel()->getTrophicLevel()+1));
         if (pred != nullptr) {
             getModel()->setSpeed(getModel()->getSpeed() * 2);
             getModel()->setTargetLocation(getModel()->GetActorLocation() - pred->GetActorLocation());
             getModel()->setState("Fleeing");
+            CurrentFleeTimer = FleeTimer;
         }
 
         else if (getModel()->getEnergy() < 90) {
-            Target = findFood();
-            if (Target) {
-                getModel()->setState("Hunting");
-                float currentSpeed = getModel()->getSpeed();
-                getModel()->setSpeed(currentSpeed * 2);
-                getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
-                getModel()->setTargetLocation(Target->GetActorLocation());
+            if(getModel()->bIsPredator){
+                Target = Cast<AAnimal>(find(AAnimal::StaticClass(), {}, false, getModel()->getTrophicLevel()-1));
+                if (Target) {
+                    getModel()->setState("Hunting");
+                    float currentSpeed = getModel()->getSpeed();
+                    getModel()->setSpeed(currentSpeed * 2);
+                    getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
+                    getModel()->setTargetLocation(Target->GetActorLocation());
+                }
+                else roam(DeltaTime);
             }
-            else roam(DeltaTime);
+            else {
+                AOrganism* Plant = find(AOrganism::StaticClass(), {"plant"}, true);
+                if (Plant) {
+                    getModel()->setState("Hunting");
+                    float currentSpeed = getModel()->getSpeed();
+                    getModel()->setSpeed(currentSpeed * 2);
+                    getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
+                    getModel()->setTargetLocation(Plant->GetActorLocation());
+                }
+                else roam(DeltaTime);
+            }
         }
         else if (getModel()->getEnergy() > 90) {
             getModel()->setSpeed(getModel()->getSpeed() / 2);
@@ -58,28 +73,37 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         if (Target){ 
             HuntPrey(DeltaTime);
         }
+        else if (!getModel()->bIsPredator) {
+            AOrganism* Plant = find(AOrganism::StaticClass(), { "plant" }, true);
+            if (Plant) {
+                getModel()->setTargetLocation(Plant->GetActorLocation());
+            }
+            else {
+                roam(DeltaTime);
+            }
+        }
         else {
             roam(DeltaTime);
         }
     }
     else if (CurrentState == "Fleeing") {
-        if (getModel()->getEnergy() >= 0.30 * getModel()->getMaxEnergy()) {
-
-            getModel()->setTargetLocation(FMath::VRand().GetSafeNormal());
+        CurrentFleeTimer -= DeltaTime;
+        if(CurrentFleeTimer > 0){
+            if (checkPredators() != nullptr) {
+                CurrentFleeTimer = FleeTimer;
+            }
+            FVector NextLoc = FMath::VRand() * 100;
+            if (NextLoc.Z < 0) {
+                NextLoc.Z = -NextLoc.Z;
+            }
+            getModel()->setTargetLocation(NextLoc);
         }
         else {
-            if (checkPredators() != nullptr) {
-                getModel()->setTargetLocation(FMath::VRand().GetSafeNormal());
-            }
-            else {
-                getModel()->setSpeed(getModel()->getSpeed() / 2);
-                getModel()->setState("Idle");
-            }
+            getModel()->setState("Idle");
+            getModel()->setSpeed(getModel()->getSpeed()/2);
         }
-
-        
-
     }
+
     else if (CurrentState == "Reproduction") {
         AAnimal* pred = checkPredators();
         if (pred != nullptr) {
@@ -93,6 +117,9 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             Target = Cast<AAnimal>(find(getModel()->GetClass()));
             if (Target && Target->getCurrentState() == "Reproduction") {
                 getModel()->setTargetLocation(Target->GetActorLocation());
+            }
+            else {
+                roam(DeltaTime);
             }
         }
         else {
@@ -125,18 +152,16 @@ void AFishController::Reproduce() {
         QueryParams.AddIgnoredActor(getModel());
 
 
-        // Check if the area is clear
         bool bIsOccupied = GetWorld()->OverlapAnyTestByChannel(
             SpawnLocation,
             FQuat::Identity,
-            ECC_Pawn, // Assuming Organisms use the Pawn channel
+            ECC_Pawn,
             Sphere,
             QueryParams
         );
 
         if (!bIsOccupied)
         {
-            // Spawn the new Algae with SpawnActorDeferred
             FTransform SpawnTransform(FRotator::ZeroRotator, SpawnLocation);
 
             AFish* NewFish = GetWorld()->SpawnActorDeferred<AFish>(
@@ -152,7 +177,7 @@ void AFishController::Reproduce() {
                 NewFish->setState("Idle");
                 UGameplayStatics::FinishSpawningActor(NewFish, SpawnTransform);
                 UE_LOG(LogTemp, Display, TEXT("New fish successfully created at %s"), *SpawnLocation.ToString());
-                return; // Successfully spawned
+                return; 
             }
         }
 
