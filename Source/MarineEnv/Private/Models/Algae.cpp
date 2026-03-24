@@ -17,9 +17,7 @@ AAlgae::AAlgae()
 
 
 	// TO BE CHANGED
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SphereAsset(TEXT("/Game/Fab/Clown_Fish_Low_Poly_Animated/clown_fish_low_poly_animated/SkeletalMeshes/clown_fish_low_poly_animated.clown_fish_low_poly_animated"));
-
-	static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(TEXT("/Script/Engine.AnimSequence'/Game/Assets/clown_fish_low_poly_animatedswim1.clown_fish_low_poly_animatedswim1'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SphereAsset(TEXT("/Script/Engine.SkeletalMesh'/Game/Assets/seaweed_skeletal_mesh.seaweed_skeletal_mesh'"));
 
 
 	if (SphereAsset.Succeeded())
@@ -27,12 +25,11 @@ AAlgae::AAlgae()
 		AlgaeMesh->SetSkeletalMesh(SphereAsset.Object);
 	}
 
-	if (Animation.Succeeded())
-	{
-		Anim = Animation.Object;
-	}
+	float scale = FMath::RandRange(0.25, 0.75);
 
 	AIControllerClass = AAlgaeController::StaticClass();
+	AlgaeMesh->SetRelativeScale3D(FVector(scale, scale, scale));
+
 }
 
 AAlgae::~AAlgae()
@@ -43,23 +40,6 @@ void AAlgae::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!AlgaeMesh)
-	{
-		UE_LOG(LogTemp, Error, TEXT("FishMesh is null!"));
-		return;
-	}
-
-	if (!Anim)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Animation is null! Check the asset path."));
-	}
-	else
-	{
-		AlgaeMesh->PlayAnimation(Anim, true);
-		UE_LOG(LogTemp, Warning, TEXT("Animation started successfully"));
-	}
-
-	AlgaeMesh->PlayAnimation(Anim, true);
 
 	setState("Idle");
 

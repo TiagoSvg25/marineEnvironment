@@ -21,47 +21,6 @@ void AOrganismAIController::OnPossess(APawn* InPawn) {
 }
 
 /*
-void AOrganismAIController::OnPossess(APawn* InPawn)
-{
-    Super::OnPossess(InPawn);
-
-    Organism = Cast<AOrganism>(InPawn);
-}
-
-
-void AOrganismAIController::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
-
-
-    if (!Organism) return;
-
-    DirectionTimer += DeltaTime;
-    DetectionTimer += DeltaTime;
-
-    if (DetectionTimer >= Organism->DetectionInterval)
-    {
-        DetectionTimer = 0.0f;
-        updateState();
-    }
-    Organism->updateMovement(DeltaTime);
-}
-
-void AOrganismAIController::setPredatorNearby(AOrganism* InPredator)
-{
-    Predator = InPredator;
-    if (Organism)
-        Organism->setState(OrganismState::Fleeing);
-}
-
-bool AOrganismAIController::checkEscape(AOrganism* Prey, AOrganism* InPredator) {
-
-    if(!InPredator || !Prey) return true;
-        
-    float distance = FVector::DistSquared(Prey->GetActorLocation(), InPredator->GetActorLocation());
-    UE_LOG(LogTemp, Warning, TEXT("Distance: %f, AWare: %f"), FMath::Sqrt(distance), InPredator->getMovementCharacteristics().AwarenessRadius);
-    return FMath::Sqrt(distance) > InPredator->getMovementCharacteristics().AwarenessRadius;
-}
 
 void AOrganismAIController::onActorCollision(AOrganism* Collided) {
 

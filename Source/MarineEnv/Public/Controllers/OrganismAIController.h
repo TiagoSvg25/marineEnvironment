@@ -28,6 +28,8 @@ public:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
+	virtual void onActorCollision(AOrganism* Collided) {};
+
 protected:
 
 	UPROPERTY()

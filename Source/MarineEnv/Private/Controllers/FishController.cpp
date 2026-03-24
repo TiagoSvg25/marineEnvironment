@@ -23,6 +23,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
     getModel()->setEnergy(getModel()->getEnergy() - getModel()->getEnergyConsumptionRate() * DeltaTime * getModel()->getSpeed());
 
     FString CurrentState = getModel()->getCurrentState();
+    
 
     if (CurrentState == "Idle") {
         AAnimal* pred = Cast<AAnimal>(find(AAnimal::StaticClass(), {}, false, -1 , getModel()->getTrophicLevel()+1));
@@ -38,7 +39,6 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
                 Target = find(AAnimal::StaticClass(), {}, false, getModel()->getTrophicLevel()-1);
             }
             else {
-                UE_LOG(LogTemp, Warning, TEXT("State: %s"), *getModel()->getCurrentState());
                 Target = find(APlant::StaticClass());
             }
             if (Target) {
@@ -65,23 +65,12 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             HuntPrey(DeltaTime);
         }
         else if (!getModel()->bIsPredator) {
-            Target = find(APlant::StaticClass());
             if (Target) {
+                UE_LOG(LogTemp, Warning, TEXT("Found plant"));
                 getModel()->setTargetLocation(Target->GetActorLocation());
-                float DistanceToTarget = FVector::Dist(Target->GetActorLocation(), getModel()->GetActorLocation());
-
-
-                if (DistanceToTarget <= 50) {
-                    getModel()->setEnergy(Target->getEnergy() + getModel()->getEnergy());
-                    getModel()->setSpeed(getModel()->getBaseSpeed());
-                    getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
-                    getModel()->setState("Idle");
-                    getModel()->setTargetLocation(FMath::VRand());
-                    Target->Destroy();
-                    Target = nullptr;
-                }
             }
             else {
+                Target = find(APlant::StaticClass());
                 roam(DeltaTime);
             }
         }
@@ -129,11 +118,6 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
                 Target = nullptr;
             }
             getModel()->setTargetLocation(Target->GetActorLocation());
-            if(FVector::Dist(getModel()->GetActorLocation(), Target->GetActorLocation()) < 50.f){
-                Reproduce();
-                getModel()->setState("Idle");
-                Target->setState("Idle");
-            }
         }
     }
 }
@@ -253,17 +237,6 @@ void AFishController::HuntPrey(float DeltaTime) {
         float DistanceToTarget = FVector::Dist(Target->GetActorLocation(), getModel()->GetActorLocation());
 
 
-        if (DistanceToTarget <= 50) {
-            getModel()->setEnergy(Target->getEnergy() + getModel()->getEnergy());
-            getModel()->setSpeed(getModel()->getBaseSpeed());
-            getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
-            getModel()->setState("Idle");
-            getModel()->setTargetLocation(FMath::VRand());
-            Target->Destroy();
-            Target = nullptr;
-        }
-
-
         if (DistanceToTarget >= getModel()->getAwarenessRadius()) {
             Target = nullptr;
             getModel()->setState("Idle");
@@ -272,3 +245,37 @@ void AFishController::HuntPrey(float DeltaTime) {
         }
     }
 }    
+
+
+
+void AFishController::onActorCollision(AOrganism* Collided) {
+
+    if (!Target) return;
+    if (!getModel()) return; 
+
+    if (getModel()->getCurrentState() == "Hunting") {            
+        if (Collided == Target) {
+            getModel()->setEnergy(Target->getEnergy() + getModel()->getEnergy());
+            getModel()->setSpeed(getModel()->getBaseSpeed());
+            getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
+            getModel()->setState("Idle");
+            Target->Destroy();
+            Target = nullptr;
+        }
+
+    }
+    else if (getModel()->getCurrentState() == "Reproduction") {
+        if (Collided == Target) {
+            Reproduce();
+            getModel()->setState("Idle");
+            Target->setState("Idle");
+            Target = nullptr;
+        }
+
+    }
+
+    getModel()->setTargetLocation(getModel()->GetActorLocation() + FMath::VRand() * 10.f);
+
+    return;
+}
+

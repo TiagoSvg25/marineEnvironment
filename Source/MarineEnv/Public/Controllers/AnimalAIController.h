@@ -51,6 +51,8 @@ public:
 
 	virtual void HuntPrey(float DeltaTime) {} ;
 
+	virtual void onActorCollision(AOrganism* Collided) {};
+
 	//void UpdateBehaviour() override;
 
 	virtual AAnimal* findFood() { return nullptr;  };

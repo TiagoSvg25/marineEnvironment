@@ -33,6 +33,9 @@ protected:
 
 	virtual void roam(float DeltaTime) override;
 
+	virtual void onActorCollision(AOrganism* Collided) override;
+
+
 	void Reproduce();
 
 	//virtual void updateState() override;

@@ -16,7 +16,7 @@ AOrganism::AOrganism()
 
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 	RootComponent = CollisionSphere;
-	CollisionSphere->SetSphereRadius(20.0f);
+	CollisionSphere->SetSphereRadius(50.0f);
 
 	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
@@ -25,8 +25,25 @@ AOrganism::AOrganism()
 	CollisionSphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	CollisionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 	CollisionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);	
+	CollisionSphere->SetGenerateOverlapEvents(true);
+
+	CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AOrganism::OnOrganismOverlap);
 
 	AIControllerClass = AOrganismAIController::StaticClass();
+}
+
+void AOrganism::OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+	bool bFromSweep, const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Colision Detected"));
+	
+	AOrganism* Other = Cast<AOrganism>(OtherActor);
+	if (!Other) return;
+
+	AOrganismAIController* MyController = Cast<AOrganismAIController>(GetController());
+	if (MyController)
+		MyController->onActorCollision(Other);
 }
 
 float AOrganism::getHealth() const
@@ -218,18 +235,7 @@ void AOrganism::setEnergyConsumptionRate(float NewEnergyConsumptionRate)
 
 
 /*
-void AOrganism::OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-	bool bFromSweep, const FHitResult& SweepResult)
-{
-	AOrganism* Other = Cast<AOrganism>(OtherActor);
-	if (!Other) return;
 
-	// notify controller
-	AOrganismAIController* MyController = Cast<AOrganismAIController>(GetController());
-	if (MyController)
-		MyController->onActorCollision(Other);
-}
 
 void AOrganism::OnHitTerrain(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, FVector NormalImpulse,
