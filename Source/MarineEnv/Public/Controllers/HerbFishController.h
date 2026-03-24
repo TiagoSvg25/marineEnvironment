@@ -27,8 +27,6 @@ protected:
 
 	virtual void BehaviourAnalisys(float DeltaTime) override;
 
-	virtual AAnimal* findMate() override;
-
 	virtual void HuntPrey(float DeltaTime) override;
 
 	virtual void updateMovement(float DeltaTime) override;

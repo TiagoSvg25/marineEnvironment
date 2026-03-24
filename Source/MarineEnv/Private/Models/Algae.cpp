@@ -15,10 +15,6 @@ AAlgae::AAlgae()
 		AlgaeMesh->SetupAttachment(RootComponent);
 	}
 
-	AlgaeMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision); // ECollisionEnabled::QueryAndPhysics
-	AlgaeMesh->SetCollisionObjectType(ECC_Pawn);
-	AlgaeMesh->SetCollisionResponseToAllChannels(ECR_Block);
-	AlgaeMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 
 	// TO BE CHANGED
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SphereAsset(TEXT("/Game/Fab/Clown_Fish_Low_Poly_Animated/clown_fish_low_poly_animated/SkeletalMeshes/clown_fish_low_poly_animated.clown_fish_low_poly_animated"));

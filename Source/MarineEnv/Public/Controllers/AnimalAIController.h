@@ -61,7 +61,7 @@ public:
 protected:
 
 	UPROPERTY()
-	AAnimal* Target;
+	AOrganism* Target;
 
 	UPROPERTY()
 	UStaticMeshComponent* VisionConeMesh;

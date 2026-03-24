@@ -58,6 +58,26 @@ public:
 
 	void setTags(const TArray<FString>& NewTags);
 
+	float getEnergy() const;
+
+	void setEnergy(float NewEnergy);
+
+	float getEnergyConsumptionRate() const;
+
+	void setEnergyConsumptionRate(float NewEnergyConsumptionRate);
+
+	float getEnergyThreshold() const;
+
+	void setEnergyThreshold(float NewHungerThreshold);
+
+	float getMaxEnergy() const;
+
+	void setMaxEnergy(float NewMaxEnergy);
+
+	FString getCurrentState() const;
+
+	void setState(const FString& NewState);
+
 
 	/**UFUNCTION()
 	void OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -76,11 +96,17 @@ protected:
 	float SpawnDensity = 1.0f;
 	float MinDepthRange = 0.f;
 	float MaxDepthRange = 100.f;
+	float Energy = 100.0f;
+	float EnergyThreshold = 20.0f;
+	float MaxEnergy = 100.0f;
+	float EnergyConsumptionRate = 0.2f;
+
 	USkeletalMesh* MeshAsset;
 	UAnimSequence* anim;
 	float Health = 1.0f;
 	float MaxHealth = 100.0f;
 	TArray<FString> Tags = { "dummy" };
+	FString CurrentState = "Idle";
 	int Age = 0;
 	TSubclassOf<AAIController> ControllerClass;
 	USphereComponent* CollisionSphere;

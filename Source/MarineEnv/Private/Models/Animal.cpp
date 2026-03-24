@@ -36,16 +36,6 @@ void AAnimal::Tick(float DeltaTime)
 
 
 
-FString AAnimal::getCurrentState() const
-{
-	return CurrentState;
-}
-
-void AAnimal::setState(const FString& NewState)
-{
-	CurrentState = NewState;
-}
-
 float AAnimal::getAwarenessRadius() const
 {
 	return AwarenessRadius;
@@ -98,46 +88,6 @@ void AAnimal::setSpeed(float NewSpeed)
 	Speed = NewSpeed;
 }
 
-float AAnimal::getEnergyThreshold() const
-{
-	return EnergyThreshold;
-}
-
-void AAnimal::setEnergyThreshold(float NewEnergyThreshold)
-{
-	EnergyThreshold = NewEnergyThreshold;
-}
-
-float AAnimal::getMaxEnergy() const
-{
-	return MaxEnergy;
-}
-
-void AAnimal::setMaxEnergy(float NewMaxEnergy)
-{
-	MaxEnergy = NewMaxEnergy;
-}
-
-
-
-float AAnimal::getEnergy() const {
-	return Energy;
-}
-
-void AAnimal::setEnergy(float NewEnergy) {
-	Energy = NewEnergy;
-}
-
-
-float AAnimal::getEnergyConsumptionRate() const
-{
-	return EnergyConsumptionRate;
-}
-
-void AAnimal::setEnergyConsumptionRate(float NewEnergyConsumptionRate)
-{
-	EnergyConsumptionRate = NewEnergyConsumptionRate;
-}
 
 float AAnimal::getTurnSpeed() const
 {

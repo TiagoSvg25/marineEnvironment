@@ -6,9 +6,9 @@
 APlant::APlant()
 {
     PrimaryActorTick.bCanEverTick = true;
-    DataAsset = CreateDefaultSubobject<UOrganismDataAsset>(TEXT("PlantDataAsset"));
     /*AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
     AIControllerClass = AAnimalAIController::StaticClass();*/
+
 }
 
 void APlant::BeginPlay()
@@ -22,23 +22,3 @@ void APlant::Tick(float DeltaTime)
 }
 
 // --- Getters and Setters ---
-
-FString APlant::getCurrentState() const
-{
-    return CurrentState;
-}
-
-void APlant::setState(const FString& NewState)
-{
-    CurrentState = NewState;
-}
-
-float APlant::getEnergy() const
-{
-    return CurrentEnergy;
-}
-
-void APlant::setEnergy(float NewEnergy)
-{
-    CurrentEnergy = NewEnergy;
-}

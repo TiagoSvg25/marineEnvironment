@@ -26,20 +26,27 @@ AClownFish::AClownFish()
 
 	}
 
-	setSpeed(0.2f);
 
-	setEnergy(60.f);
 
-	setState("Idle");
 
-	bIsPredator = true;
 
+	bIsPredator = false;
 }
 
 
 void AClownFish::BeginPlay()
 {
 	Super::BeginPlay();
+
+	setSpeed(0.1f);
+
+	setEnergy(60.f);
+
+	setState("Idle");
+
+	setAwarenessRadius(10000.f);
+
+	setAngleVision(70.f);
 
 	FishMesh->PlayAnimation(Anim, true);
 }

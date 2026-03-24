@@ -123,6 +123,56 @@ void AOrganism::setTags(const TArray<FString>& NewTags)
 }
 
 
+FString AOrganism::getCurrentState() const
+{
+	return CurrentState;
+}
+
+void AOrganism::setState(const FString& NewState)
+{
+	CurrentState = NewState;
+}
+
+float AOrganism::getEnergy() const {
+	return Energy;
+}
+
+void AOrganism::setEnergy(float NewEnergy) {
+	Energy = NewEnergy;
+}
+
+
+float AOrganism::getEnergyThreshold() const
+{
+	return EnergyThreshold;
+}
+
+void AOrganism::setEnergyThreshold(float NewEnergyThreshold)
+{
+	EnergyThreshold = NewEnergyThreshold;
+}
+
+float AOrganism::getMaxEnergy() const
+{
+	return MaxEnergy;
+}
+
+void AOrganism::setMaxEnergy(float NewMaxEnergy)
+{
+	MaxEnergy = NewMaxEnergy;
+}
+
+
+
+float AOrganism::getEnergyConsumptionRate() const
+{
+	return EnergyConsumptionRate;
+}
+
+void AOrganism::setEnergyConsumptionRate(float NewEnergyConsumptionRate)
+{
+	EnergyConsumptionRate = NewEnergyConsumptionRate;
+}
 
 
 

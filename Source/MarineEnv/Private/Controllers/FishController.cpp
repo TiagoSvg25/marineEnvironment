@@ -20,8 +20,6 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
 {
     if (!getModel()) return;
 
-    UE_LOG(LogTemp, Warning, TEXT("Energy: %f"), getModel()->getEnergy());
-    UE_LOG(LogTemp, Warning, TEXT("State: %s"), *getModel()->getCurrentState());
     getModel()->setEnergy(getModel()->getEnergy() - getModel()->getEnergyConsumptionRate() * DeltaTime * getModel()->getSpeed());
 
     FString CurrentState = getModel()->getCurrentState();
@@ -37,27 +35,20 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
 
         else if (getModel()->getEnergy() < 90) {
             if(getModel()->bIsPredator){
-                Target = Cast<AAnimal>(find(AAnimal::StaticClass(), {}, false, getModel()->getTrophicLevel()-1));
-                if (Target) {
-                    getModel()->setState("Hunting");
-                    float currentSpeed = getModel()->getSpeed();
-                    getModel()->setSpeed(currentSpeed * 2);
-                    getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
-                    getModel()->setTargetLocation(Target->GetActorLocation());
-                }
-                else roam(DeltaTime);
+                Target = find(AAnimal::StaticClass(), {}, false, getModel()->getTrophicLevel()-1);
             }
             else {
-                AOrganism* Plant = find(AOrganism::StaticClass(), {"plant"}, true);
-                if (Plant) {
-                    getModel()->setState("Hunting");
-                    float currentSpeed = getModel()->getSpeed();
-                    getModel()->setSpeed(currentSpeed * 2);
-                    getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
-                    getModel()->setTargetLocation(Plant->GetActorLocation());
-                }
-                else roam(DeltaTime);
+                UE_LOG(LogTemp, Warning, TEXT("State: %s"), *getModel()->getCurrentState());
+                Target = find(APlant::StaticClass());
             }
+            if (Target) {
+                getModel()->setState("Hunting");
+                float currentSpeed = getModel()->getSpeed();
+                getModel()->setSpeed(currentSpeed * 2);
+                getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
+                getModel()->setTargetLocation(Target->GetActorLocation());
+            }
+            else roam(DeltaTime);
         }
         else if (getModel()->getEnergy() > 90) {
             getModel()->setSpeed(getModel()->getSpeed() / 2);
@@ -70,21 +61,31 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
     }
     else if (CurrentState == "Hunting") {
 
-        if (Target){ 
+        if (Target && getModel()->bIsPredator){
             HuntPrey(DeltaTime);
         }
         else if (!getModel()->bIsPredator) {
-            AOrganism* Plant = find(AOrganism::StaticClass(), { "plant" }, true);
-            if (Plant) {
-                getModel()->setTargetLocation(Plant->GetActorLocation());
+            Target = find(APlant::StaticClass());
+            if (Target) {
+                getModel()->setTargetLocation(Target->GetActorLocation());
+                float DistanceToTarget = FVector::Dist(Target->GetActorLocation(), getModel()->GetActorLocation());
+
+
+                if (DistanceToTarget <= 50) {
+                    getModel()->setEnergy(Target->getEnergy() + getModel()->getEnergy());
+                    getModel()->setSpeed(getModel()->getBaseSpeed());
+                    getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
+                    getModel()->setState("Idle");
+                    getModel()->setTargetLocation(FMath::VRand());
+                    Target->Destroy();
+                    Target = nullptr;
+                }
             }
             else {
                 roam(DeltaTime);
             }
         }
-        else {
-            roam(DeltaTime);
-        }
+  
     }
     else if (CurrentState == "Fleeing") {
         CurrentFleeTimer -= DeltaTime;
@@ -92,7 +93,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             if (checkPredators() != nullptr) {
                 CurrentFleeTimer = FleeTimer;
             }
-            FVector NextLoc = FMath::VRand() * 100;
+            FVector NextLoc = FMath::VRand() * 20;
             if (NextLoc.Z < 0) {
                 NextLoc.Z = -NextLoc.Z;
             }
@@ -114,15 +115,19 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         }
 
         if(Target == nullptr){
-            Target = Cast<AAnimal>(find(getModel()->GetClass()));
+            Target = find(getModel()->GetClass());
             if (Target && Target->getCurrentState() == "Reproduction") {
                 getModel()->setTargetLocation(Target->GetActorLocation());
+
             }
             else {
                 roam(DeltaTime);
             }
         }
         else {
+            if (Target->getCurrentState() != "Reproduction") {
+                Target = nullptr;
+            }
             getModel()->setTargetLocation(Target->GetActorLocation());
             if(FVector::Dist(getModel()->GetActorLocation(), Target->GetActorLocation()) < 50.f){
                 Reproduce();
@@ -219,7 +224,7 @@ void AFishController::roam(float DeltaTime) {
     float DistToTarget = FVector::Dist(CurrentLocation, getModel()->getTargetLocation());
 
     if (DirectionTimer >= getModel()->getDirectionChangeInterval() || DistToTarget < 10.f) {
-        FVector RandomOffset = FMath::VRand()*300.f;
+        FVector RandomOffset = FMath::VRand()*20.f;
         FVector NewTarget = CurrentLocation + RandomOffset;
         if (NewTarget.Z <= 0) {
             NewTarget.Z = 0 - NewTarget.Z;
@@ -267,57 +272,3 @@ void AFishController::HuntPrey(float DeltaTime) {
         }
     }
 }    
-
-
-
-AAnimal* AFishController::findFood() {
-    float radius = getModel()->getAwarenessRadius();
-    int trophicLevel = getModel()->getTrophicLevel();
-
-
-
-    TArray<AActor*> FoundActors;
-    TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-    TArray<AActor*> ToIgnore;
-    ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
-    ToIgnore.Add(getModel());
-
-    UKismetSystemLibrary::SphereOverlapActors(
-        GetWorld(),
-        getModel()->GetActorLocation(),
-        radius,
-        ObjectTypes,
-        AFish::StaticClass(),
-        ToIgnore,
-        FoundActors
-    );
-
-    AAnimal* ClosestFood = nullptr;
-    float ClosestDistSq = FLT_MAX;
-
-    for (AActor* Actor : FoundActors)
-    {
-
-        AAnimal* Other = Cast<AAnimal>(Actor);
-        if (!Other) continue;
-        UE_LOG(LogTemp, Warning, TEXT("Vi um animal: %s"), *Other->GetName());
-        UE_LOG(LogTemp, Warning, TEXT("Meu nivel: %d, Outro nivel: %d"), trophicLevel, Other->getTrophicLevel());
-
-        if (Other->getTrophicLevel() >= trophicLevel) continue;
-
-        FVector direction = getModel()->GetActorLocation() - Other->GetActorLocation();
-
-
-        float DistSq = FVector::DistSquared(getModel()->GetActorLocation(), Other->GetActorLocation());
-
-
-        if (DistSq < ClosestDistSq)
-        {
-            ClosestDistSq = DistSq;
-            ClosestFood = Other;
-        }
-    }
-
-
-    return ClosestFood;
-}

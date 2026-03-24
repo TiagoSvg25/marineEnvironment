@@ -27,13 +27,6 @@ public:
 
 	// getters and setters
 
-	FString getCurrentState() const;
-
-	void setState(const FString& NewState);
-
-	float getEnergy() const;
-
-	void setEnergy(float NewEnergy);
 
 
 protected:
@@ -41,10 +34,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
 	USphereComponent* CollisionComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Plant | Stats")
-	FString CurrentState;
+	TArray<FString> Tags = { "plant" };
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Plant | Stats")
-	float CurrentEnergy;
-	
 };

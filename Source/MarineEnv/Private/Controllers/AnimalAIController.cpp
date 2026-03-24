@@ -96,6 +96,7 @@ AOrganism* AAnimalAIController::find(TSubclassOf<AOrganism> ClassFilter,
 
     for (AActor* actor : allActors)
     {
+
         AOrganism* other = Cast<AOrganism>(actor);
         if (!other || other == getModel()) continue;
 
@@ -175,9 +176,6 @@ void AAnimalAIController::Tick(float DeltaTime)
     BehaviourAnalisys(DeltaTime);
     updateMovement(DeltaTime);
     DrawDebugVisionCone();
-    AOrganism* org = find(AAnimal::StaticClass(), {"dummy"}, true, 1, 1);
-    UE_LOG(LogTemp, Warning, TEXT("Found organism: %s"), org ? *org->GetName() : TEXT("None"));
-
 }
 
 

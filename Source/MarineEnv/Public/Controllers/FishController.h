@@ -36,6 +36,6 @@ protected:
 	void Reproduce();
 
 	//virtual void updateState() override;
-	virtual AAnimal* findFood() override;
+
 
 };

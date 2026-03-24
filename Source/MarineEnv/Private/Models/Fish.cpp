@@ -12,11 +12,7 @@ AFish::AFish()
 		FishMesh->SetupAttachment(RootComponent);
 	}
 
-	FishMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	// ECollisionEnabled::QueryAndPhysics
-	/*FishMesh->SetCollisionObjectType(ECC_Pawn);
-	FishMesh->SetCollisionResponseToAllChannels(ECR_Block);
-	FishMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);*/
+	FishMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
 	AIControllerClass = AFishController::StaticClass();
 
