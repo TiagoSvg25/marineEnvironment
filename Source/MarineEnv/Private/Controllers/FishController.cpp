@@ -10,7 +10,7 @@
 
 AFishController::AFishController()
 {
-    PrimaryActorTick.bCanEverTick = true; // must be true
+    PrimaryActorTick.bCanEverTick = true;
 }
 
 

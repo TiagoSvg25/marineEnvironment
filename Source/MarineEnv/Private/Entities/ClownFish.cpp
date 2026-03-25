@@ -26,10 +26,6 @@ AClownFish::AClownFish()
 
 	}
 
-
-
-
-
 	bIsPredator = false;
 }
 
@@ -42,11 +38,17 @@ void AClownFish::BeginPlay()
 
 	setEnergy(60.f);
 
+	setEnergyConsumptionRate(0.5f);
+
+	setMaxEnergy(100.f);
+
 	setState("Idle");
 
-	setAwarenessRadius(10000.f);
+	setAwarenessRadius(1000.f);
 
 	setAngleVision(70.f);
+
+	setTrophicLevel(1);
 
 	FishMesh->PlayAnimation(Anim, true);
 }
