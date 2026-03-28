@@ -13,8 +13,6 @@ AAnimal::AAnimal()
 		FloatingMovement->SetUpdatedComponent(RootComponent);
 	}
 
-
-
 	PrimaryActorTick.bCanEverTick = true;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AIControllerClass = AAnimalAIController::StaticClass();

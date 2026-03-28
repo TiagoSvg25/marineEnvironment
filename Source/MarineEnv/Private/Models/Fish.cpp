@@ -55,17 +55,13 @@ void AFish::BeginPlay()
 		return;
 	}
 
-	if (!Anim)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Animation is null! Check the asset path."));
-	}
-	else
+	FishMesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+
+	if (Anim && GetClass() == AFish::StaticClass())
 	{
 		FishMesh->PlayAnimation(Anim, true);
-		UE_LOG(LogTemp, Warning, TEXT("Animation started successfully"));
 	}
-
-	FishMesh->PlayAnimation(Anim, true);
+	else UE_LOG(LogTemp, Error, TEXT("Animation is null! Check the asset path."));
 
 	setState("Idle");
 
