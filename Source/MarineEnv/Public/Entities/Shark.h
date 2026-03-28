@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Entities/Fish.h"
-#include "SharkController.h"
+#include "Controllers/SharkController.h"
 #include "Shark.generated.h"
 
 /**
