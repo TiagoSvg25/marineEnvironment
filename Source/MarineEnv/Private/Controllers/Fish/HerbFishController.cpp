@@ -1,8 +1,8 @@
 //// Fill out your copyright notice in the Description page of Project Settings.
 //
-#include "Controllers/HerbFishController.h"
+#include "Controllers/Fish/HerbFishController.h"
 #include "Entities/Organism.h"
-#include "Entities/Plant.h"
+#include "Entities/Plant/Plant.h"
 #include "Kismet/KismetMathLibrary.h"
 
 

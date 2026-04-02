@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Animal.h"
+#include "Entities/Animal.h"
 #include "CoreMinimal.h"
 #include "Fish.generated.h"
 

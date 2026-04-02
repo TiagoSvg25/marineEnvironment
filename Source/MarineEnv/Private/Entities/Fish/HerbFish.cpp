@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Entities/HerbFish.h"
-#include "Controllers/HerbFishController.h"
+#include "Entities/Fish/HerbFish.h"
+#include "Controllers/Fish/HerbFishController.h"
 
 
 AHerbFish::AHerbFish()

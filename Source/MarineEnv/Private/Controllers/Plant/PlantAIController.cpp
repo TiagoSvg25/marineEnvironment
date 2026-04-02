@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Controllers/PlantAIController.h"
+#include "Controllers/Plant/PlantAIController.h"
 
 APlantAIController::APlantAIController()
 {

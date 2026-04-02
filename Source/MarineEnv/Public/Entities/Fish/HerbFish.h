@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #pragma once
 
-#include "Animal.h"
-#include "Plant.h"
+#include "Entities/Plant/Plant.h"
+#include "Entities/Animal.h"     
 #include "CoreMinimal.h"
 #include "HerbFish.generated.h"
 

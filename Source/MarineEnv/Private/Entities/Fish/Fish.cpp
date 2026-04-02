@@ -1,5 +1,5 @@
-#include "Entities/Fish.h"
-#include "Controllers/FishController.h"
+#include "Entities/Fish/Fish.h"
+#include "Controllers/Fish/FishController.h"
 
 
 AFish::AFish()

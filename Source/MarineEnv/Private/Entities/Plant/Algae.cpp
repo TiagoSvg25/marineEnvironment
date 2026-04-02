@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Entities/Algae.h"
-#include "Entities/Plant.h"
-#include "Controllers/AlgaeController.h"
+#include "Entities/Plant/Algae.h"
+#include "Entities/Plant/Plant.h"
+#include "Controllers/Plant/AlgaeController.h"
 
 AAlgae::AAlgae()
 {

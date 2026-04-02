@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Entities/Fish.h"
+#include "Fish.h"
 #include "ClownFish.generated.h"
 
 /**

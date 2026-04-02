@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Entities/Fish.h"
-#include "Controllers/SharkController.h"
+#include "Fish.h"
+#include "Controllers/Fish/SharkController.h"
 #include "Shark.generated.h"
 
 /**

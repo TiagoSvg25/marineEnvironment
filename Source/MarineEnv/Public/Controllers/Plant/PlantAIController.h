@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Controllers/OrganismAIController.h"
-#include "Entities/Plant.h"
-
+#include "Entities/Plant/Plant.h"
 #include "PlantAIController.generated.h"
 
 /**

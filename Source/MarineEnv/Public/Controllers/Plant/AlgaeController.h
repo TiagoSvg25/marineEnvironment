@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Entities/Algae.h"
-#include "Controllers/PlantAIController.h"
+#include "Entities/Plant/Algae.h"
+#include "Controllers/Plant/PlantAIController.h"
 #include "AlgaeController.generated.h"
 
 /**

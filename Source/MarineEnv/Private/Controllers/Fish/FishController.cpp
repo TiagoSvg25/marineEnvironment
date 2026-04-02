@@ -1,6 +1,6 @@
 //// Fill out your copyright notice in the Description page of Project Settings.
 //
-#include "Controllers/FishController.h"
+#include "Controllers/Fish/FishController.h"
 #include "Entities/Organism.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"

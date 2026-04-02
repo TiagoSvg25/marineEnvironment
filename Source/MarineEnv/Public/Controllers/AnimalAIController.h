@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Entities/Animal.h"
-#include "Entities/Plant.h"
+#include "Entities/Plant/Plant.h"
 #include "Controllers/OrganismAIController.h"
 #include "WorldCollision.h"
 #include "Engine/World.h"

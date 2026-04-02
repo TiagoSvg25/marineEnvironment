@@ -3,29 +3,29 @@
 #pragma once
 
 #include "Controllers/AnimalAIController.h"
-#include "Entities/Fish.h"
-#include "FishController.generated.h"
+#include "Entities/Fish/HerbFish.h"
+#include "Entities/Plant/Plant.h"
+#include "HerbFishController.generated.h"
 
 /**
- * 
+ *
  */
 
 
 UCLASS()
-class MARINEENV_API AFishController : public AAnimalAIController
+class MARINEENV_API AHerbFishController : public AAnimalAIController
 {
 	GENERATED_BODY()
 
 public:
-	AFishController();
+	AHerbFishController();
 
-	virtual AFish* getModel() const override { return Cast<AFish>(Model); }
-	
+	virtual AHerbFish* getModel() const override { return Cast<AHerbFish>(Model); }
+
 
 protected:
-	
-	virtual void BehaviourAnalisys(float DeltaTime) override;
 
+	virtual void BehaviourAnalisys(float DeltaTime) override;
 
 	virtual void HuntPrey(float DeltaTime) override;
 
@@ -33,12 +33,7 @@ protected:
 
 	virtual void roam(float DeltaTime) override;
 
-	virtual void onActorCollision(AOrganism* Collided) override;
-
-
-	void Reproduce();
-
 	//virtual void updateState() override;
-
-
+	virtual APlant* findPlant();
 };
+
