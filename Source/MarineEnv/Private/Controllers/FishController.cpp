@@ -177,6 +177,9 @@ void AFishController::Reproduce() {
 
 }
 
+
+
+
 void AFishController::updateMovement(float DeltaTime)
 {
     FVector CurrentLocation = getModel()->GetActorLocation();
@@ -208,7 +211,7 @@ void AFishController::roam(float DeltaTime) {
     float DistToTarget = FVector::Dist(CurrentLocation, getModel()->getTargetLocation());
 
     if (DirectionTimer >= getModel()->getDirectionChangeInterval() || DistToTarget < 10.f) {
-        FVector RandomOffset = FMath::VRand()*20.f;
+        FVector RandomOffset = FMath::VRand() * 300.f;
         FVector NewTarget = CurrentLocation + RandomOffset;
         if (NewTarget.Z <= 0) {
             NewTarget.Z = 0 - NewTarget.Z;
