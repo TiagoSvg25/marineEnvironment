@@ -56,28 +56,3 @@ void AFish::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-
-
-
-/* 
-void AFish::updateMovement(float DeltaTime)
-{
-
-	// first phase - calculate the direction to the organism move
-
-	CurrentDirection = FMath::VInterpTo(CurrentDirection, CurrentDirection, DeltaTime, AnimalDataAsset->DirectionChangeInterval);
-
-	AddMovementInput(CurrentDirection, AnimalDataAsset->Speed);
-
-	if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
-	{
-		FRotator TargetRotation = CurrentDirection.ToOrientationRotator();
-		FRotator Smoothed = FMath::RInterpTo(
-			GetActorRotation(),
-			TargetRotation,
-			DeltaTime,
-			AnimalDataAsset->DirectionChangeInterval
-		);
-		SetActorRotation(Smoothed);
-	}
-}*/
