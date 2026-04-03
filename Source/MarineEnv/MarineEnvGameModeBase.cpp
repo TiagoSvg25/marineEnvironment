@@ -1,7 +1,10 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 
+
 #include "MarineEnvGameModeBase.h"
+#include "Spawner/BaseSpawner.h"
+
 
 AMarineEnvGameModeBase::AMarineEnvGameModeBase()
 {
@@ -11,7 +14,7 @@ AMarineEnvGameModeBase::AMarineEnvGameModeBase()
 void AMarineEnvGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-
+	/*
 
 	if (SpawnerClass) {
 		FActorSpawnParameters SpawnParam;
@@ -19,6 +22,6 @@ void AMarineEnvGameModeBase::BeginPlay()
 		SpawnParam.Owner = this;
 		SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-		Spawner = GetWorld()->SpawnActor<ASpawnOrganism>(SpawnerClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParam);
-	}
+		Spawner = GetWorld()->SpawnActor<ABaseSpawner>(SpawnerClass.Get(), FVector::ZeroVector, FRotator::ZeroRotator, SpawnParam);
+	}*/
 }

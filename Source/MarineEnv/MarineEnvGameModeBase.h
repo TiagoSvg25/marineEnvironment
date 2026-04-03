@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SpawnOrganism.h"
 #include "GameFramework/GameModeBase.h"
 #include "MarineEnvGameModeBase.generated.h"
 
 /**
  * 
  */
+class ABaseSpawner;
 UCLASS()
 class MARINEENV_API AMarineEnvGameModeBase : public AGameModeBase
 {
@@ -21,11 +21,11 @@ public:
 protected:
 
 	virtual void BeginPlay() override;
+/*
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	TSubclassOf<ABaseSpawner> SpawnerClass;
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
-	TSubclassOf<ASpawnOrganism> SpawnerClass;
-
-	UPROPERTY(EditAnywhere, Category = "Setup")
-	ASpawnOrganism* Spawner;
-	
+	ABaseSpawner* Spawner;
+	*/
 };
