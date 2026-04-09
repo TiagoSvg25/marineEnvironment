@@ -11,9 +11,14 @@ void ATerrainSpawner::BeginPlay()
 
     UE_LOG(LogTemp, Warning, TEXT("=== TerrainRegistry: %d terrain(s) found ==="), TerrainClasses.Num());
 
-    for (UClass* Class : TerrainClasses)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Spawning: %s"), *Class->GetName());
-        FTerrainRegistry::Spawn(Class, GetWorld(), GetActorLocation());
-    }
+    //for (UClass* Class : TerrainClasses)
+    //{
+    //    UE_LOG(LogTemp, Warning, TEXT("Spawning: %s"), *Class->GetName());
+    //    FTerrainRegistry::Spawn(Class, GetWorld(), GetActorLocation());
+    //    return;
+    //}
+
+    FTerrainRegistry::Spawn(TerrainClasses.Last(), GetWorld(), GetActorLocation());
+    return;
+
 }

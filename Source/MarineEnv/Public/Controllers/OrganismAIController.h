@@ -30,6 +30,15 @@ public:
 
 	virtual void onActorCollision(AOrganism* Collided) {};
 
+	virtual void onTerrainCollision(FVector Normal) {};
+
+
+
+	void SnapToFloor(FVector& Location);
+
+	float GetTerrainZ(float LocationX, float LocationY);
+
+
 protected:
 
 	UPROPERTY()

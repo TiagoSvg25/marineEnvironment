@@ -39,6 +39,9 @@ public:
 
 	float getBaseSpeed() const;
 
+	void setBaseSpeed(float NewSpeed);
+
+
 	float getAwarenessRadius() const;
 
 	void setAwarenessRadius(float NewAwarenessRadius);

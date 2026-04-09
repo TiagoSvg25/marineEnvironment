@@ -4,6 +4,7 @@
 #include "Entities/Organism.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include <MarineEnv/MarineEnvGameModeBase.h>
 
 
 
@@ -117,7 +118,9 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             if (Target->getCurrentState() != "Reproduction") {
                 Target = nullptr;
             }
-            getModel()->setTargetLocation(Target->GetActorLocation());
+            else{
+                getModel()->setTargetLocation(Target->GetActorLocation());
+            }
         }
     }
 }
@@ -210,16 +213,27 @@ void AFishController::roam(float DeltaTime) {
     FVector CurrentLocation = getModel()->GetActorLocation();
     float DistToTarget = FVector::Dist(CurrentLocation, getModel()->getTargetLocation());
 
+    AMarineEnvGameModeBase* GameMode = Cast<AMarineEnvGameModeBase>(GetWorld()->GetAuthGameMode());
+
     if (DirectionTimer >= getModel()->getDirectionChangeInterval() || DistToTarget < 10.f) {
-        FVector RandomOffset = FMath::VRand() * 300.f;
-        FVector NewTarget = CurrentLocation + RandomOffset;
-        if (NewTarget.Z <= 0) {
-            NewTarget.Z = 0 - NewTarget.Z;
-        }
-        getModel()->setTargetLocation(NewTarget);
+        float LocationX = FMath::RandRange(0.f, GameMode->WorldLength);
+
+        float LocationY = FMath::RandRange(0.f, GameMode->WorldWidth);
+
+        FVector Location = FVector(
+            LocationX,
+            LocationY,
+            FMath::RandRange(GetTerrainZ(LocationX, LocationY), GameMode->WorldHeight)
+        );
+
+        getModel()->setTargetLocation(Location);
         DirectionTimer = 0.f;
     }
 }
+
+
+
+
 
 void AFishController::HuntPrey(float DeltaTime) {
     if (!Target || !getModel()) {
@@ -259,7 +273,7 @@ void AFishController::onActorCollision(AOrganism* Collided) {
     if (getModel()->getCurrentState() == "Hunting") {            
         if (Collided == Target) {
             getModel()->setEnergy(Target->getEnergy() + getModel()->getEnergy());
-            getModel()->setSpeed(getModel()->getBaseSpeed());
+            getModel()->setSpeed(getModel()->getSpeed()/2);
             getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
             getModel()->setState("Idle");
             Target->Destroy();

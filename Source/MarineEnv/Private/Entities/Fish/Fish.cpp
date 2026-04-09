@@ -20,6 +20,8 @@ AFish::AFish()
 	{
 		FloatingMovement->SetUpdatedComponent(RootComponent);
 	}
+
+
 }
 
 AFish::~AFish()
@@ -48,6 +50,8 @@ void AFish::BeginPlay()
 
 	setEnergyThreshold(FMath::RandRange(20.0f, 40.0f));
 
+
+
 }
 
 void AFish::Tick(float DeltaTime)
@@ -55,4 +59,3 @@ void AFish::Tick(float DeltaTime)
 
 	Super::Tick(DeltaTime);
 }
-

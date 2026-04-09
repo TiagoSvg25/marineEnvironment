@@ -11,7 +11,15 @@ APlantAIController::APlantAIController()
 void APlantAIController::OnPossess(APawn* InPawn)
 {
     Super::OnPossess(InPawn);
-    // Plant = Cast<AAnimal>(InPawn);
+
+    if (getModel()) {
+        getModel()->setState("Idle");
+        FVector curLoc = getModel()->GetActorLocation();
+        SnapToFloor(curLoc);
+        getModel()->SetActorLocation(curLoc);
+        UE_LOG(LogTemp, Display, TEXT("Clamped to %s"), *curLoc.ToString());
+    }
+
 }
 
 
@@ -20,9 +28,6 @@ void APlantAIController::BeginPlay()
     Super::BeginPlay();
 
     //InitialZ = getModel()->GetActorLocation().Z;
-    if (getModel()) {
-        getModel()->setState("Idle");
-    }
 }
 
 
@@ -31,3 +36,4 @@ void APlantAIController::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
     BehaviourAnalisys(DeltaTime);
 }
+

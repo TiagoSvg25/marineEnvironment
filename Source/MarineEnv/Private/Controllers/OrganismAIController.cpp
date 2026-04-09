@@ -2,6 +2,7 @@
 
 #include "Controllers/OrganismAIController.h"
 #include "Entities/Organism.h"
+#include "Engine/World.h"
 #include <Kismet/GameplayStatics.h>
 
 
@@ -17,7 +18,44 @@ void AOrganismAIController::Tick(float DeltaTime) {
 void AOrganismAIController::OnPossess(APawn* InPawn) {
     Super::OnPossess(InPawn);
     Model = Cast<AOrganism>(InPawn);
+}
 
+
+void AOrganismAIController::SnapToFloor(FVector& Location)
+{
+    FVector Start = Location + FVector(0, 0, 500.f); // trace from above
+    FVector End = Location - FVector(0, 0, 10000.f); // trace downward
+
+    FHitResult Hit;
+    FCollisionQueryParams Params;
+    Params.AddIgnoredActor(getModel());
+
+    if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_WorldStatic, Params))
+    {
+        Location = Hit.ImpactPoint;
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("%s could not snap to floor"), *GetName());
+    }
+}
+
+
+
+
+float AOrganismAIController::GetTerrainZ(float LocationX, float LocationY) {
+    FVector TraceStart = FVector(LocationX, LocationY, 10000.f);
+    FVector TraceEnd = FVector(LocationX, LocationY, -10000.f);
+
+    FHitResult Hit;
+    FCollisionQueryParams Params;
+
+    if (getModel()->GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_WorldStatic, Params))
+    {
+        return Hit.ImpactPoint.Z;
+    }
+
+    return 0.f;
 }
 
 /*

@@ -109,3 +109,8 @@ FVector AAnimal::getTargetLocation() {
 float AAnimal::getBaseSpeed() const {
 	return BaseSpeed;
 }
+
+void AAnimal::setBaseSpeed(float NewSpeed)
+{
+	BaseSpeed = NewSpeed;
+}

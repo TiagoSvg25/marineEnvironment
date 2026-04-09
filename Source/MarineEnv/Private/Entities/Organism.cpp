@@ -46,6 +46,19 @@ void AOrganism::OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 		MyController->onActorCollision(Other);
 }
 
+
+void AOrganism::OnHitTerrain(UPrimitiveComponent* HitComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, FVector NormalImpulse,
+	const FHitResult& Hit)
+{
+	// reflect direction off the terrain normal
+	AOrganismAIController* MyController = Cast<AOrganismAIController>(GetController());
+	if (MyController)
+		MyController->onTerrainCollision(Hit.Normal);
+}
+
+
+
 float AOrganism::getHealth() const
 {
 	return Health;
