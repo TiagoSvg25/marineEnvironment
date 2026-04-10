@@ -14,6 +14,9 @@ void ATerrainSpawner::BeginPlay()
     for (UClass* Class : TerrainClasses)
     {
         UE_LOG(LogTemp, Warning, TEXT("Spawning: %s"), *Class->GetName());
+           
+        FVector CenteredLocation = GetActorLocation() - FVector(5000.f, 5000.f, 0.f);
+
         FTerrainRegistry::Spawn(Class, GetWorld(), GetActorLocation());
     }
 }

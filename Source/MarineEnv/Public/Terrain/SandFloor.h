@@ -34,8 +34,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-    int XSize = 50;
-    int YSize = 50;
+    int XSize = 100;
+    int YSize = 100;
     float Scale = 100.0f;
     float PerlinScale = 0.05f;
     float ZMultiplier = 500.0f;

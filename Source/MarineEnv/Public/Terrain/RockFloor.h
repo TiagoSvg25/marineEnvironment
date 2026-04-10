@@ -16,10 +16,10 @@ protected:
     virtual void BeginPlay() override;
 
 private:
-    int32 XSize = 50;
-    int32 YSize = 50;
+    int32 XSize = 100;
+    int32 YSize = 100;
     float Scale = 100.0f;
-    float ZMultiplier = 100.0f;  // much flatter than sand
+    float ZMultiplier = 200.0f; 
     float UVScale = 0.1f;
 
     void CreateVertices();
