@@ -36,6 +36,8 @@ void AClownFish::BeginPlay()
 
 	setSpeed(0.1f);
 
+	setBaseSpeed(0.1f);
+
 	setEnergy(60.f);
 
 	setState("Idle");

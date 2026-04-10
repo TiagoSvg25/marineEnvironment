@@ -53,6 +53,8 @@ public:
 
 	virtual void onActorCollision(AOrganism* Collided) {};
 
+	virtual void onTerrainCollision(FVector Normal) override;
+
 	//void UpdateBehaviour() override;
 
 	virtual AAnimal* findFood() { return nullptr;  };

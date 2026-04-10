@@ -18,10 +18,22 @@ class MARINEENV_API AMarineEnvGameModeBase : public AGameModeBase
 public:
 	AMarineEnvGameModeBase();
 
+	UPROPERTY(EditAnywhere, Category = "World")
+	float WorldLength = 5000.f;
+
+	UPROPERTY(EditAnywhere, Category = "World")
+	float WorldWidth = 5000.f;
+
+	UPROPERTY(EditAnywhere, Category = "World")
+	float WorldHeight = 600.f;
+
+
+
 protected:
 
 	virtual void BeginPlay() override;
-/*
+
+	/*
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<ABaseSpawner> SpawnerClass;
 

@@ -83,16 +83,10 @@ public:
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 		bool bFromSweep, const FHitResult& SweepResult);
 
-
-	/**UFUNCTION()
-	void OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-		bool bFromSweep, const FHitResult& SweepResult);
-
 	UFUNCTION()
 	void OnHitTerrain(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, FVector NormalImpulse,
-		const FHitResult& Hit);*/
+		const FHitResult& Hit);
 
 protected:
 

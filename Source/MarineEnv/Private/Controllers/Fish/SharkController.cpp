@@ -2,6 +2,7 @@
 
 
 #include "Controllers/Fish/SharkController.h"
+#include <MarineEnv/MarineEnvGameModeBase.h>
 
 ASharkController::ASharkController()
 {
@@ -43,16 +44,22 @@ void ASharkController::updateMovement(float DeltaTime)
 
 void ASharkController::roam(float DeltaTime)
 {
+    AMarineEnvGameModeBase* GameMode = Cast<AMarineEnvGameModeBase>(GetWorld()->GetAuthGameMode());
+
     FVector CurrentLocation = getModel()->GetActorLocation();
     float DistToTarget = FVector::Dist(CurrentLocation, getModel()->getTargetLocation());
 
     if (DirectionTimer >= getModel()->getDirectionChangeInterval() || DistToTarget < 800.0f) {
-        FVector RandomDir = FMath::VRand();
-        RandomDir.Z *= 0.1f;
-        RandomDir = RandomDir.GetSafeNormal();
-        FVector NewTarget = CurrentLocation + RandomDir * FMath::RandRange(2000.0f, 4000.0f);
-        if (NewTarget.Z <= 0) NewTarget.Z = FMath::Abs(NewTarget.Z);
-        getModel()->setTargetLocation(NewTarget);
+        float LocationX = FMath::RandRange(0.f, GameMode->WorldLength);
+
+        float LocationY = FMath::RandRange(0.f, GameMode->WorldWidth);
+
+        FVector Location = FVector(
+            LocationX,
+            LocationY,
+            FMath::RandRange(GetTerrainZ(LocationX, LocationY), GameMode->WorldHeight)
+        );
+        getModel()->setTargetLocation(Location);
         DirectionTimer = 0.f;
     }
 }

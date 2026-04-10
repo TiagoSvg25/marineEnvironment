@@ -175,8 +175,18 @@ void AAnimalAIController::Tick(float DeltaTime)
    
     BehaviourAnalisys(DeltaTime);
     updateMovement(DeltaTime);
-    DrawDebugVisionCone();
+    //DrawDebugVisionCone();
 }
+
+
+void AAnimalAIController::onTerrainCollision(FVector Normal) {
+    if (!getModel()) return;
+
+    FVector newDir = FMath::GetReflectionVector(getModel()->getTargetLocation(), Normal);
+
+    getModel()->setTargetLocation(newDir);
+}
+
 
 
 
