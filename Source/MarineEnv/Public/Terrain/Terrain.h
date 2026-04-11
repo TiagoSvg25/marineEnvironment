@@ -25,4 +25,6 @@ protected:
     TArray<FVector> Vertices;
     TArray<int32> Triangles;
     TArray<FVector2D> UV0;
+    TArray<FVector> Normals;
+    TArray<FColor> Colors;
 };
