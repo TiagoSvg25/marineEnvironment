@@ -58,6 +58,8 @@ public:
 
 	void setTags(const TArray<FString>& NewTags);
 
+	void addTag(const FString& NewTag);
+
 	float getEnergy() const;
 
 	void setEnergy(float NewEnergy);

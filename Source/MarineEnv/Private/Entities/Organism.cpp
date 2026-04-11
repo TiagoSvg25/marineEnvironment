@@ -152,6 +152,11 @@ void AOrganism::setTags(const TArray<FString>& NewTags)
 	Tags = NewTags;
 }
 
+void AOrganism::addTag(const FString& NewTag)
+{
+	Tags.Add(NewTag);
+}
+
 
 FString AOrganism::getCurrentState() const
 {

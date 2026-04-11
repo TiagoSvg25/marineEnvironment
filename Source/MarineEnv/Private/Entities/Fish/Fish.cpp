@@ -21,6 +21,8 @@ AFish::AFish()
 		FloatingMovement->SetUpdatedComponent(RootComponent);
 	}
 
+	ShoalSubsystem = GetWorld()->GetSubsystem<UShoalManager>();
+
 
 }
 

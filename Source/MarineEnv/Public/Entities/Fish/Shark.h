@@ -26,4 +26,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimSequence* AnimSwim;
 
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* FishMesh;
+
+
+	UPROPERTY()
+	UAnimSequence* Anim;
+
 };
