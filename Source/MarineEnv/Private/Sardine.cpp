@@ -5,12 +5,35 @@
 
 ASardine::ASardine()
 {
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SphereAsset(TEXT("/Game/Fab/Clown_Fish_Low_Poly_Animated/clown_fish_low_poly_animated/SkeletalMeshes/clown_fish_low_poly_animated.clown_fish_low_poly_animated"));
 
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(TEXT("/Script/Engine.AnimSequence'/Game/Assets/clown_fish_low_poly_animatedswim1.clown_fish_low_poly_animatedswim1'"));
+
+
+	if (SphereAsset.Succeeded())
+	{
+		FishMesh->SetSkeletalMesh(SphereAsset.Object);
+		setMeshAsset(SphereAsset.Object);
+	}
+
+	if (Animation.Succeeded())
+	{
+		Anim = Animation.Object;
+
+	}
+
+	bIsPredator = false;
 }
 
 void ASardine::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FishMesh->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
+
+	setState("Idle");
+
+	FishMesh->PlayAnimation(Anim, true);
 
 	setTrophicLevel(1);
 
@@ -26,7 +49,7 @@ void ASardine::BeginPlay()
 
 	setTurnSpeed(1.0f);
 
-	setDirectionChangeInterval(2.0f);
+	setDirectionChangeInterval(10.0f);
 
 	addTag("Sardine");
 	addTag("Schooling");

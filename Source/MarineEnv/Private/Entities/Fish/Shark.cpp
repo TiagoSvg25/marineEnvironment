@@ -11,17 +11,23 @@ AShark::AShark()
 	if (SharkMesh.Succeeded()) {
 		FishMesh->SetSkeletalMesh(SharkMesh.Object);
 	}
-
 	else UE_LOG(LogTemp, Error, TEXT("ERRO: Nao foi possivel encontrar a mesh do tubarao no caminho especificado!"));
 
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> SwimAsset(TEXT("/Script/Engine.AnimSequence'/Game/Character/Shark/Animations/Sharkmetarig_Swim_Shark.Sharkmetarig_Swim_Shark'"));
 
+	FishMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	CollisionSphere->SetSphereRadius(200.0f);
+
 	if (SwimAsset.Succeeded())
-		AnimSwim = SwimAsset.Object;
+		Anim = SwimAsset.Object;
 
 	else UE_LOG(LogTemp, Error, TEXT("ERRO: Nao foi possivel encontrar a animacao de nado!"));
 
 	AIControllerClass = ASharkController::StaticClass();
+
+
+	bIsPredator = true;
 
 }
 
@@ -30,13 +36,14 @@ void AShark::BeginPlay()
 {
 	Super::BeginPlay();
 	FishMesh->SetRelativeLocationAndRotation(FVector(-150.0f, 0.0f, 0.0f), FRotator(0.0f, -90.0f, 0.0f));
+	FishMesh->SetRelativeScale3D(FVector(0.01f, 0.01f, 0.01f));
 
 
 	bUseControllerRotationYaw = false;
 
-	setSpeed(1.5f);
+	setSpeed(0.7f);
 
-	setEnergyThreshold(30.0f);
+	setEnergyThreshold(95.0f);
 
 	setEnergyConsumptionRate(0.3f);
 
@@ -46,15 +53,15 @@ void AShark::BeginPlay()
 
 	setTrophicLevel(3);
 
-	setTurnSpeed(1.5f);
+	setTurnSpeed(1.0f);
 
 	setDirectionChangeInterval(8.0f);
 
-	if (FishMesh && AnimSwim) {
+	if (FishMesh && Anim) {
 
 		FishMesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
 
-		FishMesh->PlayAnimation(AnimSwim, true);
+		FishMesh->PlayAnimation(Anim, true);
 
 		FishMesh->SetPlayRate(0.8f);
 	}

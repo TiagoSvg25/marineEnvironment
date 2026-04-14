@@ -13,7 +13,8 @@ AClownFish::AClownFish()
 
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(TEXT("/Script/Engine.AnimSequence'/Game/Assets/clown_fish_low_poly_animatedswim1.clown_fish_low_poly_animatedswim1'"));
 
-
+	FishMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	CollisionSphere->SetSphereRadius(50.0f);
 	if (SphereAsset.Succeeded())
 	{
 		FishMesh->SetSkeletalMesh(SphereAsset.Object);
@@ -33,6 +34,8 @@ AClownFish::AClownFish()
 void AClownFish::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FishMesh->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
 
 	setSpeed(0.1f);
 

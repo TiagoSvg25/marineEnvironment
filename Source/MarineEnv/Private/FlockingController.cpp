@@ -4,6 +4,10 @@
 #include "FlockingController.h"
 
 
+AFlockingController::AFlockingController()
+{
+
+}
 
 void AFlockingController::flockingBehaviour()
 {
@@ -13,7 +17,10 @@ void AFlockingController::flockingBehaviour()
 	cohesionWithNeighbors();
 	separateFromNeighbors();
 
-	getModel()->setTargetLocation(getModel()->GetActorLocation() + AlignmentVector + CohesionVector + SeparationVector);
+	FVector FlockingForce = AlignmentVector.GetSafeNormal() * AlignWeight + CohesionVector.GetSafeNormal() * CohesionWeight + SeparationVector.GetSafeNormal() * SeparationWeight;
+
+	getModel()->setTargetLocation(getModel()->GetActorLocation() + FlockingForce * 100.0f);
+
 }
 
 void AFlockingController::alignWithNeighbors()
@@ -22,7 +29,7 @@ void AFlockingController::alignWithNeighbors()
 	FVector AverageDirection = FVector::ZeroVector;
 
 	for (AFish* neighborFish : getModel()->getNeighbors()) {
-		AverageDirection += neighborFish->GetTargetLocation();
+		AverageDirection += neighborFish->getTargetLocation();
 	}
 
 	AlignmentVector = AverageDirection / getModel()->getNeighbors().Num();
@@ -54,33 +61,40 @@ void AFlockingController::separateFromNeighbors()
 	SeparationVector = DistanceNeighbors;
 }
 
-
-
 void AFlockingController::BehaviourAnalisys(float DeltaTime)
 {
-	Super::BehaviourAnalisys(DeltaTime);
 
 	if (getModel()->getCurrentState() == "Idle") {
-		AAnimal* animal = Cast<AAnimal>(find(AFish::StaticClass(), getModel()->getTags(), true, -1,-1));
+		for (auto fishTags : getModel()->getTags()) {
+			UE_LOG(LogTemp, Warning, TEXT(""));
+		}
+
+		UE_LOG(LogTemp, Warning, TEXT("A procurar vizinhos com tags..."));
+
+		float oldAngle = getModel()->getAngleVision();
+		getModel()->setAngleVision(360.f);
+		AAnimal* animal = Cast<AAnimal>(find(AFish::StaticClass(), getModel()->getTags(), true, -1, -1));
+		getModel()->setAngleVision(oldAngle);
+		UE_LOG(LogTemp, Warning, TEXT("Resultado find: %s"), animal ? TEXT("encontrou") : TEXT("nao encontrou"));
 
 		if (animal != nullptr) {
 
-			 getModel()->setState("Flocking");
+			getModel()->setState("Flocking");
 
-			 UE_LOG(LogTemp, Warning, TEXT("Found neighbor for flocking"));
+			UE_LOG(LogTemp, Warning, TEXT("Found neighbor for flocking"));
 
-			 getModel()->getShoalSubsystem()->AddShoal(Cast<AFish>(getModel()));
+			getModel()->getShoalSubsystem()->AddShoal(Cast<AFish>(getModel()));
 		}
 	}
 
 
-	if (getModel()->getCurrentState() == "Flocking") {
+	else if (getModel()->getCurrentState() == "Flocking") {
 		AAnimal* pred = Cast<AAnimal>(find(AAnimal::StaticClass(), {}, false, -1, getModel()->getTrophicLevel() + 1));
 
 		if (pred != nullptr) {
 
 			getModel()->getShoalSubsystem()->RemoveShoal(Cast<AFish>(getModel()), getModel()->getShoalId());
-			
+
 			getModel()->setShoalId("");
 			getModel()->setNeighbors(TArray<AFish*>());
 			getModel()->setState("Fleeing");
@@ -90,4 +104,6 @@ void AFlockingController::BehaviourAnalisys(float DeltaTime)
 		flockingBehaviour();
 		updateMovement(DeltaTime);
 	}
+
+	Super::BehaviourAnalisys(DeltaTime);
 }

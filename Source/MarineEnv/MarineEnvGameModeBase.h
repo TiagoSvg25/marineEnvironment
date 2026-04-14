@@ -19,10 +19,10 @@ public:
 	AMarineEnvGameModeBase();
 
 	UPROPERTY(EditAnywhere, Category = "World")
-	float WorldLength = 5000.f;
+	float WorldLength = 10000.0f;
 
 	UPROPERTY(EditAnywhere, Category = "World")
-	float WorldWidth = 5000.f;
+	float WorldWidth = 10000.0f;
 
 	UPROPERTY(EditAnywhere, Category = "World")
 	float WorldHeight = 600.f;

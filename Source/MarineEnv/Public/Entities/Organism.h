@@ -97,7 +97,11 @@ protected:
 	float SpawnDensity = 1.0f;
 	float MinDepthRange = 0.f;
 	float MaxDepthRange = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Organism")
 	float Energy = 100.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Organism")
 	float EnergyThreshold = 20.0f;
 	float MaxEnergy = 100.0f;
 	float EnergyConsumptionRate = 0.2f;

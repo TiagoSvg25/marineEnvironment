@@ -12,18 +12,12 @@ AFish::AFish()
 		FishMesh->SetupAttachment(RootComponent);
 	}
 
-	FishMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-
 	AIControllerClass = AFishController::StaticClass();
 
 	if (FloatingMovement)
 	{
 		FloatingMovement->SetUpdatedComponent(RootComponent);
 	}
-
-	ShoalSubsystem = GetWorld()->GetSubsystem<UShoalManager>();
-
-
 }
 
 AFish::~AFish()
@@ -33,6 +27,8 @@ AFish::~AFish()
 void AFish::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ShoalSubsystem = GetWorld()->GetSubsystem<UShoalManager>();
 
 	if (!FishMesh)
 	{

@@ -2,4 +2,7 @@
 
 
 #include "SardineController.h"
-
+	
+ASardineController::ASardineController()
+{
+}

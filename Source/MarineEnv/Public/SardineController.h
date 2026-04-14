@@ -3,15 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Controllers/Fish/FishController.h"
+#include "FlockingController.h"
 #include "SardineController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MARINEENV_API ASardineController : public AFishController
+class MARINEENV_API ASardineController : public AFlockingController
 {
 	GENERATED_BODY()
 	
+public:
+
+	ASardineController();
 };

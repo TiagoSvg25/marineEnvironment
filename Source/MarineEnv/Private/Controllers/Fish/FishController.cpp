@@ -35,7 +35,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             CurrentFleeTimer = FleeTimer;
         }
 
-        else if (getModel()->getEnergy() < 90) {
+        else if (getModel()->getEnergy() < getModel()->getEnergyThreshold()) {
             if(getModel()->bIsPredator){
                 Target = find(AAnimal::StaticClass(), {}, false, getModel()->getTrophicLevel()-1);
             }
@@ -51,10 +51,11 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             }
             else roam(DeltaTime);
         }
+        /*
         else if (getModel()->getEnergy() > 90) {
             getModel()->setSpeed(getModel()->getSpeed() / 2);
             getModel()->setState("Reproduction");
-        }
+        }*/
         else {
             roam(DeltaTime);
         }
@@ -220,11 +221,8 @@ void AFishController::roam(float DeltaTime) {
 
         float LocationY = FMath::RandRange(0.f, GameMode->WorldWidth);
 
-        FVector Location = FVector(
-            LocationX,
-            LocationY,
-            FMath::RandRange(GetTerrainZ(LocationX, LocationY), GameMode->WorldHeight)
-        );
+
+        FVector Location = FVector(LocationX, LocationY, InitialZ);
 
         getModel()->setTargetLocation(Location);
         DirectionTimer = 0.f;

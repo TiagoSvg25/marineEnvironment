@@ -59,8 +59,6 @@ void AAnimalAIController::DrawDebugVisionCone()
     );
 }
 
-
-
 AOrganism* AAnimalAIController::find(TSubclassOf<AOrganism> ClassFilter,
     TArray<FString> RequiredTags,
     bool RequireAllTags,
@@ -75,8 +73,7 @@ AOrganism* AAnimalAIController::find(TSubclassOf<AOrganism> ClassFilter,
         bool classIsAnimal = ClassFilter && ClassFilter->IsChildOf(AAnimal::StaticClass());
         if (!classIsAnimal)
         {
-            UE_LOG(LogTemp, Warning,
-                TEXT("find(): TrophicLevel filter ignorado — ClassFilter não é um AAnimal."));
+            UE_LOG(LogTemp, Warning, TEXT("find(): TrophicLevel filter ignorado — ClassFilter não é um AAnimal."));
             useTrophicFilter = false;
         }
     }
@@ -88,25 +85,42 @@ AOrganism* AAnimalAIController::find(TSubclassOf<AOrganism> ClassFilter,
 
     TSubclassOf<AOrganism> searchClass = ClassFilter ? ClassFilter : TSubclassOf<AOrganism>(AOrganism::StaticClass());
 
-    TArray<AActor*> allActors;
-    UGameplayStatics::GetAllActorsOfClass(GetWorld(), searchClass, allActors);
+    TArray<AActor*> FoundActors;
+    TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+    ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn)); // Assumindo que os peixes são Pawns
+
+    TArray<AActor*> ToIgnore;
+    ToIgnore.Add(getModel());
+
+    UKismetSystemLibrary::SphereOverlapActors(
+        GetWorld(),
+        myLocation,
+        radius,
+        ObjectTypes,
+        searchClass,
+        ToIgnore,
+        FoundActors
+    );
 
     AOrganism* closest = nullptr;
     float closestDistSq = FLT_MAX;
 
-    for (AActor* actor : allActors)
+    for (AActor* actor : FoundActors)
     {
-
         AOrganism* other = Cast<AOrganism>(actor);
-        if (!other || other == getModel()) continue;
+        if (!other) continue; // Já não precisamos de "other == getModel()" porque o ToIgnore trata disso
 
-        float distSq = FVector::DistSquared(myLocation, other->GetActorLocation());
-        if (distSq > radius * radius) continue;
+        // A distância máxima já é garantida pelo SphereOverlapActors, portanto saltamos esse if
 
+        // 2. Proteção do Acos com FMath::Clamp
         FVector toOther = (other->GetActorLocation() - myLocation).GetSafeNormal();
-        float angle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(myForward, toOther)));
+        float dotProduct = FVector::DotProduct(myForward, toOther);
+        dotProduct = FMath::Clamp(dotProduct, -1.0f, 1.0f); // Evita NaN
+        float angle = FMath::RadiansToDegrees(FMath::Acos(dotProduct));
+
         if (angle > halfAngle) continue;
 
+        // Filtragem de Tags
         if (RequiredTags.Num() > 0)
         {
             TArray<FString> otherTags = other->getTags();
@@ -139,6 +153,7 @@ AOrganism* AAnimalAIController::find(TSubclassOf<AOrganism> ClassFilter,
             if (!passedTagFilter) continue;
         }
 
+        // Filtragem de Nível Trófico
         if (useTrophicFilter)
         {
             AAnimal* otherAnimal = Cast<AAnimal>(other);
@@ -149,6 +164,8 @@ AOrganism* AAnimalAIController::find(TSubclassOf<AOrganism> ClassFilter,
             if (MaxTrophicLevel != -1 && trophic > MaxTrophicLevel) continue;
         }
 
+        // Atualizar o mais próximo
+        float distSq = FVector::DistSquared(myLocation, other->GetActorLocation());
         if (distSq < closestDistSq)
         {
             closestDistSq = distSq;
@@ -158,6 +175,7 @@ AOrganism* AAnimalAIController::find(TSubclassOf<AOrganism> ClassFilter,
 
     return closest;
 }
+
 
 void AAnimalAIController::BeginPlay()
 {

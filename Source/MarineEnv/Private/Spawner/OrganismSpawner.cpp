@@ -49,10 +49,13 @@ void AOrganismSpawner::Spawn(UClass* OrganismClass, UWorld* World)
 
         float LocationY = FMath::RandRange(0.f, GameMode->WorldWidth);
 
+        float TerrainZ = GetTerrainZ(LocationX, LocationY);
+        float MinHeight = TerrainZ + 150.f;
+
         FVector Location = FVector(
             LocationX,
             LocationY,
-            FMath::RandRange(GetTerrainZ(LocationX, LocationY), GameMode->WorldHeight)
+            FMath::RandRange(MinHeight, GameMode->WorldHeight)
         );
 
         TArray<AActor*> OverlappingActors;

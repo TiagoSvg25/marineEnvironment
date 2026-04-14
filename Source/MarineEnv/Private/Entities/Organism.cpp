@@ -16,7 +16,7 @@ AOrganism::AOrganism()
 
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 	RootComponent = CollisionSphere;
-	CollisionSphere->SetSphereRadius(50.0f);
+	
 
 	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 

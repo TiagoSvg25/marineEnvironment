@@ -39,4 +39,13 @@ private:
 	float SeparationDistance = 40.0f;
 
 
+	UPROPERTY(EditAnywhere, Category = "Flocking")
+	float AlignWeight = 1.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Flocking")
+	float CohesionWeight = 1.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Flocking")
+	float SeparationWeight = 1.5f;
+
 };

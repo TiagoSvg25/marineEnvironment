@@ -33,6 +33,9 @@ void UShoalManager::AddShoal(AFish* Fish)
 			{
 				member->setNeighbors(pair.Value);
 			}
+
+			MergeShoals();
+
 			return;
 		}
 	}
@@ -49,6 +52,8 @@ void UShoalManager::AddShoal(AFish* Fish)
 	{
 		member->setNeighbors(Shoals[newKey]);
 	}
+
+	MergeShoals();
 
 }
 
@@ -73,3 +78,49 @@ void UShoalManager::RemoveShoal(AFish* Fish, FString ShoalID)
 }
 
 
+void UShoalManager::MergeShoals()
+{
+	TArray<FString> Keys;
+	Shoals.GetKeys(Keys);
+
+	for (int i = 0; i < Keys.Num(); i++)
+	{
+		for (int j = i + 1; j < Keys.Num(); j++)
+		{
+			FString KeyA = Keys[i];
+			FString KeyB = Keys[j];
+
+			if (!Shoals.Contains(KeyA) || !Shoals.Contains(KeyB)) continue;
+
+			FString SpeciesA = KeyA.Left(KeyA.Find(TEXT("_Shoal_")));
+			FString SpeciesB = KeyB.Left(KeyB.Find(TEXT("_Shoal_")));
+			if (SpeciesA != SpeciesB) continue;
+
+			if (Shoals[KeyA].Num() + Shoals[KeyB].Num() > MaxShoals) continue;
+
+			FVector CenterA = FVector::ZeroVector;
+			for (AFish* Fish : Shoals[KeyA])
+				CenterA += Fish->GetActorLocation();
+			CenterA /= Shoals[KeyA].Num();
+
+			FVector CenterB = FVector::ZeroVector;
+			for (AFish* Fish : Shoals[KeyB])
+				CenterB += Fish->GetActorLocation();
+			CenterB /= Shoals[KeyB].Num();
+
+			if (FVector::Dist(CenterA, CenterB) <= MinShoalDistance)
+			{
+				for (AFish* Fish : Shoals[KeyB])
+				{
+					Fish->setShoalId(KeyA);
+					Shoals[KeyA].Add(Fish);
+				}
+
+				for (AFish* Fish : Shoals[KeyA])
+					Fish->setNeighbors(Shoals[KeyA]);
+
+				Shoals.Remove(KeyB);
+			}
+		}
+	}
+}
