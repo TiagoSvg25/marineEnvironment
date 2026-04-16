@@ -45,9 +45,9 @@ void AOrganismSpawner::Spawn(UClass* OrganismClass, UWorld* World)
     bool invalidSpawn = true;
 
     for (int i = 0; i < maxSpawnAttempt; i++) {
-        float LocationX =FMath::RandRange(0.f, GameMode->WorldLength);
+        float LocationX =FMath::RandRange(-GameMode->WorldLength / 2 + 500.f, GameMode->WorldLength/2 - 500.f);
 
-        float LocationY = FMath::RandRange(0.f, GameMode->WorldWidth);
+        float LocationY = FMath::RandRange(-GameMode->WorldWidth / 2 + 500.f, GameMode->WorldWidth/2 - 500.f);
 
         float TerrainZ = GetTerrainZ(LocationX, LocationY);
         float MinHeight = TerrainZ + 150.f;

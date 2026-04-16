@@ -28,15 +28,12 @@ void ASharkController::updateMovement(float DeltaTime)
     if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
     {
         FRotator TargetRotation = CurrentDirection.ToOrientationRotator();
-        // TargetRotation.Yaw += 90.0f;
-        TargetRotation.Pitch = FMath::Clamp(TargetRotation.Pitch, -10.f, 10.f); 
-        TargetRotation.Roll = 0.0f;
 
         FRotator Smoothed = FMath::RInterpTo(
             getModel()->GetActorRotation(),
             TargetRotation,
             DeltaTime,
-            1.2f
+            3.f
         );
         getModel()->SetActorRotation(Smoothed);
     }
@@ -50,9 +47,9 @@ void ASharkController::roam(float DeltaTime)
     float DistToTarget = FVector::Dist(CurrentLocation, getModel()->getTargetLocation());
 
     if (DirectionTimer >= getModel()->getDirectionChangeInterval() || DistToTarget < 800.0f) {
-        float LocationX = FMath::RandRange(0.f, GameMode->WorldLength);
+        float LocationX = FMath::RandRange(-GameMode->WorldLength / 2 + 200.f, GameMode->WorldLength / 2 - 200.f);
 
-        float LocationY = FMath::RandRange(0.f, GameMode->WorldWidth);
+        float LocationY = FMath::RandRange(-GameMode->WorldWidth / 2 + 200.f, GameMode->WorldWidth / 2 - 200.f);
 
         FVector Location = FVector(
             LocationX,

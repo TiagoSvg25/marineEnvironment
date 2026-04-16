@@ -8,6 +8,8 @@
 #include "GameFramework/Pawn.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "Components/BoxComponent.h"
+#include "PhysicsEngine/PhysicsAsset.h"
 #include "Organism.generated.h"
 
 
@@ -46,9 +48,9 @@ public:
 
 	void setMaxDepthRange(float NewMaxDepthRange);
 
-	USkeletalMesh* getMeshAsset() const;
+	USkeletalMeshComponent* getMeshAsset() const;
 
-	void setMeshAsset(USkeletalMesh* NewMeshAsset);
+	void setMeshAsset(USkeletalMeshComponent* NewMeshAsset);
 
 	UAnimSequence* getAnimAsset() const;
 
@@ -102,11 +104,11 @@ protected:
 	float Energy = 100.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Organism")
-	float EnergyThreshold = 20.0f;
+	float EnergyThreshold = 50.0f;
 	float MaxEnergy = 100.0f;
 	float EnergyConsumptionRate = 0.2f;
 
-	USkeletalMesh* MeshAsset;
+	USkeletalMeshComponent* MeshAsset;
 	UAnimSequence* anim;
 	float Health = 1.0f;
 	float MaxHealth = 100.0f;
@@ -114,7 +116,8 @@ protected:
 	FString CurrentState = "Idle";
 	int Age = 0;
 	TSubclassOf<AAIController> ControllerClass;
-	USphereComponent* CollisionSphere;
+	UBoxComponent* CollisionBox;
+
 
 	// Called when the game starts or when spawned
 

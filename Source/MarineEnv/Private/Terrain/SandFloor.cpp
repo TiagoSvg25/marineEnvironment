@@ -1,4 +1,5 @@
 #include "Terrain/SandFloor.h"
+#include <MarineEnv/MarineEnvGameModeBase.h>
 
 
 ASandFloor::ASandFloor()
@@ -15,6 +16,9 @@ ASandFloor::ASandFloor()
 void ASandFloor::BeginPlay()
 {
 	Super::BeginPlay();
+	AMarineEnvGameModeBase* GameMode = Cast<AMarineEnvGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	setScale(GameMode->WorldLength/getXSize());
 	GenerateTerrain();
 }
 
@@ -49,9 +53,9 @@ void ASandFloor::GenerateTerrain()
 
 void ASandFloor::CreateSandVertices()
 {
-	for (int32 X = 0; X <= getXSize(); ++X)
+	for (int32 X = -getXSize()/2; X <= getXSize()/2; ++X)
 	{
-		for (int32 Y = 0; Y <= getYSize(); ++Y)
+		for (int32 Y = -getYSize()/2; Y <= getYSize()/2; ++Y)
 		{
 			FVector2D NoiseInput = FVector2D(X + 0.1f + getSeed(), Y + 0.1f + getSeed()) * getPerlinScale();
 

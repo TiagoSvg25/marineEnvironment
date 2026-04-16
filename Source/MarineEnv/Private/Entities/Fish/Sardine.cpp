@@ -14,13 +14,12 @@ ASardine::ASardine()
 
 	if (SphereAsset.Succeeded())
 	{
-		FishMesh->SetSkeletalMesh(SphereAsset.Object);
-		setMeshAsset(SphereAsset.Object);
+		MeshAsset->SetSkeletalMesh(SphereAsset.Object);
 	}
 
 	if (Animation.Succeeded())
 	{
-		Anim = Animation.Object;
+		anim = Animation.Object;
 
 	}
 
@@ -33,11 +32,11 @@ void ASardine::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FishMesh->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
+	MeshAsset->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
 
 	setState("Idle");
 
-	FishMesh->PlayAnimation(Anim, true);
+	MeshAsset->PlayAnimation(anim, true);
 
 	setTrophicLevel(1);
 

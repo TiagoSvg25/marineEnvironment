@@ -16,7 +16,7 @@ void AAlgaeController::BehaviourAnalisys(float DeltaTime)
 
 
     //getModel()->setEnergy(getModel()->getEnergy() + (0.5f * DeltaTime));
-    getModel()->setEnergy(getModel()->getEnergy() + 0.1f);
+    getModel()->setEnergy(getModel()->getEnergy() + 0.5f);
 
     FString CurrentState = getModel()->getCurrentState();
 
@@ -49,16 +49,15 @@ void AAlgaeController::Reproduce()
 
     FVector ParentLocation = ParentAlgae->GetActorLocation();
 
-    float SpawnRadius = MeshLength * 2.5f;
+    float SpawnRadius = 500.f;
     float CollisionCheckRadius = MeshLength;
 
     for (int i = 0; i < 10; i++)
     {
-        FVector RandomOffset = FMath::VRand(); // Shorthand for a random unit vector
-        FVector SpawnLocation = ParentLocation + (RandomOffset * SpawnRadius);
-        SpawnLocation.Z = ParentLocation.Z;
+        FVector RandomOffset = FMath::VRand() * SpawnRadius;
+        FVector SpawnLocation = ParentLocation + (RandomOffset);
+        SpawnLocation.Z = GetTerrainZ(SpawnLocation.X, SpawnLocation.Y);
 
-        // Check for collisions with other Organisms (Pawns/Actors)
         FCollisionShape Sphere = FCollisionShape::MakeSphere(CollisionCheckRadius);
         FCollisionQueryParams QueryParams;
         QueryParams.AddIgnoredActor(ParentAlgae);
@@ -66,11 +65,10 @@ void AAlgaeController::Reproduce()
         UE_LOG(LogTemp, Display, TEXT("Parent at: %s"), *ParentLocation.ToString());
         UE_LOG(LogTemp, Display, TEXT("Child at: %s"), *SpawnLocation.ToString());
 
-        // Check if the area is clear
         bool bIsOccupied = GetWorld()->OverlapAnyTestByChannel(
             SpawnLocation,
             FQuat::Identity,
-            ECC_Pawn, // Assuming Organisms use the Pawn channel
+            ECC_Pawn, 
             Sphere,
             QueryParams
         );

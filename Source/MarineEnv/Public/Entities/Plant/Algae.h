@@ -25,12 +25,7 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere)
-	USkeletalMeshComponent* AlgaeMesh;
 
-
-	UPROPERTY()
-	UAnimSequence* Anim;
 
 
 	UPROPERTY(EditAnywhere, Category = "Debug")
