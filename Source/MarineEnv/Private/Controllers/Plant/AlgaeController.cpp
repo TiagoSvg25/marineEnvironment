@@ -16,7 +16,7 @@ void AAlgaeController::BehaviourAnalisys(float DeltaTime)
 
 
     //getModel()->setEnergy(getModel()->getEnergy() + (0.5f * DeltaTime));
-    getModel()->setEnergy(getModel()->getEnergy() + 0.1f);
+    getModel()->setEnergy(getModel()->getEnergy() + 0.5f);
 
     FString CurrentState = getModel()->getCurrentState();
 
@@ -56,7 +56,7 @@ void AAlgaeController::Reproduce()
     {
         FVector RandomOffset = FMath::VRand(); // Shorthand for a random unit vector
         FVector SpawnLocation = ParentLocation + (RandomOffset * SpawnRadius);
-        SpawnLocation.Z = ParentLocation.Z;
+        SpawnLocation.Z = GetTerrainZ(SpawnLocation.X, SpawnLocation.Y);
 
         // Check for collisions with other Organisms (Pawns/Actors)
         FCollisionShape Sphere = FCollisionShape::MakeSphere(CollisionCheckRadius);

@@ -7,15 +7,15 @@
 
 AHerbFish::AHerbFish()
 {
-	FishMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FishMesh"));
+	MeshAsset = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FishMesh"));
 
 
 	if (RootComponent)
 	{
-		FishMesh->SetupAttachment(RootComponent);
+		MeshAsset->SetupAttachment(RootComponent);
 	}
 
-	FishMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision); // ECollisionEnabled::QueryAndPhysics
+	MeshAsset->SetCollisionEnabled(ECollisionEnabled::NoCollision); // ECollisionEnabled::QueryAndPhysics
 	/*FishMesh->SetCollisionObjectType(ECC_Pawn);
 	FishMesh->SetCollisionResponseToAllChannels(ECR_Block);
 	FishMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);*/
@@ -27,12 +27,12 @@ AHerbFish::AHerbFish()
 
 	if (SphereAsset.Succeeded())
 	{
-		FishMesh->SetSkeletalMesh(SphereAsset.Object);
+		MeshAsset->SetSkeletalMesh(SphereAsset.Object);
 	}
 
 	if (Animation.Succeeded())
 	{
-		Anim = Animation.Object;
+		anim = Animation.Object;
 	}
 
 	AIControllerClass = AHerbFishController::StaticClass();
@@ -51,13 +51,13 @@ void AHerbFish::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!FishMesh)
-	{
+	if (!MeshAsset){
+	
 		UE_LOG(LogTemp, Error, TEXT("FishMesh is null!"));
 		return;
 	}
 
-	if (!Anim)
+	if (!anim)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Animation is null! Check the asset path."));
 	}

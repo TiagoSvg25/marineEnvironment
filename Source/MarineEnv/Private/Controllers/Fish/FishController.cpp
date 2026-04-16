@@ -21,11 +21,14 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
 {
     if (!getModel()) return;
 
+    AMarineEnvGameModeBase* GameMode = Cast<AMarineEnvGameModeBase>(GetWorld()->GetAuthGameMode());
+
+
     getModel()->setEnergy(getModel()->getEnergy() - getModel()->getEnergyConsumptionRate() * DeltaTime * getModel()->getSpeed());
 
     FString CurrentState = getModel()->getCurrentState();
-    
 
+   
     if (CurrentState == "Idle") {
         AAnimal* pred = Cast<AAnimal>(find(AAnimal::StaticClass(), {}, false, -1 , getModel()->getTrophicLevel()+1));
         if (pred != nullptr) {
@@ -48,14 +51,15 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
                 getModel()->setSpeed(currentSpeed * 2);
                 getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
                 getModel()->setTargetLocation(Target->GetActorLocation());
+                getModel()->setTurnSpeed(getModel()->getTurnSpeed()*2);
             }
             else roam(DeltaTime);
         }
-        /*
-        else if (getModel()->getEnergy() > 90) {
+        
+        else if (getModel()->getEnergy() > getModel()->getEnergyThreshold()) {
             getModel()->setSpeed(getModel()->getSpeed() / 2);
             getModel()->setState("Reproduction");
-        }*/
+        }
         else {
             roam(DeltaTime);
         }
@@ -84,10 +88,15 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             if (checkPredators() != nullptr) {
                 CurrentFleeTimer = FleeTimer;
             }
-            FVector NextLoc = FMath::VRand() * 20;
-            if (NextLoc.Z < 0) {
-                NextLoc.Z = -NextLoc.Z;
-            }
+            FVector RandomDir = FMath::VRand();
+            RandomDir.Z = 0;
+            RandomDir.Normalize();
+            FVector NextLoc = FVector(FMath::RandRange(-GameMode->WorldWidth/2 +100.f, GameMode->WorldWidth / 2 - 100.f), FMath::RandRange(-GameMode->WorldLength / 2 + 100.f, GameMode->WorldLength / 2 - 100.f), 0.f);
+            float TerrainZ = GetTerrainZ(NextLoc.X, NextLoc.Y);
+
+            float SafeZ = FMath::RandRange(TerrainZ + 200.f, GameMode->WorldHeight - 200.f);
+
+            NextLoc.Z = SafeZ;            
             getModel()->setTargetLocation(NextLoc);
         }
         else {
@@ -130,17 +139,17 @@ void AFishController::Reproduce() {
     
     if(!getModel()) return;
 
-     getModel()->setEnergy(getModel()->getEnergy() * 0.70);
+     getModel()->setEnergy(getModel()->getEnergy() * 0.50);
 
      int spawnAttempts = 10;
 
      for (int i = 0; i < spawnAttempts; i++) {
 
 
-        FVector SpawnLocation = getModel()->GetActorLocation() + FMath::VRand()*(getModel()->getMeshAsset()->GetImportedBounds().SphereRadius);
+        FVector SpawnLocation = getModel()->GetActorLocation() + FMath::VRand()*(getModel()->getMeshAsset()->Bounds.SphereRadius);
         SpawnLocation.Z = getModel()->GetActorLocation().Z;
 
-        FCollisionShape Sphere = FCollisionShape::MakeSphere(getModel()->getMeshAsset()->GetImportedBounds().SphereRadius);
+        FCollisionShape Sphere = FCollisionShape::MakeSphere(getModel()->getMeshAsset()->Bounds.SphereRadius);
         FCollisionQueryParams QueryParams;
         QueryParams.AddIgnoredActor(getModel());
 
@@ -211,18 +220,22 @@ void AFishController::updateMovement(float DeltaTime)
 }
 
 void AFishController::roam(float DeltaTime) {
+
     FVector CurrentLocation = getModel()->GetActorLocation();
     float DistToTarget = FVector::Dist(CurrentLocation, getModel()->getTargetLocation());
+
 
     AMarineEnvGameModeBase* GameMode = Cast<AMarineEnvGameModeBase>(GetWorld()->GetAuthGameMode());
 
     if (DirectionTimer >= getModel()->getDirectionChangeInterval() || DistToTarget < 10.f) {
-        float LocationX = FMath::RandRange(0.f, GameMode->WorldLength);
+        float LocationX = FMath::RandRange(-GameMode->WorldLength/2 + 100.f, GameMode->WorldLength/2 - 100.f);
 
-        float LocationY = FMath::RandRange(0.f, GameMode->WorldWidth);
+        float LocationY = FMath::RandRange(-GameMode->WorldWidth/2 + 100.f, GameMode->WorldWidth/2 - 100.f);
 
 
-        FVector Location = FVector(LocationX, LocationY, InitialZ);
+        FVector Location = FVector(LocationX, LocationY, FMath::RandRange(GetTerrainZ(LocationX, LocationY), GameMode->WorldHeight));
+
+        UE_LOG(LogTemp, Display, TEXT("Target: %s"), *Location.ToString());
 
         getModel()->setTargetLocation(Location);
         DirectionTimer = 0.f;
@@ -268,11 +281,13 @@ void AFishController::onActorCollision(AOrganism* Collided) {
     if (!Target) return;
     if (!getModel()) return; 
 
+
     if (getModel()->getCurrentState() == "Hunting") {            
         if (Collided == Target) {
             getModel()->setEnergy(Target->getEnergy() + getModel()->getEnergy());
             getModel()->setSpeed(getModel()->getSpeed()/2);
             getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
+            getModel()->setTurnSpeed(getModel()->getTurnSpeed() / 2);
             getModel()->setState("Idle");
             Target->Destroy();
             Target = nullptr;
@@ -289,7 +304,7 @@ void AFishController::onActorCollision(AOrganism* Collided) {
 
     }
 
-    getModel()->setTargetLocation(getModel()->GetActorLocation() + FMath::VRand() * 10.f);
+    getModel()->setTargetLocation(getModel()->GetActorLocation() + FMath::VRand() * 50.f);
 
     return;
 }

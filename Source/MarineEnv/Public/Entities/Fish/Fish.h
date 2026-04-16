@@ -41,15 +41,6 @@ public:
 	UShoalManager* getShoalSubsystem() const { return ShoalSubsystem; }
 
 
-
-	UPROPERTY(VisibleAnywhere)
-	USkeletalMeshComponent* FishMesh;
-
-
-	UPROPERTY()
-	UAnimSequence* Anim;
-
-
 	UPROPERTY(EditAnywhere, Category = "Debug")
 	bool bIsPredator = false;
 

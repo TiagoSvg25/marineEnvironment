@@ -14,20 +14,34 @@ AOrganism::AOrganism()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
-	RootComponent = CollisionSphere;
-	
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
+	SetRootComponent(CollisionBox);
+	CollisionBox->SetBoxExtent(FVector(50.f, 20.f, 15.f));
 
-	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	MeshAsset = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshAsset"));
 
-	CollisionSphere->SetCollisionObjectType(ECC_Pawn);
-	CollisionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
-	CollisionSphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	CollisionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
-	CollisionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);	
-	CollisionSphere->SetGenerateOverlapEvents(true);
+	//MeshAsset->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	//MeshAsset->SetGenerateOverlapEvents(true);
+	//MeshAsset->SetCollisionObjectType(ECC_Pawn);
+	//MeshAsset->SetNotifyRigidBodyCollision(true);
+	//MeshAsset->SetCollisionResponseToAllChannels(ECR_Ignore);
+	//MeshAsset->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 
-	CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AOrganism::OnOrganismOverlap);
+	//MeshAsset->OnComponentBeginOverlap.AddDynamic(this, &AOrganism::OnOrganismOverlap);
+	//MeshAsset->OnComponentHit.AddDynamic(this, &AOrganism::OnHitTerrain);
+
+
+	CollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	CollisionBox->SetCollisionObjectType(ECC_Pawn);
+	CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+	CollisionBox->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	CollisionBox->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
+	CollisionBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	CollisionBox->SetGenerateOverlapEvents(true);
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AOrganism::OnOrganismOverlap);
+	CollisionBox->OnComponentHit.AddDynamic(this, &AOrganism::OnHitTerrain);
+
 
 	AIControllerClass = AOrganismAIController::StaticClass();
 }
@@ -36,7 +50,10 @@ void AOrganism::OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 	bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Colision Detected"));
+
+
+	if (OverlappedComp != CollisionBox) return;
+
 	
 	AOrganism* Other = Cast<AOrganism>(OtherActor);
 	if (!Other) return;
@@ -44,13 +61,16 @@ void AOrganism::OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 	AOrganismAIController* MyController = Cast<AOrganismAIController>(GetController());
 	if (MyController)
 		MyController->onActorCollision(Other);
+
+	UE_LOG(LogTemp, Warning, TEXT("%s Other Actor %s"), *GetName(), *OtherActor->GetName());
 }
 
 
 void AOrganism::OnHitTerrain(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, FVector NormalImpulse,
-	const FHitResult& Hit)
+	const FHitResult& Hit) 
 {
+
 	// reflect direction off the terrain normal
 	AOrganismAIController* MyController = Cast<AOrganismAIController>(GetController());
 	if (MyController)
@@ -121,12 +141,12 @@ void AOrganism::setMaxDepthRange(float NewMaxDepthRange)
 	MaxDepthRange = NewMaxDepthRange;
 }
 
-USkeletalMesh* AOrganism::getMeshAsset() const
+USkeletalMeshComponent* AOrganism::getMeshAsset() const
 {
 	return MeshAsset;
 }
 
-void AOrganism::setMeshAsset(USkeletalMesh* NewMeshAsset)
+void AOrganism::setMeshAsset(USkeletalMeshComponent* NewMeshAsset)
 {
 	MeshAsset = NewMeshAsset;
 }

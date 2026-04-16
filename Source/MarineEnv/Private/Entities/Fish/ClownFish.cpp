@@ -5,7 +5,6 @@
 
 
 
-
 AClownFish::AClownFish()
 {
 
@@ -13,17 +12,17 @@ AClownFish::AClownFish()
 
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(TEXT("/Script/Engine.AnimSequence'/Game/Assets/clown_fish_low_poly_animatedswim1.clown_fish_low_poly_animatedswim1'"));
 
-	FishMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	CollisionSphere->SetSphereRadius(50.0f);
+	MeshAsset->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	CollisionBox->SetBoxExtent(FVector(50.f, 50.f, 50.f));
+
 	if (SphereAsset.Succeeded())
 	{
-		FishMesh->SetSkeletalMesh(SphereAsset.Object);
-		setMeshAsset(SphereAsset.Object);
+		MeshAsset->SetSkeletalMesh(SphereAsset.Object);
 	}
 
 	if (Animation.Succeeded())
 	{
-		Anim = Animation.Object;
+		anim = Animation.Object;
 
 	}
 
@@ -35,11 +34,13 @@ void AClownFish::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FishMesh->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
+	MeshAsset->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
 
-	setSpeed(0.1f);
+	setSpeed(0.3f);
 
-	setBaseSpeed(0.1f);
+	setBaseSpeed(0.3f);
+
+	setEnergyThreshold(50.0f);
 
 	setEnergy(60.f);
 
@@ -49,5 +50,7 @@ void AClownFish::BeginPlay()
 
 	setAngleVision(70.f);
 
-	FishMesh->PlayAnimation(Anim, true);
+	setDirectionChangeInterval(3.f);
+
+	MeshAsset->PlayAnimation(anim, true);
 }

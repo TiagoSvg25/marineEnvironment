@@ -25,7 +25,7 @@ void AAnimalAIController::OnPossess(APawn* InPawn)
 
     FVector CurrentLocation = getModel()->GetActorLocation();
 
-    FVector RandomOffset = FMath::VRand() * 200.0f;
+    FVector RandomOffset = FMath::VRand() * 1000.0f;
 
     FVector NewTarget = CurrentLocation + RandomOffset;
 
@@ -191,8 +191,9 @@ void AAnimalAIController::Tick(float DeltaTime)
     DirectionTimer += DeltaTime;
     DetectionTimer += DeltaTime;
    
-    BehaviourAnalisys(DeltaTime);
+
     updateMovement(DeltaTime);
+    BehaviourAnalisys(DeltaTime);
     //DrawDebugVisionCone();
 }
 
@@ -200,9 +201,15 @@ void AAnimalAIController::Tick(float DeltaTime)
 void AAnimalAIController::onTerrainCollision(FVector Normal) {
     if (!getModel()) return;
 
-    FVector newDir = FMath::GetReflectionVector(getModel()->getTargetLocation(), Normal);
+    FVector CurrentDir = getModel()->GetVelocity().GetSafeNormal();
 
-    getModel()->setTargetLocation(newDir);
+    FVector FlatDir = FVector::VectorPlaneProject(CurrentDir, Normal);
+    FlatDir = FlatDir.GetSafeNormal();
+
+    FVector NewTarget = getModel()->GetActorLocation() + FlatDir * 800.f;
+
+    getModel()->setTargetLocation(NewTarget);
+
 }
 
 

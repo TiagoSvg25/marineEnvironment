@@ -25,7 +25,7 @@ public:
 	float WorldWidth = 10000.0f;
 
 	UPROPERTY(EditAnywhere, Category = "World")
-	float WorldHeight = 600.f;
+	float WorldHeight = 2000.f;
 
 
 

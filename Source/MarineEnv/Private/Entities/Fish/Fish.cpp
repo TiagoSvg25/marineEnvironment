@@ -4,12 +4,11 @@
 
 AFish::AFish()
 {
-	FishMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FishMesh"));
 
 
 	if (RootComponent)
 	{
-		FishMesh->SetupAttachment(RootComponent);
+		MeshAsset->SetupAttachment(RootComponent);
 	}
 
 	AIControllerClass = AFishController::StaticClass();
@@ -30,25 +29,23 @@ void AFish::BeginPlay()
 
 	ShoalSubsystem = GetWorld()->GetSubsystem<UShoalManager>();
 
-	if (!FishMesh)
+	if (!MeshAsset)
 	{
 		UE_LOG(LogTemp, Error, TEXT("FishMesh is null!"));
 		return;
 	}
 
-	FishMesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+	MeshAsset->SetAnimationMode(EAnimationMode::AnimationSingleNode);
 
-	if (Anim && GetClass() == AFish::StaticClass())
+	if (anim && GetClass() == AFish::StaticClass())
 	{
-		FishMesh->PlayAnimation(Anim, true);
+		MeshAsset->PlayAnimation(anim, true);
 	}
 	else UE_LOG(LogTemp, Error, TEXT("Animation is null! Check the asset path."));
 
 	setState("Idle");
 
 	setEnergyThreshold(FMath::RandRange(20.0f, 40.0f));
-
-
 
 }
 

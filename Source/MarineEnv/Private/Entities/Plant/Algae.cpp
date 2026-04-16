@@ -7,12 +7,11 @@
 
 AAlgae::AAlgae()
 {
-	AlgaeMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("AlgaeMesh"));
 
 
 	if (RootComponent)
 	{
-		AlgaeMesh->SetupAttachment(RootComponent);
+		MeshAsset ->SetupAttachment(RootComponent);
 	}
 
 
@@ -22,13 +21,16 @@ AAlgae::AAlgae()
 
 	if (SphereAsset.Succeeded())
 	{
-		AlgaeMesh->SetSkeletalMesh(SphereAsset.Object);
+		MeshAsset->SetSkeletalMesh(SphereAsset.Object);
 	}
 
-	float scale = FMath::RandRange(0.25, 0.75);
+	float scale = FMath::RandRange(1, 3);
 
 	AIControllerClass = AAlgaeController::StaticClass();
-	AlgaeMesh->SetRelativeScale3D(FVector(scale, scale, scale));
+
+	CollisionBox->SetBoxExtent(FVector(50.f, 50.f, 50.f) * scale);
+
+	MeshAsset->SetRelativeScale3D(FVector(scale, scale, scale));
 
 }
 
@@ -43,8 +45,7 @@ void AAlgae::BeginPlay()
 
 	setState("Idle");
 
-	setEnergy(1.0f);
-
+	setEnergy(50.0f);
 
 }
 

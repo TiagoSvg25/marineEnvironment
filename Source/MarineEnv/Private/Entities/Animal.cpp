@@ -83,6 +83,9 @@ float AAnimal::getSpeed() const
 
 void AAnimal::setSpeed(float NewSpeed)
 {
+	if (MeshAsset && anim) {
+		MeshAsset->SetPlayRate((NewSpeed/getBaseSpeed()));
+	}
 	Speed = NewSpeed;
 }
 
