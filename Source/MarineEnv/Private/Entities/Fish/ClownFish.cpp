@@ -40,7 +40,7 @@ void AClownFish::BeginPlay()
 
 	setBaseSpeed(0.3f);
 
-	setEnergyThreshold(50.0f);
+	setEnergyThreshold(80.0f);
 
 	setEnergy(60.f);
 

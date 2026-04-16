@@ -298,13 +298,29 @@ void AFishController::onActorCollision(AOrganism* Collided) {
         if (Collided == Target) {
             Reproduce();
             getModel()->setState("Idle");
+            getModel()->setSpeed(getModel()->getSpeed() * 2);
+
             Target->setState("Idle");
             Target = nullptr;
         }
 
     }
 
+else {
+        FVector PushDirection = (getModel()->GetActorLocation() - Collided->GetActorLocation()).GetSafeNormal();
+
+        FVector RandomOffset = FMath::VRand() * 0.1f;
+        PushDirection = (PushDirection + RandomOffset).GetSafeNormal();
+
+        FVector NewTarget = getModel()->GetActorLocation() + PushDirection * 500.f;
+        getModel()->setTargetLocation(NewTarget);
+        return;
+        
+    }
+
+
     getModel()->setTargetLocation(getModel()->GetActorLocation() + FMath::VRand() * 50.f);
+
 
     return;
 }

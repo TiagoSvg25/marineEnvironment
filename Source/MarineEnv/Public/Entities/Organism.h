@@ -118,8 +118,6 @@ protected:
 	TSubclassOf<AAIController> ControllerClass;
 	UBoxComponent* CollisionBox;
 
-	virtual void BeginPlay() override;
-
 
 	// Called when the game starts or when spawned
 

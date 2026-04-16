@@ -45,6 +45,8 @@ void AShark::BeginPlay()
 
 	setBaseSpeed(0.7f);
 
+	setEnergy(50.f);
+
 	setEnergyThreshold(95.0f);
 
 	setEnergyConsumptionRate(0.3f);
