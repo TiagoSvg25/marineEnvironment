@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ShoalManager.h"
+#include "Controllers/ShoalManager.h"
 #include "Entities/Fish/Fish.h"
 
 
@@ -28,14 +28,24 @@ void UShoalManager::AddShoal(AFish* Fish)
 
 			Fish->setShoalId(pair.Key);
 			Fish->setNeighbors(pair.Value);
-			
+
+			TArray<AFish*> neighborsWithoutSelf = pair.Value;
+
+			neighborsWithoutSelf.Remove(Fish);
+
+			Fish->setNeighbors(neighborsWithoutSelf);
+
 			for (AFish* member : pair.Value)
 			{
-				member->setNeighbors(pair.Value);
+				if (member == Fish) continue;
+
+				TArray<AFish*> memberNeighbors = pair.Value;
+				memberNeighbors.Remove(member);
+				member->setNeighbors(memberNeighbors);
+
 			}
-
+		
 			MergeShoals();
-
 			return;
 		}
 	}
@@ -54,6 +64,7 @@ void UShoalManager::AddShoal(AFish* Fish)
 	}
 
 	MergeShoals();
+
 
 }
 

@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Sardine.h"
+#include "Entities/Fish/Sardine.h"
+#include "Controllers/Fish/FlockingController.h"
+
 
 ASardine::ASardine()
 {
@@ -21,6 +23,8 @@ ASardine::ASardine()
 		Anim = Animation.Object;
 
 	}
+
+	AIControllerClass = AFlockingController::StaticClass();
 
 	bIsPredator = false;
 }

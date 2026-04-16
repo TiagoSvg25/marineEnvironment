@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FlockingController.h"
+#include "Controllers/Fish/FlockingController.h"
 
 
 AFlockingController::AFlockingController()
@@ -11,15 +11,19 @@ AFlockingController::AFlockingController()
 
 void AFlockingController::flockingBehaviour()
 {
-	if (getModel()->getNeighbors().Num() == 0) return;
+	if (getModel()->getNeighbors().Num() == 0){
+		getModel()->setState("Idle");
+		return;
+	}
 
 	alignWithNeighbors();
 	cohesionWithNeighbors();
 	separateFromNeighbors();
 
+
 	FVector FlockingForce = AlignmentVector.GetSafeNormal() * AlignWeight + CohesionVector.GetSafeNormal() * CohesionWeight + SeparationVector.GetSafeNormal() * SeparationWeight;
 
-	getModel()->setTargetLocation(getModel()->GetActorLocation() + FlockingForce * 100.0f);
+	getModel()->setTargetLocation(getModel()->GetActorLocation() + FlockingForce * 2000.0f);
 
 }
 
@@ -29,7 +33,7 @@ void AFlockingController::alignWithNeighbors()
 	FVector AverageDirection = FVector::ZeroVector;
 
 	for (AFish* neighborFish : getModel()->getNeighbors()) {
-		AverageDirection += neighborFish->getTargetLocation();
+		AverageDirection += neighborFish->GetActorForwardVector();
 	}
 
 	AlignmentVector = AverageDirection / getModel()->getNeighbors().Num();
@@ -85,6 +89,7 @@ void AFlockingController::BehaviourAnalisys(float DeltaTime)
 
 			getModel()->getShoalSubsystem()->AddShoal(Cast<AFish>(getModel()));
 		}
+		if (getModel()->getCurrentState() == "Flocking") return;
 	}
 
 
@@ -102,7 +107,7 @@ void AFlockingController::BehaviourAnalisys(float DeltaTime)
 		}
 
 		flockingBehaviour();
-		updateMovement(DeltaTime);
+		return;
 	}
 
 	Super::BehaviourAnalisys(DeltaTime);

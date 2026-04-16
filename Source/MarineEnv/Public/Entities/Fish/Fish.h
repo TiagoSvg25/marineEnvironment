@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Entities/Animal.h"
-#include "ShoalManager.h"
+#include "Controllers/ShoalManager.h"
 #include "CoreMinimal.h"
 #include "Fish.generated.h"
 

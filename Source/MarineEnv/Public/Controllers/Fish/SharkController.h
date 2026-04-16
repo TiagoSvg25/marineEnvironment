@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FishController.h"
+#include "Controllers/Fish/FishController.h"
 #include "SharkController.generated.h"
 
 /**
