@@ -55,6 +55,7 @@ public:
 
 	virtual void onTerrainCollision(FVector Normal) override;
 
+	void resetFleeTimer() { CurrentFleeTimer = 0.0f; }
 	//void UpdateBehaviour() override;
 
 	virtual AAnimal* findFood() { return nullptr;  };

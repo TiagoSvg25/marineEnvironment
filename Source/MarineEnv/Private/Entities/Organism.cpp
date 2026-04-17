@@ -62,8 +62,6 @@ void AOrganism::OnOrganismOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 	AOrganismAIController* MyController = Cast<AOrganismAIController>(GetController());
 	if (MyController)
 		MyController->onActorCollision(Other);
-
-	UE_LOG(LogTemp, Warning, TEXT("%s Other Actor %s"), *GetName(), *OtherActor->GetName());
 }
 
 
@@ -229,60 +227,3 @@ void AOrganism::setEnergyConsumptionRate(float NewEnergyConsumptionRate)
 {
 	EnergyConsumptionRate = NewEnergyConsumptionRate;
 }
-
-
-
-
-
-
-
-
-
-/*void AOrganism::updateMovement(float DeltaTime)
-{
-	// first phase - calculate the direction to the organism move
-
-	CurrentDirection = FMath::VInterpTo(CurrentDirection, TargetDirection, DeltaTime, Movement.TurnSpeed);
-
-	AddMovementInput(CurrentDirection, Movement.Speed);
-
-	if (CurrentDirection.SizeSquared() > KINDA_SMALL_NUMBER)
-	{
-		FRotator TargetRotation = CurrentDirection.ToOrientationRotator();
-		FRotator Smoothed = FMath::RInterpTo(
-			GetActorRotation(),
-			TargetRotation,
-			DeltaTime,
-			Movement.TurnSpeed
-		);
-		SetActorRotation(Smoothed);
-	}
-} */
-
-// Called when the game starts or when spawned
-
-
-	/*CurrentDirection = FMath::VRand();
-	DirectionChangeInterval = FMath::RandRange(2.0f, 5.0f);
-	DetectionInterval = FMath::RandRange(1.0f, 1.5f);
-	calculateVectors();
-	SphereMesh->PlayAnimation(anim, true);
-	CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AOrganism::OnOrganismOverlap);
-	CollisionSphere->OnComponentHit.AddDynamic(this, &AOrganism::OnHitTerrain);*/
-
-
-
-
-/*
-
-
-void AOrganism::OnHitTerrain(UPrimitiveComponent* HitComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, FVector NormalImpulse,
-	const FHitResult& Hit)
-{
-	// reflect direction off the terrain normal
-	AOrganismAIController* MyController = Cast<AOrganismAIController>(GetController());
-	if (MyController)
-		MyController->onTerrainCollision(Hit.Normal);
-}
-*/

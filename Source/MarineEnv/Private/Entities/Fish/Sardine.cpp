@@ -40,19 +40,20 @@ void ASardine::BeginPlay()
 
 	setTrophicLevel(1);
 
-	setSpeed(1.0f);
+	setSpeed(0.5f);
+	setBaseSpeed(0.5f);
 
-	setEnergyThreshold(50.0f);
+	setEnergyThreshold(90.0f);
 
 	setEnergyConsumptionRate(0.4f);
 
-	setAwarenessRadius(1000.0f);
+	setAwarenessRadius(2000.0f);
 
-	setAngleVision(60.0f);
+	setAngleVision(120.0f);
 
-	setTurnSpeed(1.0f);
+	setTurnSpeed(3.0f);
 
-	setDirectionChangeInterval(10.0f);
+	setDirectionChangeInterval(15.0f);
 
 	addTag("Sardine");
 	addTag("Schooling");
@@ -60,4 +61,5 @@ void ASardine::BeginPlay()
 
 void ASardine::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
 }

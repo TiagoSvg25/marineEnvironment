@@ -37,5 +37,5 @@ private:
 	TMap<FString, TArray<AFish*>> Shoals;
 
 	int MaxShoals = 10;
-	float MinShoalDistance = 250.0f;
+	float MinShoalDistance = 500.0f;
 };

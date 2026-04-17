@@ -56,10 +56,10 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             else roam(DeltaTime);
         }
         
-        else if (getModel()->getEnergy() > getModel()->getEnergyThreshold()) {
+        /*/else if (getModel()->getEnergy() > getModel()->getEnergyThreshold()) {
             getModel()->setSpeed(getModel()->getSpeed() / 2);
             getModel()->setState("Reproduction");
-        }
+        }*/
         else {
             roam(DeltaTime);
         }
@@ -83,6 +83,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
   
     }
     else if (CurrentState == "Fleeing") {
+
         CurrentFleeTimer -= DeltaTime;
         if(CurrentFleeTimer > 0){
             if (checkPredators() != nullptr) {
@@ -280,6 +281,8 @@ void AFishController::onActorCollision(AOrganism* Collided) {
 
     if (!Target) return;
     if (!getModel()) return; 
+
+    if (getModel()->getCurrentState() == "Flocking") return;
 
 
     if (getModel()->getCurrentState() == "Hunting") {            
