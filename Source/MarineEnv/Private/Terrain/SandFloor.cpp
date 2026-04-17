@@ -1,5 +1,6 @@
 #include "Terrain/SandFloor.h"
 #include <MarineEnv/MarineEnvGameModeBase.h>
+#include "KismetProceduralMeshLibrary.h"
 
 
 ASandFloor::ASandFloor()
@@ -29,19 +30,24 @@ void ASandFloor::GenerateTerrain()
 	Vertices.Empty();
 	Triangles.Empty();
 	UV0.Empty();
+	Normals.Empty();
+	Colors.Empty();
 	ProceduralMesh->ClearMeshSection(0);
 
 	CreateSandVertices();
 	CreateSandTriangles();
 
+	TArray<FProcMeshTangent> Tangents;
+	UKismetProceduralMeshLibrary::CalculateTangentsForMesh(Vertices, Triangles, UV0, Normals, Tangents);
+
 	ProceduralMesh->CreateMeshSection(
 		0,
 		Vertices,
 		Triangles,
-		TArray<FVector>(),
+		Normals,
 		UV0,
-		TArray<FColor>(),
-		TArray<FProcMeshTangent>(),
+		Colors,
+		Tangents,
 		true
 	);
 
@@ -53,7 +59,10 @@ void ASandFloor::GenerateTerrain()
 
 void ASandFloor::CreateSandVertices()
 {
-	for (int32 X = -getXSize()/2; X <= getXSize()/2; ++X)
+	float MaxDepth = 0.0f;
+	float MinDepth = getZMultiplier();
+
+	for (int32 X = 0; X <= getXSize(); ++X)
 	{
 		for (int32 Y = -getYSize()/2; Y <= getYSize()/2; ++Y)
 		{
@@ -64,6 +73,10 @@ void ASandFloor::CreateSandVertices()
 
 			Vertices.Add(FVector(X * getScale(), Y * getScale(), Z));
 			UV0.Add(FVector2D(X * getUVScale(), Y * getUVScale()));
+
+			float Alpha = FMath::GetMappedRangeValueClamped(FVector2D(MaxDepth, MinDepth), FVector2D(0.2f, 1.0f), Z);
+			uint8 Brightness = static_cast<uint8>(Alpha * 255);
+			Colors.Add(FColor(Brightness, Brightness, Brightness, 255));
 		}
 	}
 }
