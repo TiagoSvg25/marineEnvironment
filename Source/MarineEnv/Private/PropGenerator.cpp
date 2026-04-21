@@ -7,7 +7,6 @@ APropGenerator::APropGenerator()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	// We don't create the HISM here anymore. We just create a standard root.
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
 }
 
@@ -15,20 +14,27 @@ void APropGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 1. Create one HISM component for EACH mesh you added in the Blueprint
-	for (int32 i = 0; i < PropMeshes.Num(); i++)
+	for (int i = 0; i < PropMeshes.Num(); i++)
 	{
 		if (PropMeshes[i] != nullptr)
 		{
-			// Dynamically create a new HISM component
 			UHierarchicalInstancedStaticMeshComponent* NewHISM = NewObject<UHierarchicalInstancedStaticMeshComponent>(this);
-
+			
 			NewHISM->SetStaticMesh(PropMeshes[i]);
-			NewHISM->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			NewHISM->SetupAttachment(RootComponent);
-			NewHISM->RegisterComponent(); // Critical when creating components at runtime!
 
-			// Save it in our array
+			if (bEnableCollision)
+			{
+				NewHISM->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+				NewHISM->SetCollisionResponseToAllChannels(ECR_Block);
+			}
+			else
+			{
+				NewHISM->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			}
+
+			NewHISM->SetupAttachment(RootComponent);
+			NewHISM->RegisterComponent();
+
 			HISMComponents.Add(NewHISM);
 		}
 	}
@@ -38,15 +44,15 @@ void APropGenerator::BeginPlay()
 
 void APropGenerator::GenerateProps()
 {
-	if (HISMComponents.Num() == 0) return; // Prevents crashing if you forgot to add meshes
+	if (HISMComponents.Num() == 0) return;
 
-	// We need a list of transforms for EACH HISM component
+	
 	TArray<TArray<FTransform>> TransformsPerMesh;
 	TransformsPerMesh.SetNum(HISMComponents.Num());
 
 	FVector Origin = GetActorLocation();
 
-	for (int32 i = 0; i < NumberOfInstances; i++)
+	for (int i = 0; i < NumberOfInstances; i++)
 	{
 		float RandX = Origin.X + FMath::RandRange(0.0f, WorldLength);
 		float RandY = Origin.Y + FMath::RandRange(0.0f, WorldWidth);
@@ -54,7 +60,7 @@ void APropGenerator::GenerateProps()
 		float TerrainZ = GetTerrainZ(RandX, RandY);
 		float RandomScale = FMath::RandRange(MinScale, MaxScale);
 
-		// Apply the sink offset (multiply by scale so big rocks sink further)
+		
 		float FinalZ = TerrainZ - (SinkDepth * RandomScale);
 
 		FVector SpawnLocation = FVector(RandX, RandY, FinalZ);
@@ -63,21 +69,19 @@ void APropGenerator::GenerateProps()
 
 		FTransform NewTransform(SpawnRotation, SpawnLocation, SpawnScale);
 
-		// Pick a random rock type from your array
-		int32 RandomMeshIndex = FMath::RandRange(0, HISMComponents.Num() - 1);
+		int RandomMeshIndex = FMath::RandRange(0, HISMComponents.Num() - 1);
 
-		// Add this transform to the specific rock type's list
 		TransformsPerMesh[RandomMeshIndex].Add(NewTransform);
 	}
 
-	// Finally, add all instances to their respective HISM components efficiently
+	
 	for (int32 i = 0; i < HISMComponents.Num(); i++)
 	{
 		if (TransformsPerMesh[i].Num() > 0)
 		{
 			HISMComponents[i]->AddInstances(TransformsPerMesh[i], false);
 
-			// ADD THIS LINE: Forces the engine to recalculate visibility bounds
+			
 			HISMComponents[i]->BuildTreeIfOutdated(true, false);
 		}
 	}

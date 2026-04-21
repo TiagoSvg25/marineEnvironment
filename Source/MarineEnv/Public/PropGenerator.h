@@ -17,17 +17,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	// Array of different meshes you can add in the Blueprint editor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	TArray<UStaticMesh*> PropMeshes;
 	
-	// This will hold the HISM components we generate via code
 	UPROPERTY()
 	TArray<UHierarchicalInstancedStaticMeshComponent*> HISMComponents;
 
 public:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	int32 NumberOfInstances = 200;
+	bool bEnableCollision = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
+	int NumberOfInstances = 200;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float WorldLength = 10000.0f;
@@ -41,7 +43,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float MaxScale = 0.8f;
 
-	// How much the rocks sink into the terrain (multiplied by their scale)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float SinkDepth = 20.0f;
 
