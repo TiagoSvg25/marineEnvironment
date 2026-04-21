@@ -39,7 +39,7 @@ void AAlgaeController::Reproduce()
     if (!ParentAlgae || !GetWorld()) return;
 
     USkeletalMeshComponent* MeshComp = ParentAlgae->FindComponentByClass<USkeletalMeshComponent>();
-    float MeshLength = 50.0f; // Default fallback
+    float MeshLength = 100.0f; // Default fallback
 
     if (MeshComp && MeshComp->GetSkeletalMeshAsset())
     {
@@ -50,11 +50,11 @@ void AAlgaeController::Reproduce()
     FVector ParentLocation = ParentAlgae->GetActorLocation();
 
     float SpawnRadius = 500.f;
-    float CollisionCheckRadius = MeshLength;
+    float CollisionCheckRadius = 100.f;
 
     for (int i = 0; i < 10; i++)
     {
-        FVector RandomOffset = FMath::VRand() * SpawnRadius;
+        FVector RandomOffset = FVector(FMath::RandRange(100.0f,500.f), FMath::RandRange(100.0f, 500.f), 0);
         FVector SpawnLocation = ParentLocation + (RandomOffset);
         SpawnLocation.Z = GetTerrainZ(SpawnLocation.X, SpawnLocation.Y);
 

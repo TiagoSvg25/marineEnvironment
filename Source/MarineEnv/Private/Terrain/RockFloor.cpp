@@ -9,6 +9,7 @@ void ARockFloor::BeginPlay()
 {
     Super::BeginPlay();
     GenerateTerrain();
+
 }
 
 void ARockFloor::GenerateTerrain()
@@ -37,10 +38,10 @@ void ARockFloor::GenerateTerrain()
 
 void ARockFloor::CreateVertices()
 {
-    for (int32 X = 0; X <= XSize; ++X)
-    {
-        for (int32 Y = 0; Y <= YSize; ++Y)
-        {
+	for (int32 X = -XSize/2; X <= XSize/2; ++X)
+	{
+		for (int32 Y = -YSize/2; Y <= YSize/2; ++Y)
+		{
             // Simple random bumps instead of Perlin — no plugin needed
             float Z = FMath::RandRange(-1.0f, 1.0f) * ZMultiplier;
 
