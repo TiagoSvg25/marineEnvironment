@@ -63,7 +63,7 @@ void AAlgae::BeginPlay()
 
 	setState("Idle");
 
-	setEnergy(50.0f);
+	setEnergy(FMath::RandRange(1.0f,50.0f));
 
 }
 
