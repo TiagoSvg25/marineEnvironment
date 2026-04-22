@@ -3,6 +3,7 @@
 
 #include "Controllers/Plant/AlgaeController.h"
 #include "Engine/World.h"
+#include "WorldCollision.h"
 #include "Kismet/GameplayStatics.h"
 
 AAlgaeController::AAlgaeController()
@@ -16,7 +17,7 @@ void AAlgaeController::BehaviourAnalisys(float DeltaTime)
 
 
     //getModel()->setEnergy(getModel()->getEnergy() + (0.5f * DeltaTime));
-    getModel()->setEnergy(getModel()->getEnergy() + 0.5f);
+    getModel()->setEnergy(getModel()->getEnergy() + 0.1f);
 
     FString CurrentState = getModel()->getCurrentState();
 
@@ -54,24 +55,29 @@ void AAlgaeController::Reproduce()
 
     for (int i = 0; i < 10; i++)
     {
-        FVector RandomOffset = FVector(FMath::RandRange(100.0f,500.f), FMath::RandRange(100.0f, 500.f), 0);
+        FVector RandomOffset = FVector(FMath::RandRange(200.0f,700.f), FMath::RandRange(200.0f, 700.f), 0);
         FVector SpawnLocation = ParentLocation + (RandomOffset);
         SpawnLocation.Z = GetTerrainZ(SpawnLocation.X, SpawnLocation.Y);
 
-        FCollisionShape Sphere = FCollisionShape::MakeSphere(CollisionCheckRadius);
-        FCollisionQueryParams QueryParams;
-        QueryParams.AddIgnoredActor(ParentAlgae);
+
+        TArray<AActor*> OverlappingActors;
+        TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+        ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
+        TArray<AActor*> ToIgnore;
+        ToIgnore.Add(getModel());
 
         UE_LOG(LogTemp, Display, TEXT("Parent at: %s"), *ParentLocation.ToString());
         UE_LOG(LogTemp, Display, TEXT("Child at: %s"), *SpawnLocation.ToString());
 
-        bool bIsOccupied = GetWorld()->OverlapAnyTestByChannel(
+        bool bIsOccupied = UKismetSystemLibrary::SphereOverlapActors(
+            GetWorld(),
             SpawnLocation,
-            FQuat::Identity,
-            ECC_Pawn, 
-            Sphere,
-            QueryParams
-        );
+            50.f,
+            ObjectTypes,
+            AOrganism::StaticClass(),
+            ToIgnore,
+            OverlappingActors
+        ) && OverlappingActors.Num() > 0;
 
         if (!bIsOccupied)
         {
@@ -90,6 +96,8 @@ void AAlgaeController::Reproduce()
             {
                 NewAlgae->setEnergy(0.1f);
                 NewAlgae->setState("Idle");
+                SnapToFloor(SpawnLocation);
+                NewAlgae->SetActorLocation(SpawnLocation);
 
                 UGameplayStatics::FinishSpawningActor(NewAlgae, SpawnTransform);
                 //NewAlgae->SpawnDefaultController();
