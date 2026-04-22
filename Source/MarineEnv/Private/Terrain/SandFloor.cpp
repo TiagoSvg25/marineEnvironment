@@ -62,7 +62,7 @@ void ASandFloor::CreateSandVertices()
 	float MaxDepth = 0.0f;
 	float MinDepth = getZMultiplier();
 
-	for (int32 X = 0; X <= getXSize(); ++X)
+	for (int32 X = -getXSize()/2; X <= getXSize()/2; ++X)
 	{
 		for (int32 Y = -getYSize()/2; Y <= getYSize()/2; ++Y)
 		{
