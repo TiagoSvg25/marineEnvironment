@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/HierarchicalInstancedStaticMeshComponent.h"
-#include "Engine/StaticMesh.h" // We need this to use UStaticMesh
+#include "Engine/StaticMesh.h" 
 #include "PropGenerator.generated.h" 
 
 UCLASS()
@@ -30,12 +30,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	int NumberOfInstances = 200;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	float WorldLength = 10000.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	float WorldWidth = 10000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float MinScale = 0.5f;

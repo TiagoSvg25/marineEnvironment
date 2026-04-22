@@ -1,4 +1,5 @@
-#include "PropGenerator.h" 
+#include "Spawner/PropGenerator.h" 
+#include <MarineEnv/MarineEnvGameModeBase.h>
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "TimerManager.h"
@@ -46,6 +47,8 @@ void APropGenerator::GenerateProps()
 {
 	if (HISMComponents.Num() == 0) return;
 
+	AMarineEnvGameModeBase* GameMode = Cast<AMarineEnvGameModeBase>(GetWorld()->GetAuthGameMode());
+
 	
 	TArray<TArray<FTransform>> TransformsPerMesh;
 	TransformsPerMesh.SetNum(HISMComponents.Num());
@@ -54,8 +57,8 @@ void APropGenerator::GenerateProps()
 
 	for (int i = 0; i < NumberOfInstances; i++)
 	{
-		float RandX = Origin.X + FMath::RandRange(0.0f, WorldLength);
-		float RandY = Origin.Y + FMath::RandRange(0.0f, WorldWidth);
+		float RandX = Origin.X + FMath::RandRange(-GameMode->WorldLength / 2, GameMode->WorldLength / 2 );
+		float RandY = Origin.Y + FMath::RandRange(-GameMode->WorldWidth / 2, GameMode->WorldWidth / 2);
 
 		float TerrainZ = GetTerrainZ(RandX, RandY);
 		float RandomScale = FMath::RandRange(MinScale, MaxScale);
