@@ -4,6 +4,8 @@
 #include "GameFramework/Actor.h"
 #include "Components/HierarchicalInstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h" 
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
 #include "PropGenerator.generated.h" 
 
 UCLASS()
@@ -38,7 +40,13 @@ public:
 	float MaxScale = 0.8f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
-	float SinkDepth = 20.0f;
+	float SinkDepth = 2.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning|Bubbles")
+	UNiagaraSystem* BubbleSystem;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning|Bubbles")
+	int32 NumberOfBubblePoints = 200;
 
 	float GetTerrainZ(float LocationX, float LocationY);
 
