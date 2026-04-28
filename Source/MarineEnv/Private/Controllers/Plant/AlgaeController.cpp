@@ -17,7 +17,7 @@ void AAlgaeController::BehaviourAnalisys(float DeltaTime)
 
 
     //getModel()->setEnergy(getModel()->getEnergy() + (0.5f * DeltaTime));
-    getModel()->setEnergy(getModel()->getEnergy() + 0.1f);
+    getModel()->setEnergy(getModel()->getEnergy() + 0.05f);
 
     FString CurrentState = getModel()->getCurrentState();
 

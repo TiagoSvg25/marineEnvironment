@@ -41,8 +41,6 @@ AOrganism::AOrganism()
 	CollisionBox->SetGenerateOverlapEvents(true);
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AOrganism::OnOrganismOverlap);
 	CollisionBox->OnComponentHit.AddDynamic(this, &AOrganism::OnHitTerrain);
-	CollisionBox->SetHiddenInGame(false);
-
 
 	AIControllerClass = AOrganismAIController::StaticClass();
 }
