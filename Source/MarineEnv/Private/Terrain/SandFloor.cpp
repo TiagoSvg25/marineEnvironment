@@ -9,6 +9,8 @@ ASandFloor::ASandFloor()
 		TEXT("/Game/MyTexture.MyTexture")
 	);
 
+	this->Tags.Add(FName("SandFloor"));
+
 	if (MatFinder.Succeeded())
 	{
 		TerrainMaterial = MatFinder.Object;

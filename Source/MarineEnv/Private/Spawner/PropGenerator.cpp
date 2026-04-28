@@ -9,6 +9,12 @@ APropGenerator::APropGenerator()
 	PrimaryActorTick.bCanEverTick = false;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
+
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> BubbleAsset(TEXT("/Script/Niagara.NiagaraSystem'/Game/VFX/Bubbles.Bubbles'"));
+	if (BubbleAsset.Succeeded())
+	{
+		BubbleSystem = BubbleAsset.Object;
+	}
 }
 
 void APropGenerator::BeginPlay()
@@ -88,9 +94,30 @@ void APropGenerator::GenerateProps()
 			HISMComponents[i]->BuildTreeIfOutdated(true, false);
 		}
 	}
+
+	if (BubbleSystem) {
+		for (int i = 0; i < NumberOfBubblePoints; i++)
+		{
+			float RandX = Origin.X + FMath::RandRange(-GameMode->WorldLength / 2, GameMode->WorldLength / 2);
+			float RandY = Origin.Y + FMath::RandRange(-GameMode->WorldWidth / 2, GameMode->WorldWidth / 2);
+
+			float TerrainZ = GetTerrainZ(RandX, RandY);
+			
+			FVector BubbleLocation = FVector(RandX, RandY, TerrainZ);
+
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+				GetWorld(),
+				BubbleSystem,
+				BubbleLocation,
+				FRotator::ZeroRotator,
+				FVector(1.0f),
+				true
+			);
+		}
+	}
 }
 
-float APropGenerator::GetTerrainZ(float LocationX, float LocationY)
+/*float APropGenerator::GetTerrainZ(float LocationX, float LocationY)
 {
 	FVector TraceStart = FVector(LocationX, LocationY, 10000.f);
 	FVector TraceEnd = FVector(LocationX, LocationY, -10000.f);
@@ -104,5 +131,24 @@ float APropGenerator::GetTerrainZ(float LocationX, float LocationY)
 		return Hit.ImpactPoint.Z;
 	}
 
+	return 0.f;
+}*/
+
+float APropGenerator::GetTerrainZ(float LocationX, float LocationY)
+{
+	FVector TraceStart = FVector(LocationX, LocationY, 10000.f);
+	FVector TraceEnd = FVector(LocationX, LocationY, -10000.f);
+
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+
+	if (GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_WorldStatic, Params))
+	{
+		if (Hit.GetActor() && Hit.GetActor()->ActorHasTag(FName("SandFloor")))
+		{
+			return Hit.ImpactPoint.Z;
+		}
+	}
 	return 0.f;
 }
