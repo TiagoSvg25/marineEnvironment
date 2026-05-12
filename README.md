@@ -1,12 +1,68 @@
 # Projeto Integrador Pe01 Unrealengine 2026
 
 
+## 1. Required Software
+ 
+### Unreal Engine 5.7
+- Download and install the **Epic Games Launcher** from [unrealengine.com](https://www.unrealengine.com/download)
+- Afert downloading and installing, open the launcher and go to **Unreal Engine → Library**
+- Click **+** to add a new engine version and select the lastest version of **5.7**
+- Click **Install** and wait for it to finish.
 
-## Getting started
+### Visual Studio 2026
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- If not installed, download **Visual Studio** from [visualstudio.microsoft.com](https://visualstudio.microsoft.com/downloads). Select the Community version.
+- After installing Visual Studio Installer, a window will pop up showing options for the Visual Studio installation. Select the follwoing options:
+  - On the **Workloads** tab select:
+    - ✅ **Desktop development with C++**
+    - ✅ **Game development with C++**
+    - ✅ **Desktop development with .NET**
+  - On the **Individual Components** tab select:
+    - ✅ **.NET Framework 4.8.1 SDK**
+    - ✅ **.NET Framework 4.8.1 targeting pack**
+    - ✅ **MSVC Build Tools for x64/x86 (Latest)**
+    - ✅ **MSVC v143 - VS 2022 C++ x64/x86 build tools**
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- If Visual Studio is already installed, open **Visual Studio Installers** and click **Modify** on the IDE installation, and select all the missing options.
+
+### Git
+
+- If not installed, dowmload from https://git-scm.com/
+- Used to clone the project into your machine.
+
+## 2. Development
+
+### Cloning the project
+
+Open a terminal (Command Prompt or Git Bash) and run:
+ 
+```bash
+git clone https://gitlab.up.pt/l.eic/projeto-integrador-pe01-unrealengine-2026.git
+cd projeto-integrador-pe01-unrealengine-2026
+```
+
+### Running the project
+
+After cloning the project, open **Visual Studio** and select **Open Project or Solution** and select the **.sln** file from the project folder. This will open and configure the project inside Visual Studio.
+
+After that, to compile and run project simply click the Green Arrow on the Top Bar. This will automatically open an **Unreal Engine** window with the project.
+
+Inside **Unreal Engine**, on the **File** tab, select **Open Level**, and in this window select **Content/Map/OceanLevel**.
+
+To run the simulation, simply click the green arrow, or **Alt+P**.
+
+### Opening project files
+
+To open and inspect the C++ code, select, on the **Tools** tab, **Open Visual Studio**, or open directly on **Visual Studio** This will open the project files and C++ classes in **Visual Studio**.
+
+To rebuild the project after changing any file in **Visual Studio**, use the **Live Rebuild** option in **Unreal Engine**, which is located in the bottom bar of the window. 
+
+This can also be done from **Visual Studio**, but requires closing **Unreal Engine**, and using the build option in Visual Studio, which will re-open the project with the changes applied.
+
+### Exporting
+
+
+
 
 ## Add your files
 
