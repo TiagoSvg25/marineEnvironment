@@ -76,6 +76,25 @@ void APanoramicCamera::Tick(float DeltaTime)
     APlayerController* PC = GetWorld()->GetFirstPlayerController();
     if (!PC) return;
 
+    if (PC->WasInputKeyJustPressed(EKeys::H))
+    {
+        if (ControlWidgetInstance)
+        {
+            bIsUIVisible = !bIsUIVisible;
+
+            if (bIsUIVisible)
+            {
+                ControlWidgetInstance->SetVisibility(ESlateVisibility::Visible);
+                PC->SetInputMode(FInputModeGameAndUI());
+            }
+            else
+            {
+                ControlWidgetInstance->SetVisibility(ESlateVisibility::Hidden);
+                PC->SetInputMode(FInputModeGameOnly());
+            }
+        }
+    }
+
 
     if (PC->IsInputKeyDown(EKeys::RightMouseButton))
     {

@@ -23,6 +23,14 @@ void UControlWidget::NativeConstruct()
             }
         }
     }
+    if (SpeedSlider)
+    {
+        SpeedSlider->OnValueChanged.AddDynamic(this, &UControlWidget::OnSpeedValueChanged);
+        SpeedSlider->SetMinValue(0.0f);
+        SpeedSlider->SetMaxValue(4.0f);
+        SpeedSlider->SetValue(1.0f);
+    }
+    
 }
 
 void UControlWidget::OnSliderValueChanged(float Value)
@@ -38,4 +46,9 @@ void UControlWidget::OnSliderValueChanged(float Value)
             FogComp->MarkRenderStateDirty();
         }
     }
+}
+
+void UControlWidget::OnSpeedValueChanged(float Value)
+{
+    UGameplayStatics::SetGlobalTimeDilation(GetWorld(), Value);
 }

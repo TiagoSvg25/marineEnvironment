@@ -29,6 +29,7 @@ public:
 
     UPROPERTY(BlueprintReadWrite, Category = "Active")
     bool isActive = false;
+    bool bIsUIVisible = true;
 
 protected:
     UPROPERTY(EditAnywhere, Category = "UI")

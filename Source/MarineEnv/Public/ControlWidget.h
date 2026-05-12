@@ -18,4 +18,10 @@ protected:
 
     UFUNCTION()
     void OnSliderValueChanged(float Value);
+
+    UPROPERTY(meta = (BindWidget))
+    class USlider* SpeedSlider;
+
+    UFUNCTION()
+    void OnSpeedValueChanged(float Value);
 };
