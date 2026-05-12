@@ -37,6 +37,16 @@ void APanoramicCamera::BeginPlay()
         PC->bShowMouseCursor = true;
         PC->SetInputMode(FInputModeGameAndUI());
         isActive = true;
+
+        if (ControlWidgetClass)
+        {
+            ControlWidgetInstance = CreateWidget<UControlWidget>(PC, ControlWidgetClass);
+
+            if (ControlWidgetInstance)
+            {
+                ControlWidgetInstance->AddToViewport();
+            }
+        }
     }
 
 

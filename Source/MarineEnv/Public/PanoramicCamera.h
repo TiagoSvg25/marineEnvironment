@@ -6,6 +6,7 @@
 #include "Camera/CameraActor.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "ControlWidget.h"
 #include "PanoramicCamera.generated.h"
 
 UCLASS()
@@ -30,6 +31,11 @@ public:
     bool isActive = false;
 
 protected:
+    UPROPERTY(EditAnywhere, Category = "UI")
+    TSubclassOf<UControlWidget> ControlWidgetClass;
+    UPROPERTY()
+    UControlWidget* ControlWidgetInstance;
+
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
 
