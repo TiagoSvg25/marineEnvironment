@@ -32,7 +32,10 @@ void APropGenerator::BeginPlay()
 			{
 				NewHISM->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			}
-
+			
+			NewHISM->SetEvaluateWorldPositionOffset(true);
+			// This forces the instances to animate regardless of camera distance
+			NewHISM->SetWorldPositionOffsetDisableDistance(0);
 			NewHISM->SetupAttachment(RootComponent);
 			NewHISM->RegisterComponent();
 
