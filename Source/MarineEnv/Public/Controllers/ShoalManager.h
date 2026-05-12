@@ -28,7 +28,7 @@ public:
 
 	void RemoveShoal(AFish* Fish, FString ShoalID);
 	
-	void MergeShoals();
+	void MergeShoals(AFish* Fish);
 
 	TMap<FString, TArray<AFish*>> GetShoals() const { return Shoals; }
 
@@ -36,6 +36,5 @@ private:
 
 	TMap<FString, TArray<AFish*>> Shoals;
 
-	int MaxShoals = 10;
 	float MinShoalDistance = 500.0f;
 };

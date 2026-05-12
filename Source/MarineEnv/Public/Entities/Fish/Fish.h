@@ -40,6 +40,9 @@ public:
 
 	UShoalManager* getShoalSubsystem() const { return ShoalSubsystem; }
 
+	int getMaxShoals() const { return MaxShoals; }
+	
+	void setMaxShoals(int max) { MaxShoals = max; }
 
 	UPROPERTY(EditAnywhere, Category = "Debug")
 	bool bIsPredator = false;
@@ -51,4 +54,7 @@ private:
 	FString ShoalId;
 
 	TArray<AFish*> Neighbors;
+
+
+	int MaxShoals = 0;
 };

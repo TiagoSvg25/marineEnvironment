@@ -1,17 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Entities/Fish/Sardine.h"
+#include "Entities/Fish/Tuna.h"
 #include "Controllers/Fish/FlockingController.h"
 
 
-ASardine::ASardine()
+ATuna::ATuna()
 {
     static ConstructorHelpers::FObjectFinder<USkeletalMesh> SphereAsset(
-        TEXT("/Script/Engine.SkeletalMesh'/Game/Assets/Sardine/Sardine.Sardine'"));
+        TEXT("/Script/Engine.SkeletalMesh'/Game/Assets/Tuna/Tuna.Tuna'"));
 
     static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(
-        TEXT("/Script/Engine.AnimSequence'/Game/Assets/Sardine/Sardine_Anim.Sardine_Anim'"));
+        TEXT("/Script/Engine.AnimSequence'/Game/Assets/Tuna/Tuna_Anim.Tuna_Anim'"));
 
     if (!MeshAsset)
     {
@@ -29,45 +29,44 @@ ASardine::ASardine()
     else
         UE_LOG(LogTemp, Error, TEXT("Animation not found!"));
 
-    MeshAsset->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+    MeshAsset->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 
     AIControllerClass = AFlockingController::StaticClass();
     bIsPredator = false;
 }
 
-void ASardine::BeginPlay()
+void ATuna::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
-    SetActorRelativeScale3D(FVector(0.1f, 0.1f, 0.1f));
 
     MeshAsset->SetSimulatePhysics(false);
     MeshAsset->SetEnablePhysicsBlending(false);
 
-	setState("Idle");
+    setState("Idle");
 
-	setTrophicLevel(1);
+    setTrophicLevel(1);
+    
+    setSpeed(0.5f);
+    setBaseSpeed(0.5f);
 
-	setSpeed(0.5f);
-	setBaseSpeed(0.5f);
+    setEnergyThreshold(90.0f);
 
-	setEnergyThreshold(90.0f);
+    setEnergyConsumptionRate(0.4f);
 
-	setEnergyConsumptionRate(0.4f);
+    setAwarenessRadius(2000.0f);
+    setMaxShoals(15);
+    setAngleVision(120.0f);
 
-	setAwarenessRadius(2000.0f);
+    setTurnSpeed(3.0f);
 
-	setAngleVision(120.0f);
+    setDirectionChangeInterval(15.0f);
 
-	setTurnSpeed(3.0f);
-
-	setDirectionChangeInterval(15.0f);
-    setMaxShoals(30);
-	addTag("Sardine");
-	addTag("Schooling");
+    addTag("Tuna");
+    addTag("Schooling");
 }
 
-void ASardine::Tick(float DeltaTime)
+void ATuna::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
 }

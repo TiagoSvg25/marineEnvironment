@@ -16,9 +16,13 @@ AOrganism::AOrganism()
 
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
 	SetRootComponent(CollisionBox);
-	CollisionBox->SetBoxExtent(FVector(50.f, 20.f, 15.f));
+
 
 	MeshAsset = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshAsset"));
+	MeshAsset->SetupAttachment(CollisionBox);
+
+
+	CollisionBox->SetBoxExtent(FVector(50.f, 20.f, 15.f));
 
 	//MeshAsset->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	//MeshAsset->SetGenerateOverlapEvents(true);
