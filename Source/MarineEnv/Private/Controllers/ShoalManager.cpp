@@ -15,11 +15,11 @@ void UShoalManager::AddShoal(AFish* Fish)
     FString speciesName = Fish->GetClass()->GetName();
 
     for (auto& pair : Shoals) {
-        if (pair.Key.StartsWith(speciesName) && pair.Value.Num() < MaxShoals) {
+        if (pair.Key.StartsWith(speciesName) && pair.Value.Num() < Fish->getMaxShoals()) {
             pair.Value.Add(Fish);
             Fish->setShoalId(pair.Key);
 
-            MergeShoals();
+            MergeShoals(Fish);
             return;
         }
     }
@@ -27,7 +27,7 @@ void UShoalManager::AddShoal(AFish* Fish)
     FString newKey = FString::Printf(TEXT("%s_Shoal_%d"), *speciesName, Shoals.Num());
     Shoals.Add(newKey, TArray<AFish*>{Fish});
     Fish->setShoalId(newKey);
-    MergeShoals();
+    MergeShoals(Fish);
 }
 
 void UShoalManager::RemoveShoal(AFish* Fish, FString ShoalID)
@@ -42,7 +42,7 @@ void UShoalManager::RemoveShoal(AFish* Fish, FString ShoalID)
     }
 }
 
-void UShoalManager::MergeShoals()
+void UShoalManager::MergeShoals(AFish* Fish)
 {
     TArray<FString> Keys;
     Shoals.GetKeys(Keys);
@@ -58,7 +58,7 @@ void UShoalManager::MergeShoals()
             FString SpeciesB = KeyB.Left(KeyB.Find(TEXT("_Shoal_")));
             if (SpeciesA != SpeciesB) continue;
 
-            if (Shoals[KeyA].Num() + Shoals[KeyB].Num() > MaxShoals) continue;
+            if (Shoals[KeyA].Num() + Shoals[KeyB].Num() > Fish->getMaxShoals()) continue;
 
             FVector CenterA = FVector::ZeroVector;
             for (AFish* f : Shoals[KeyA]) CenterA += f->GetActorLocation();

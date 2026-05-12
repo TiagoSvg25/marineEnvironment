@@ -5,12 +5,6 @@
 AFish::AFish()
 {
 
-
-	if (RootComponent)
-	{
-		MeshAsset->SetupAttachment(RootComponent);
-	}
-
 	AIControllerClass = AFishController::StaticClass();
 
 	if (FloatingMovement)
@@ -37,7 +31,7 @@ void AFish::BeginPlay()
 
 	MeshAsset->SetAnimationMode(EAnimationMode::AnimationSingleNode);
 
-	if (anim && GetClass() == AFish::StaticClass())
+	if (anim)
 	{
 		MeshAsset->PlayAnimation(anim, true);
 	}
