@@ -6,14 +6,14 @@
 
 AShark::AShark()
 {
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SharkMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Character/Shark/Shark.Shark'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SharkMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Assets/Shark/Bob.Bob'"));
 
 	if (SharkMesh.Succeeded()) {
 		MeshAsset->SetSkeletalMesh(SharkMesh.Object);
 	}
 	else UE_LOG(LogTemp, Error, TEXT("ERRO: Nao foi possivel encontrar a mesh do tubarao no caminho especificado!"));
 
-	static ConstructorHelpers::FObjectFinder<UAnimSequence> SwimAsset(TEXT("/Script/Engine.AnimSequence'/Game/Character/Shark/Animations/Sharkmetarig_Swim_Shark.Sharkmetarig_Swim_Shark'"));
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> SwimAsset(TEXT("/Script/Engine.AnimSequence'/Game/Assets/Shark/Bob_Anim.Bob_Anim'"));
 
 	MeshAsset->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
@@ -36,9 +36,6 @@ void AShark::BeginPlay()
 {
 	Super::BeginPlay();
 	MeshAsset->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, -90.0f, 0.0f));
-	MeshAsset->SetRelativeScale3D(FVector(0.01f, 0.01f, 0.01f));
-
-
 	bUseControllerRotationYaw = false;
 
 	setSpeed(0.7f);
