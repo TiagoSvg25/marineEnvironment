@@ -1,14 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DoryFish.h"
+#include "entities/Fish/SeaHorse.h"
 
-ADoryFish::ADoryFish()
+// Fill out your copyright notice in the Description page of Project Settings.
+
+ASeaHorse::ASeaHorse()
 {
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SphereAsset(TEXT("/Script/Engine.SkeletalMesh'/Game/Assets/Fish/Dory.Dory'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SphereAsset(TEXT("/Script/Engine.SkeletalMesh'/Game/Assets/SeaHorse/SeaHorse.SeaHorse'"));
 
-	static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(TEXT("/Script/Engine.AnimSequence'/Game/Assets/Fish/Dory_Anim.Dory_Anim'"));
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(TEXT("/Script/Engine.AnimSequence'/Game/Assets/SeaHorse/SeaHorse_Anim.SeaHorse_Anim'"));
 
 	MeshAsset->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	CollisionBox->SetBoxExtent(FVector(50.f, 50.f, 50.f));
@@ -24,13 +26,13 @@ ADoryFish::ADoryFish()
 
 	}
 
-	MeshAsset->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+	MeshAsset->SetRelativeRotation(FRotator(0.0f, 270.0f, 0.0f));
 
 	bIsPredator = false;
 }
 
 
-void ADoryFish::BeginPlay()
+void ASeaHorse::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -45,10 +47,13 @@ void ADoryFish::BeginPlay()
 	setState("Idle");
 
 	setAwarenessRadius(10000.f);
+	
 
 	setAngleVision(70.f);
 
-	setDirectionChangeInterval(3.f);
+	setScale(0.5);
+	setDirectionChangeInterval(10.f);
 
+	
 	MeshAsset->PlayAnimation(anim, true);
 }
