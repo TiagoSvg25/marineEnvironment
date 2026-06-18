@@ -13,7 +13,7 @@ ASeaHorse::ASeaHorse()
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> Animation(TEXT("/Script/Engine.AnimSequence'/Game/Assets/SeaHorse/SeaHorse_Anim.SeaHorse_Anim'"));
 
 	MeshAsset->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	CollisionBox->SetBoxExtent(FVector(50.f, 50.f, 50.f));
+	CollisionBox->SetBoxExtent(FVector(15.f, 15.f, 55.f));
 
 	if (SphereAsset.Succeeded())
 	{
@@ -36,9 +36,11 @@ void ASeaHorse::BeginPlay()
 {
 	Super::BeginPlay();
 
-	setSpeed(0.3f);
+	MeshAsset->SetRelativeScale3D(FVector(0.1f,0.1f,0.1f));
 
-	setBaseSpeed(0.3f);
+	setSpeed(0.05f);
+
+	setBaseSpeed(0.05f);
 
 	setEnergyThreshold(80.0f);
 
