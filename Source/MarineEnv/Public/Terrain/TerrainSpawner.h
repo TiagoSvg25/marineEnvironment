@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "MarineGameInstance.h"
 #include "TerrainSpawner.generated.h"
 
 UCLASS()

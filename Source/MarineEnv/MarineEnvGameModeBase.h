@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "MarineGameInstance.h"
 #include "MarineEnvGameModeBase.generated.h"
 
 /**

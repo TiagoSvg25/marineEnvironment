@@ -18,7 +18,15 @@ void AOrganismSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-    for (auto& Entry : spawnCounts)
+    UMarineGameInstance* GI = Cast<UMarineGameInstance>(GetGameInstance());
+
+    TMap<TSubclassOf<AOrganism>, int32>& CountsToUse = GI ? GI->SelectedOrganisms : spawnCounts;
+
+    if (CountsToUse.IsEmpty()) {
+        CountsToUse = spawnCounts;
+    }
+
+    for (auto& Entry : CountsToUse)
     {
         TSubclassOf<AOrganism> OrganismClass = Entry.Key;
         int32 Count = Entry.Value;

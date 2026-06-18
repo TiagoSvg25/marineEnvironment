@@ -19,6 +19,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Simulation Config")
 	TMap<TSubclassOf<AOrganism>, int32> SelectedOrganisms;
 
+    UPROPERTY(BlueprintReadWrite, Category = "Settings")
+    float MapSize = 10000.f;
+
     UFUNCTION(BlueprintCallable, Category = "Settings")
     void SetOrganismCount(TSubclassOf<AOrganism> OrganismClass, int32 Count)
     {

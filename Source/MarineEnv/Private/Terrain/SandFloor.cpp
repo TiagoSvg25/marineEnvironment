@@ -1,5 +1,6 @@
 #include "Terrain/SandFloor.h"
 #include <MarineEnv/MarineEnvGameModeBase.h>
+#include "MarineGameInstance.h"
 #include "KismetProceduralMeshLibrary.h"
 
 
@@ -19,9 +20,14 @@ ASandFloor::ASandFloor()
 void ASandFloor::BeginPlay()
 {
 	Super::BeginPlay();
-	AMarineEnvGameModeBase* GameMode = Cast<AMarineEnvGameModeBase>(GetWorld()->GetAuthGameMode());
+	UMarineGameInstance* GI = Cast<UMarineGameInstance>(GetGameInstance());
 
-	setScale(GameMode->WorldLength/getXSize());
+	if (!GI) return;
+
+	float ScaleFactor = GI->MapSize / getXSize();
+	setScale(ScaleFactor);
+	setZMultiplier(5 * ScaleFactor);
+
 	GenerateTerrain();
 }
 

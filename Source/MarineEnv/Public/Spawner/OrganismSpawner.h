@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Entities/Organism.h"
 #include <MarineEnv/MarineEnvGameModeBase.h>
+#include "MarineGameInstance.h"
 #include "OrganismSpawner.generated.h"
 
 UCLASS()

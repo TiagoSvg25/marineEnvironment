@@ -15,8 +15,7 @@ APanoramicCamera::APanoramicCamera()
 
     SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
     SpringArm->SetupAttachment(Root);
-    SpringArm->TargetArmLength = 1000.f;
-    SpringArm->bDoCollisionTest = false;
+    SpringArm->TargetArmLength = 1000.f;                
     SpringArm->bInheritPitch = false;
     SpringArm->bInheritYaw = false;
     SpringArm->bInheritRoll = false;
@@ -32,12 +31,12 @@ void APanoramicCamera::BeginPlay()
     Super::BeginPlay();
 
     APlayerController* PC = GetWorld()->GetFirstPlayerController();
+
     if (PC)
     {
         PC->bShowMouseCursor = true;
         PC->SetInputMode(FInputModeGameAndUI());
         isActive = true;
-
         if (ControlWidgetClass)
         {
             ControlWidgetInstance = CreateWidget<UControlWidget>(PC, ControlWidgetClass);
@@ -151,4 +150,5 @@ void APanoramicCamera::DeactivateCamera()
 
 void APanoramicCamera::UpdateCamera() {
     SpringArm->SetWorldRotation(FRotator(Pitch, Yaw, 0.f));
+
 }

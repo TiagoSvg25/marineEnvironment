@@ -14,6 +14,20 @@ AMarineEnvGameModeBase::AMarineEnvGameModeBase()
 void AMarineEnvGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UMarineGameInstance* GI = Cast<UMarineGameInstance>(GetGameInstance());
+
+	if (GI)
+	{
+		WorldLength = GI->MapSize;
+		WorldWidth = GI->MapSize;
+		UE_LOG(LogTemp, Warning, TEXT("MapSize loaded from GameInstance: %f"), GI->MapSize);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("GameInstance cast failed!"));
+	}
+
 	/*
 
 	if (SpawnerClass) {
