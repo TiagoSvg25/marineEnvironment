@@ -2,6 +2,8 @@
 #include <MarineEnv/MarineEnvGameModeBase.h>
 #include "MarineGameInstance.h"
 #include "KismetProceduralMeshLibrary.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
 
 
 ASandFloor::ASandFloor()
@@ -15,6 +17,15 @@ ASandFloor::ASandFloor()
 	if (MatFinder.Succeeded())
 	{
 		TerrainMaterial = MatFinder.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FoundBubbleAsset(
+		TEXT("/Script/Niagara.NiagaraSystem'/Game/VFX/Bubbles.Bubbles'")
+	);
+
+	if (FoundBubbleAsset.Succeeded())
+	{
+		BubbleAsset = FoundBubbleAsset.Object;
 	}
 }
 void ASandFloor::BeginPlay()
@@ -62,6 +73,54 @@ void ASandFloor::GenerateTerrain()
 	if (getTerrainMaterial())
 	{
 		ProceduralMesh->SetMaterial(0, getTerrainMaterial());
+	}
+
+	SpawnDistributedBubbles();
+}
+
+void ASandFloor::SpawnDistributedBubbles()
+{
+	if (!BubbleAsset || !ProceduralMesh) return;
+
+	// Clear out any old components if terrain is regenerated
+	for (UNiagaraComponent* Comp : BubbleComponents)
+	{
+		if (Comp) Comp->DestroyComponent();
+	}
+	BubbleComponents.Empty();
+
+	const int32 DistributionStep = 10;
+
+	int32 VertsXCount = getXSize() + 1;
+	int32 VertsYCount = getYSize() + 1;
+
+	for (int32 XIdx = 0; XIdx < VertsXCount; XIdx += DistributionStep)
+	{
+		for (int32 YIdx = 0; YIdx < VertsYCount; YIdx += DistributionStep)
+		{
+			int32 FlatVertexIndex = (XIdx * VertsYCount) + YIdx;
+
+			if (Vertices.IsValidIndex(FlatVertexIndex))
+			{
+				FVector LocalSpawnLocation = Vertices[FlatVertexIndex];
+
+				FString DynamicCompName = FString::Printf(TEXT("SandBubbleGen_%d_%d"), XIdx, YIdx);
+
+				UNiagaraComponent* NewBubbleComp = NewObject<UNiagaraComponent>(this, FName(*DynamicCompName));
+				if (NewBubbleComp)
+				{
+					NewBubbleComp->RegisterComponent();
+					NewBubbleComp->SetAsset(BubbleAsset);
+
+					NewBubbleComp->AttachToComponent(ProceduralMesh, FAttachmentTransformRules::KeepRelativeTransform);
+					NewBubbleComp->SetRelativeLocation(LocalSpawnLocation);
+
+					NewBubbleComp->Activate();
+
+					BubbleComponents.Add(NewBubbleComp);
+				}
+			}
+		}
 	}
 }
 

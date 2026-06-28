@@ -1,5 +1,6 @@
 #pragma once
 
+#include "NiagaraComponent.h"
 #include "CoreMinimal.h"
 #include "Terrain/Terrain.h"
 #include "SandFloor.generated.h"
@@ -45,4 +46,12 @@ private:
 
 	void CreateSandVertices();
 	void CreateSandTriangles();
+
+	UPROPERTY()
+	UNiagaraSystem* BubbleAsset;
+
+	UPROPERTY()
+	TArray<UNiagaraComponent*> BubbleComponents;
+
+	void SpawnDistributedBubbles();
 };
