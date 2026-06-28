@@ -36,7 +36,7 @@ protected:
 	virtual void onActorCollision(AOrganism* Collided) override;
 
 
-	void Reproduce();
+	virtual void Reproduce() override;
 
 	//virtual void updateState() override;
 

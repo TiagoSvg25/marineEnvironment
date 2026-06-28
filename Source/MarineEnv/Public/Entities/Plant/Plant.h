@@ -25,6 +25,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
+
+	float getEnergyGainRate();
+
+	void setEnergyGainRate(float NewEnergyGainRate);
+
 	// getters and setters
 
 
@@ -35,5 +40,7 @@ protected:
 	USphereComponent* CollisionComponent;
 
 	TArray<FString> Tags = { "plant" };
+
+	float EnergyGainRate;
 
 };

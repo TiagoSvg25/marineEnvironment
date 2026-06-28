@@ -24,6 +24,6 @@ protected:
 
 	virtual void BehaviourAnalisys(float DeltaTime) override;
 
-	virtual void Reproduce();
+	virtual void Reproduce() override;
 	
 };

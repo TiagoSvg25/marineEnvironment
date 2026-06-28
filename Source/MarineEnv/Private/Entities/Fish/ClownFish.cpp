@@ -36,6 +36,8 @@ void AClownFish::BeginPlay()
 
 	MeshAsset->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
 
+	setTrophicLevel(1);
+
 	setSpeed(0.3f);
 
 	setBaseSpeed(0.3f);

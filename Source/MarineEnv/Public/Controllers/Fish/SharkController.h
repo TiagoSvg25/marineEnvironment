@@ -24,5 +24,4 @@ protected:
 
 private:
     FString PreviousState;
-	
 };

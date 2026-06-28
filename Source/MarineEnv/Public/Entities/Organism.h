@@ -24,21 +24,6 @@ public:
 		// Sets default values for this actor's properties
 	AOrganism();
 
-	float getHealth() const;
-
-	void setHealth(float NewHealth);
-
-	int getAge() const;
-
-	void setAge(int NewAge);
-
-	int getScale() const;
-
-	void setScale(int NewScale);
-
-	float getSpawnDensity() const;
-
-	void setSpawnDensity(float NewSpawnDensity);
 
 	float getMinDepthRange() const;
 
@@ -94,9 +79,6 @@ public:
 
 protected:
 
-
-	int Scale = 1;
-	float SpawnDensity = 1.0f;
 	float MinDepthRange = 0.f;
 	float MaxDepthRange = 100.f;
 
@@ -110,8 +92,6 @@ protected:
 
 	USkeletalMeshComponent* MeshAsset;
 	UAnimSequence* anim;
-	float Health = 1.0f;
-	float MaxHealth = 100.0f;
 	TArray<FString> Tags = { "dummy" };
 	FString CurrentState = "Idle";
 	int Age = 0;

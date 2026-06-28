@@ -34,6 +34,8 @@ void ADoryFish::BeginPlay()
 {
 	Super::BeginPlay();
 
+	setTrophicLevel(1);
+
 	setSpeed(0.3f);
 
 	setBaseSpeed(0.3f);

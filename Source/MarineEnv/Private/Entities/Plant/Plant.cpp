@@ -22,3 +22,14 @@ void APlant::Tick(float DeltaTime)
 }
 
 // --- Getters and Setters ---
+
+
+
+
+float APlant::getEnergyGainRate(){
+    return EnergyGainRate;
+}
+
+void APlant::setEnergyGainRate(float NewEnergyGainRate){
+    EnergyGainRate = NewEnergyGainRate;
+}

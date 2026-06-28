@@ -45,7 +45,7 @@ void ATuna::BeginPlay()
 
     setState("Idle");
 
-    setTrophicLevel(1);
+    setTrophicLevel(2);
     
     setSpeed(0.5f);
     setBaseSpeed(0.5f);

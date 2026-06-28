@@ -24,15 +24,6 @@ AOrganism::AOrganism()
 
 	CollisionBox->SetBoxExtent(FVector(50.f, 20.f, 15.f));
 
-	//MeshAsset->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	//MeshAsset->SetGenerateOverlapEvents(true);
-	//MeshAsset->SetCollisionObjectType(ECC_Pawn);
-	//MeshAsset->SetNotifyRigidBodyCollision(true);
-	//MeshAsset->SetCollisionResponseToAllChannels(ECR_Ignore);
-	//MeshAsset->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
-
-	//MeshAsset->OnComponentBeginOverlap.AddDynamic(this, &AOrganism::OnOrganismOverlap);
-	//MeshAsset->OnComponentHit.AddDynamic(this, &AOrganism::OnHitTerrain);
 
 
 	CollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -78,49 +69,6 @@ void AOrganism::OnHitTerrain(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		MyController->onTerrainCollision(Hit.Normal);
 }
 
-
-
-float AOrganism::getHealth() const
-{
-	return Health;
-}
-
-void AOrganism::setHealth(float NewHealth)
-{
-	Health = NewHealth;
-
-}
-
-int AOrganism::getAge() const
-{
-	return Age;
-}
-
-void AOrganism::setAge(int NewAge)
-{
-	Age = NewAge;
-}
-
-
-int AOrganism::getScale() const
-{
-	return Scale;
-}
-
-void AOrganism::setScale(int NewScale)
-{
-	Scale = NewScale;
-}
-
-float AOrganism::getSpawnDensity() const
-{
-	return SpawnDensity;
-}
-
-void AOrganism::setSpawnDensity(float NewSpawnDensity)
-{
-	SpawnDensity = NewSpawnDensity;
-}
 
 float AOrganism::getMinDepthRange() const
 {

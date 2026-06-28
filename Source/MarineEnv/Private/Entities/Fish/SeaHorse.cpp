@@ -40,6 +40,8 @@ void ASeaHorse::BeginPlay()
 
 	setSpeed(0.05f);
 
+	setTrophicLevel(1);
+
 	setBaseSpeed(0.05f);
 
 	setEnergyThreshold(80.0f);
@@ -50,10 +52,8 @@ void ASeaHorse::BeginPlay()
 
 	setAwarenessRadius(10000.f);
 	
-
 	setAngleVision(70.f);
 
-	setScale(0.5);
 	setDirectionChangeInterval(10.f);
 
 	

@@ -32,6 +32,7 @@ public:
 
 	virtual void onTerrainCollision(FVector Normal) {};
 
+	virtual void Reproduce() {};
 
 
 	void SnapToFloor(FVector& Location);
