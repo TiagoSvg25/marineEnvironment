@@ -15,7 +15,7 @@ APanoramicCamera::APanoramicCamera()
 
     SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
     SpringArm->SetupAttachment(Root);
-    SpringArm->TargetArmLength = 1000.f;                
+    SpringArm->TargetArmLength = 2000.f;                
     SpringArm->bInheritPitch = false;
     SpringArm->bInheritYaw = false;
     SpringArm->bInheritRoll = false;

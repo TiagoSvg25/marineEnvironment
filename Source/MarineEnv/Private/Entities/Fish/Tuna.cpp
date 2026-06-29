@@ -31,6 +31,9 @@ ATuna::ATuna()
 
     MeshAsset->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 
+    CollisionBox->SetBoxExtent(FVector(250.f, 70.f, 80.f));
+
+
     AIControllerClass = AFlockingController::StaticClass();
     bIsPredator = false;
 }

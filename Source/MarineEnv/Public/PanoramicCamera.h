@@ -51,7 +51,7 @@ private:
     UCameraComponent* Camera;
 
     float Yaw = 0.f;
-    float Pitch = -30.f;
+    float Pitch = -50.f;
 
     UPROPERTY(EditAnywhere, Category = "Orbit")
     float OrbitSpeed = 0.5f;
