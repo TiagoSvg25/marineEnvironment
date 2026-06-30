@@ -53,7 +53,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             if (Target) {
                 getModel()->setState("Hunting");
                 float currentSpeed = getModel()->getSpeed();
-                getModel()->setSpeed(currentSpeed * 2);
+                getModel()->setSpeed(getModel()->getBaseSpeed() * 2);
                 getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() * 2);
                 getModel()->setTargetLocation(Target->GetActorLocation());
                 getModel()->setTurnSpeed(getModel()->getTurnSpeed()*2);
@@ -61,10 +61,13 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
             else roam(DeltaTime);
         }
         
-        /*/else if (getModel()->getEnergy() > getModel()->getEnergyThreshold()) {
-            getModel()->setSpeed(getModel()->getSpeed() / 2);
+        else if (getModel()->getEnergy() > getModel()->getEnergyThreshold()) {
             getModel()->setState("Reproduction");
-        }*/
+
+            UE_LOG(LogTemp, Warning, TEXT("%s enetered reproduction"), *getModel()->GetName());
+
+
+        }
         else {
             roam(DeltaTime);
         }
@@ -77,7 +80,6 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         }
         else if (!getModel()->bIsPredator) {
             if (Target) {
-                UE_LOG(LogTemp, Warning, TEXT("Found plant"));
                 getModel()->setTargetLocation(Target->GetActorLocation());
             }
             else {
@@ -107,7 +109,7 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         }
         else {
             getModel()->setState("Idle");
-            getModel()->setSpeed(getModel()->getSpeed()/2);
+            getModel()->setSpeed(getModel()->getBaseSpeed()/2);
         }
     }
 
@@ -115,7 +117,6 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
         AAnimal* pred = checkPredators();
         if (pred != nullptr) {
             Target = nullptr;
-            getModel()->setSpeed(getModel()->getSpeed() * 2);
             getModel()->setTargetLocation(getModel()->GetActorLocation() - pred->GetActorLocation());
             getModel()->setState("Fleeing");
         }
@@ -145,7 +146,11 @@ void AFishController::Reproduce() {
     
     if(!getModel()) return;
 
-     getModel()->setEnergy(getModel()->getEnergy() * 0.50);
+    getModel()->setEnergy(getModel()->getEnergy() * 0.50);
+
+    if (Target) {
+        Target->setEnergy(Target->getEnergy() * 0.50);
+    }
 
      int spawnAttempts = 10;
 
@@ -153,7 +158,7 @@ void AFishController::Reproduce() {
 
 
         FVector SpawnLocation = getModel()->GetActorLocation() + FMath::VRand()*(getModel()->getMeshAsset()->Bounds.SphereRadius);
-        SpawnLocation.Z = getModel()->GetActorLocation().Z;
+        SpawnLocation.Z = getModel()->GetActorLocation().Z + 50.f;
 
         FCollisionShape Sphere = FCollisionShape::MakeSphere(getModel()->getMeshAsset()->Bounds.SphereRadius);
         FCollisionQueryParams QueryParams;
@@ -292,7 +297,7 @@ void AFishController::onActorCollision(AOrganism* Collided) {
 
     if (getModel()->getCurrentState() == "Hunting") {            
         if (Collided == Target) {
-            getModel()->setEnergy(Target->getEnergy() + getModel()->getEnergy());
+            getModel()->setEnergy(FMath::Clamp(Target->getEnergy() + getModel()->getEnergy(), 0, getModel()->getMaxEnergy()));
             getModel()->setSpeed(getModel()->getSpeed()/2);
             getModel()->setEnergyConsumptionRate(getModel()->getEnergyConsumptionRate() / 2);
             getModel()->setTurnSpeed(getModel()->getTurnSpeed() / 2);
@@ -306,8 +311,6 @@ void AFishController::onActorCollision(AOrganism* Collided) {
         if (Collided == Target) {
             Reproduce();
             getModel()->setState("Idle");
-            getModel()->setSpeed(getModel()->getSpeed() * 2);
-
             Target->setState("Idle");
             Target = nullptr;
         }

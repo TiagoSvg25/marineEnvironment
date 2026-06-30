@@ -53,7 +53,11 @@ void ATuna::BeginPlay()
     setSpeed(0.5f);
     setBaseSpeed(0.5f);
 
-    setEnergyThreshold(90.0f);
+    setEnergyThreshold(80.0f);
+
+    setMaxEnergy(120.f);
+
+    setEnergy(70.0f);
 
     setEnergyConsumptionRate(0.3f);
 

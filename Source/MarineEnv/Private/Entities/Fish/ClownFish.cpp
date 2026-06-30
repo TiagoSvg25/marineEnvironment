@@ -46,6 +46,8 @@ void AClownFish::BeginPlay()
 
 	setEnergy(60.f);
 
+	setMaxEnergy(100.f);
+
 	setState("Idle");
 
 	setAwarenessRadius(10000.f);

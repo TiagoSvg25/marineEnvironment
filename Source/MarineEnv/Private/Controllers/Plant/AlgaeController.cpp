@@ -55,7 +55,7 @@ void AAlgaeController::Reproduce()
 
     for (int i = 0; i < 10; i++)
     {
-        FVector RandomOffset = FVector(FMath::RandRange(200.0f,700.f), FMath::RandRange(200.0f, 700.f), 0);
+        FVector RandomOffset = FVector(FMath::RandRange(-200.0f,200.f), FMath::RandRange(-200.0f, 200.f), 0);
         FVector SpawnLocation = ParentLocation + (RandomOffset);
         SpawnLocation.Z = GetTerrainZ(SpawnLocation.X, SpawnLocation.Y);
 

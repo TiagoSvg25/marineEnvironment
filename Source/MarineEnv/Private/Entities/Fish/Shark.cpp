@@ -44,9 +44,11 @@ void AShark::BeginPlay()
 
 	setEnergy(50.f);
 
-	setEnergyThreshold(95.0f);
+	setMaxEnergy(130.f);
 
-	setEnergyConsumptionRate(0.3f);
+	setEnergyThreshold(70.0f);
+
+	setEnergyConsumptionRate(0.5f);
 
 	setAwarenessRadius(1500.0f);
 

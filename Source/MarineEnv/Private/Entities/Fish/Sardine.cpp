@@ -51,11 +51,13 @@ void ASardine::BeginPlay()
 	setSpeed(0.5f);
 	setBaseSpeed(0.5f);
 
-    setEnergy(60.f);
+    setEnergy(45.0f);
 
-	setEnergyThreshold(90.0f);
+	setEnergyThreshold(50.0f);
 
 	setEnergyConsumptionRate(0.1f);
+
+    setMaxEnergy(70.f);
 
 	setAwarenessRadius(2000.0f);
 

@@ -44,9 +44,11 @@ void ASeaHorse::BeginPlay()
 
 	setBaseSpeed(0.05f);
 
-	setEnergyThreshold(80.0f);
+	setEnergyThreshold(70.0f);
 
 	setEnergy(60.f);
+
+	setMaxEnergy(90.f);
 
 	setState("Idle");
 
