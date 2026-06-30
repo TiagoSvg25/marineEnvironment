@@ -55,7 +55,7 @@ void ATuna::BeginPlay()
 
     setEnergyThreshold(90.0f);
 
-    setEnergyConsumptionRate(0.4f);
+    setEnergyConsumptionRate(0.3f);
 
     setAwarenessRadius(2000.0f);
     setMaxShoals(15);

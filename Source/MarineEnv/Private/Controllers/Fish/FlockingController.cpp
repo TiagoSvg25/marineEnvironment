@@ -10,6 +10,12 @@ void AFlockingController::BehaviourAnalisys(float DeltaTime)
 
     FString CurrentState = getModel()->getCurrentState();
 
+
+    if (getModel()->getEnergy() <= 0) {
+        getModel()->Destroy();
+        return;
+    }
+
     if (CurrentState == "Idle") {
 
         TArray<AActor*> allActors;

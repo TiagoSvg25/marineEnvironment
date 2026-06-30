@@ -12,14 +12,21 @@ void APlantAIController::OnPossess(APawn* InPawn)
 {
     Super::OnPossess(InPawn);
 
-    if (getModel()) {
-        getModel()->setState("Idle");
-        FVector curLoc = getModel()->GetActorLocation();
-        SnapToFloor(curLoc);
-        getModel()->SetActorLocation(curLoc);
-        UE_LOG(LogTemp, Display, TEXT("Clamped to %s"), *curLoc.ToString());
-    }
+    if (!getModel()) return;
 
+    getModel()->setState("Idle");
+
+    FTimerHandle TimerHandle;
+    GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+        {
+            if (!IsValid(getModel())) return;
+
+            FVector CurLoc = getModel()->GetActorLocation();
+            SnapToFloor(CurLoc);
+            getModel()->SetActorLocation(CurLoc);
+            UE_LOG(LogTemp, Display, TEXT("Clamped to %s"), *CurLoc.ToString());
+
+        }, 0.1f, false);
 }
 
 

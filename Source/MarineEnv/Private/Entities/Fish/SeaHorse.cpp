@@ -54,6 +54,8 @@ void ASeaHorse::BeginPlay()
 	
 	setAngleVision(70.f);
 
+	setEnergyConsumptionRate(0.2f);
+
 	setDirectionChangeInterval(10.f);
 
 	

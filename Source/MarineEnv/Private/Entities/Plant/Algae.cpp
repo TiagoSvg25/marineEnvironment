@@ -40,6 +40,8 @@ void AAlgae::BeginPlay()
 	setState("Idle");
 
 	setEnergy(FMath::RandRange(1.0f, 50.0f));
+
+	setEnergyGainRate(0.07f);
 }
 
 void AAlgae::Tick(float DeltaTime)

@@ -23,7 +23,7 @@ void AOrganismAIController::OnPossess(APawn* InPawn) {
 
 void AOrganismAIController::SnapToFloor(FVector& Location)
 {
-    FVector Start = Location + FVector(0, 0, 500.f); // trace from above
+    FVector Start = Location + FVector(0, 0, -100.f); // trace from above
     FVector End = Location - FVector(0, 0, 10000.f); // trace downward
 
     FHitResult Hit;

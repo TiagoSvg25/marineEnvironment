@@ -52,6 +52,8 @@ void AClownFish::BeginPlay()
 
 	setAngleVision(70.f);
 
+	setEnergyConsumptionRate(0.3f);
+
 	setDirectionChangeInterval(3.f);
 
 	MeshAsset->PlayAnimation(anim, true);

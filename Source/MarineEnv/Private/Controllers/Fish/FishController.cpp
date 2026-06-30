@@ -26,6 +26,11 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
 
     getModel()->setEnergy(getModel()->getEnergy() - getModel()->getEnergyConsumptionRate() * DeltaTime * getModel()->getSpeed());
 
+    if (getModel()->getEnergy() <= 0) {
+        getModel()->Destroy();
+        return;
+    }
+
     FString CurrentState = getModel()->getCurrentState();
 
    
