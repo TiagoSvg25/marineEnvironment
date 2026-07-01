@@ -115,6 +115,11 @@ void AFishController::BehaviourAnalisys(float DeltaTime)
 
     else if (CurrentState == "Reproduction") {
         AAnimal* pred = checkPredators();
+        if (getModel()->getEnergy() <= getModel()->getEnergyThreshold()) {
+            Target = nullptr;
+            getModel()->setState("Idle");
+            return;
+        }
         if (pred != nullptr) {
             Target = nullptr;
             getModel()->setTargetLocation(getModel()->GetActorLocation() - pred->GetActorLocation());
