@@ -72,4 +72,4 @@ To export the simulation as a standalone Windows executable:
 1. In Unreal Engine go to **Platforms → Windows → Package Project**
 2. Select an output folder outside the project directory
 3. Wait for packaging to complete — this can take **1–2 hours** on the first run due to shader compilation
-4. After packaging, the output folder contains all the files required to run the executable in the folder. No Unreal Engine installation is required to run the program on the target machine.
+4. After packaging, the output folder contains all the files required to run the executable in the folder. No Unreal Engine installation is required to run the program on the target machine. 
