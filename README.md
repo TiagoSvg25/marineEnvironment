@@ -1,7 +1,8 @@
 # Projeto Integrador Pe01 — Marine Environment Simulation
  
 A marine ecosystem simulation built with Unreal Engine 5.7, featuring AI-driven organisms including fish, sharks, and plants interacting in a procedurally populated ocean environment.
- 
+
+![poster](docs/PE01_poster.jpg)
 ---
  
 ## 1. Required Software
